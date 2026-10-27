@@ -682,7 +682,11 @@ class PlotWindow(tk.Toplevel):
                 c = ch if s_ is self.seq else self.seq_b.find_channel(self.seq.channel_names()[ch])
                 pts = s_.trace(c, self.app.set_index if s_ is self.seq else 0)
                 pts_all.append((pts, col, tag))
-            vals = [v for pts, _, _ in pts_all for t, v in pts if ta <= t <= tb] or [0.0]
+            clipped = []
+            for pts, col, tag in pts_all:
+                clipped.append((self._clip(pts, ta, tb), col, tag))
+            pts_all = clipped
+            vals = [v for pts, _, _ in pts_all for t, v in pts] or [0.0]
             vmin, vmax = min(vals), max(vals)
             if vmax == vmin:
                 vmax = vmin + 1.0
@@ -703,8 +707,7 @@ class PlotWindow(tk.Toplevel):
             for pts, col, tag in pts_all:
                 coords = []
                 for t, v in pts:
-                    tt = min(max(t, ta), tb)
-                    coords.extend([X(tt), Y(v)])
+                    coords.extend([X(t), Y(v)])
                 if len(coords) >= 4:
                     cv.create_line(*coords, fill=col, width=1 if tag == u"B" else 2, dash=(4, 3) if tag == u"B" else None)
         # time axis
@@ -722,6 +725,32 @@ class PlotWindow(tk.Toplevel):
                     cv.create_line(x, T, x, H - B, fill="#e8e8e8")
                     cv.create_text(x + 2, T + 2, text=self.seq.edges[i][E_NAME][:18], anchor="nw", angle=270,
                                    fill="#909090", font=("TkDefaultFont", 7)) if (tb - ta) < 60 else None
+
+    @staticmethod
+    def _clip(pts, ta, tb):
+        """Clip a (t, v) polyline to [ta, tb], interpolating at the boundaries."""
+        out = []
+        for k in range(len(pts)):
+            t, v = pts[k]
+            if k > 0:
+                t0, v0 = pts[k - 1]
+                for tc in (ta, tb):                      # boundary crossings
+                    if (t0 < tc < t) or (t < tc < t0):
+                        f = (tc - t0) / (t - t0) if t != t0 else 0.0
+                        out.append((tc, v0 + f * (v - v0)))
+            if ta <= t <= tb:
+                out.append((t, v))
+        if pts and not out:                             # whole trace outside: show the held value
+            before = [p for p in pts if p[0] <= ta]
+            if before:
+                out = [(ta, before[-1][1]), (tb, before[-1][1])]
+        elif out and out[0][0] > ta:
+            before = [p for p in pts if p[0] <= ta]
+            if before:
+                out.insert(0, (ta, before[-1][1]))
+        if out and out[-1][0] < tb:
+            out.append((tb, out[-1][1]))
+        return out
 
     def _motion(self, e):
         L, R, T, B, ta, tb, W, H = self.geom
