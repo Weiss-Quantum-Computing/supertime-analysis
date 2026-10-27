@@ -186,7 +186,7 @@ class Sequence(object):
 
     def cell_is_change(self, ch, edge, s=0):
         c = self.grid[ch][s]
-        return (not lvcore.is_nan(c[K_ANLG][edge])) or c[K_DIG][edge] != -1 or bool(c[K_FUNC][edge])
+        return (not lvcore.is_nan(c[K_ANLG][edge])) or c[K_DIG][edge] != -1 or bool(c[K_TC][edge])
 
     @staticmethod
     def cell_value(c, field, edge):
@@ -322,15 +322,18 @@ class Ramp(object):
 
 
 def _ramps_for(seq, ch, s=0):
-    """Ramps on channel ch: a cell with a value and a ramp function starts a ramp that runs to
-    the next edge (in time) where the channel has a value."""
+    """Ramps on channel ch.  Supertime enables a ramp only where the time constant is nonzero;
+    the ramp runs from that edge's value to the next edge (in time) where the channel has a
+    value, with the cell's ramp function and step size.  Function/step entries on cells with a
+    zero time constant are inert."""
     c = seq.grid[ch][s]
     order = seq.edge_order()
     ramps = []
     for k, i in enumerate(order):
         v0 = Sequence.cell_value(c, K_ANLG, i)
         f = Sequence.cell_value(c, K_FUNC, i)
-        if lvcore.is_nan(v0) or not f:
+        tc = Sequence.cell_value(c, K_TC, i)
+        if not tc or lvcore.is_nan(v0):
             continue
         for j in order[k + 1:]:
             v1 = Sequence.cell_value(c, K_ANLG, j)
@@ -373,7 +376,7 @@ def _trace(seq, ch, s=0):
                 pts.append((t, cur))
             pts.append((t, v))
         cur = v
-        if Sequence.cell_value(c, K_FUNC, i):
+        if Sequence.cell_value(c, K_TC, i):
             for j in order[k + 1:]:
                 if not lvcore.is_nan(Sequence.cell_value(c, K_ANLG, j)):
                     ramp_end = j
@@ -398,6 +401,8 @@ def _check_ramps(seq, s=0, min_step_us=2):
         for r in _ramps_for(seq, ch, s):
             all_ramps.append(r)
             su = step_us(r.step)
+            if not r.func:
+                problems.append(("ramp enabled (time constant set) but no ramp function", r, None, su))
             if su < min_step_us:
                 problems.append(("step too small", r, None, su))
             elif abs(r.step * 1000.0 - su) > 1e-6:

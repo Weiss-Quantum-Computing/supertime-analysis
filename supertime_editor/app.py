@@ -202,24 +202,24 @@ class SequenceGrid(tk.Frame):
             if len(val) > maxchars:
                 val = fnum(a, 2)
             fill = C_ANALOG
-        leftover = bool(f) and not val
-        ramp = bool(f) and bool(val)
+        ramp = bool(tc) and bool(val)              # Supertime enables a ramp by a nonzero time constant
+        leftover = bool(f) and not ramp            # ramp function set but the ramp is disabled
         if ramp:
             fill = C_RAMP
         line2 = u""
+        tag = abbr_func(f) if f else u"?"
         if mode == u"value + ramp":
             if ramp:
-                tag = abbr_func(f)
                 val = (val + u" " + tag) if len(val) + 1 + len(tag) <= maxchars else val + tag
         elif mode == u"value + ramp + step":
             if ramp:
-                line2 = abbr_func(f) + u" " + fstep(st)
+                line2 = tag + u" " + fstep(st)
             elif st != 1.0 and val:
                 line2 = fstep(st)
         elif mode == u"step size":
             val = fstep(st) if (st != 1.0 or ramp) else u""
             if ramp:
-                val = abbr_func(f) + u" " + val
+                val = tag + u" " + val
         elif mode == u"time constant":
             val = fnum(tc, 4) if tc else u""
         return val, line2, fill, leftover
@@ -282,8 +282,9 @@ class SequenceGrid(tk.Frame):
                         cv.create_text(x + W - 3, y + CH - 8, text=line2[:maxchars], anchor="e", font=tiny, fill="#303030")
                 elif txt:
                     cv.create_text(x + 3, y + CH // 2, text=txt[:maxchars], anchor="w", font=small, fill=TXT)
-                if leftover and show_left and not txt:
-                    cv.create_text(x + W - 3, y + CH // 2, text=abbr_func(Sequence.cell_value(ch, K_FUNC, ei)),
+                if leftover and show_left:
+                    cv.create_text(x + W - 3, y + (CH - 8 if two_lines else CH // 2),
+                                   text=abbr_func(Sequence.cell_value(ch, K_FUNC, ei)),
                                    anchor="e", font=tiny, fill="#a0a0a0")
         cv.create_rectangle(0, 0, ROW_HDR_W, HDR_H, fill="#d4d4d4", outline=C_GRIDLINE)
         cv.create_text(6, HDR_H - 10, anchor="w", font=("TkDefaultFont", 9), fill=TXT,
@@ -1155,7 +1156,7 @@ class App(object):
         dm = ttk.Combobox(bar, values=DISPLAY_MODES, textvariable=self.display_mode, state="readonly", width=18)
         dm.pack(side="left")
         dm.bind("<<ComboboxSelected>>", lambda e: self.grid.redraw())
-        tk.Checkbutton(bar, text=u"grey leftovers", variable=self.show_leftovers,
+        tk.Checkbutton(bar, text=u"grey disabled ramps", variable=self.show_leftovers,
                        command=lambda: self.grid.redraw()).pack(side="left", padx=4)
         tk.Label(bar, text=u" width:").pack(side="left")
         self.width_var = tk.StringVar(value=u"%d" % CELL_W)
