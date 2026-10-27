@@ -477,3 +477,70 @@ Sequence.check_ramps = _check_ramps
 Sequence.set_cells = _set_cells
 Sequence.find_cells = _find_cells
 Sequence.find_edges = _find_edges
+
+
+# ---------------------------------------------------------------- edge-name simplification
+_PREFIX_RX = __import__("re").compile(r"^((?:\s*\d+:\s*)+)(.*)$")
+
+
+def split_prefix(name):
+    """'1: 18: 1: 0: Y: End rotate' -> ([1, 18, 1, 0], 'Y: End rotate'); plain names -> ([], name)."""
+    m = _PREFIX_RX.match(name)
+    if not m:
+        return [], name
+    nums = [int(x) for x in __import__("re").findall(r"\d+", m.group(1))]
+    return nums, m.group(2)
+
+
+def strip_prefix(name):
+    return split_prefix(name)[1]
+
+
+def _simplify_names(seq, dry_run=False):
+    """Drop the numeric prefixes that splicing adds to edge names ('0: ', '1: 18: 1: 0: ').
+
+    Each edge gets the shortest form that is still unique in the sequence: the bare name if
+    nothing else has it, else the first prefix number, else the first two, and so on.
+    Returns the list of (old, new) renames; applies them unless dry_run.
+    """
+    names = seq.edge_names()
+    parsed = [split_prefix(n) for n in names]
+    taken = {}
+    for nums, base in parsed:
+        taken.setdefault(base, 0)
+        taken[base] += 1
+    new = list(names)
+    # candidates per edge, shortest first
+    cands = []
+    for nums, base in parsed:
+        c = [base] + [u"%s %s" % (u" ".join(u"%d:" % x for x in nums[:k]), base) for k in range(1, len(nums) + 1)]
+        cands.append(c)
+    # pick, for every edge, the shortest candidate that no other edge could also claim at that level
+    chosen = [None] * len(names)
+    for level in range(max(len(c) for c in cands) if cands else 0):
+        counts = {}
+        for i, c in enumerate(cands):
+            if chosen[i] is None:
+                key = c[min(level, len(c) - 1)]
+                counts[key] = counts.get(key, 0) + 1
+        for i, c in enumerate(cands):
+            if chosen[i] is None:
+                key = c[min(level, len(c) - 1)]
+                if counts[key] == 1 or level >= len(c) - 1:
+                    chosen[i] = key
+    # anything still colliding keeps its original name
+    seen = {}
+    for i, key in enumerate(chosen):
+        seen[key] = seen.get(key, 0) + 1
+    renames = []
+    for i, key in enumerate(chosen):
+        if seen[key] > 1:
+            key = names[i]
+        if key != names[i]:
+            renames.append((names[i], key))
+            if not dry_run:
+                seq.edges[i][E_NAME] = key
+    return renames
+
+
+Sequence.simplify_names = _simplify_names

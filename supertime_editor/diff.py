@@ -9,7 +9,7 @@ from collections import OrderedDict
 
 from . import lvcore
 from .model import (K_NAME, K_CARD, K_CHAN, K_SIG, K_CONV, K_ANLG, K_DIG, K_TC, K_FUNC, K_STEP,
-                    E_NAME, E_PARENT, E_REL, E_VARS, E_TYPE, E_ABS, V_NAME, V_VAL, SETTINGS)
+                    E_NAME, E_PARENT, E_REL, E_VARS, E_TYPE, E_ABS, V_NAME, V_VAL, SETTINGS, strip_prefix)
 
 CELL_LABELS = OrderedDict([(K_ANLG, "analog"), (K_DIG, "digital"), (K_FUNC, "ramp"),
                            (K_STEP, "step (ms)"), (K_TC, "time const")])
@@ -67,9 +67,10 @@ class Difference(object):
 
 
 class Comparison(object):
-    def __init__(self, a, b, sets=(0, 0)):
+    def __init__(self, a, b, sets=(0, 0), ignore_prefixes=False):
         self.a = a
         self.b = b
+        self.ignore_prefixes = ignore_prefixes
         self.sa, self.sb = sets
         self.diffs = []
         self.edge_map = []          # list of (ia or None, ib or None, key)
@@ -80,8 +81,9 @@ class Comparison(object):
     def run(self):
         a, b = self.a, self.b
         self.diffs = []
-        ka = _occurrence_keys(a.edge_names())
-        kb = _occurrence_keys(b.edge_names())
+        norm = strip_prefix if self.ignore_prefixes else (lambda n: n)
+        ka = _occurrence_keys([norm(n) for n in a.edge_names()])
+        kb = _occurrence_keys([norm(n) for n in b.edge_names()])
         ib_of = dict((k, i) for i, k in enumerate(kb))
         ia_of = dict((k, i) for i, k in enumerate(ka))
         self.edge_map = []

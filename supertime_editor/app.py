@@ -27,6 +27,7 @@ from .diff import Comparison, fmt_value
 CELL_W = 46            # default column width; adjustable in the toolbar
 CELL_H = 20
 HDR_H = 110
+HDR_ANGLE = 50         # degrees; edge names run up and to the right across the header
 ROW_HDR_W = 170
 TXT = "#000000"        # explicit colours so the grid looks the same in dark mode
 C_HDR = "#dfe3ee"
@@ -249,13 +250,17 @@ class SequenceGrid(tk.Frame):
             x = ROW_HDR_W + k * W
             e = seq.edges[ei]
             cv.create_rectangle(x, 0, x + W, HDR_H, fill=C_HDR, outline=C_GRIDLINE)
+            cv.create_text(x + W // 2, HDR_H - 9, text=fnum(e[E_ABS], 5)[:maxchars], font=("TkDefaultFont", 8), fill=TXT)
+        # edge names drawn last so the diagonal text is not covered by neighbouring header cells
+        for k, ei in enumerate(cols):
+            x = ROW_HDR_W + k * W
+            e = seq.edges[ei]
             label = u"%d %s" % (ei, e[E_NAME])
             try:
-                cv.create_text(x + W // 2, HDR_H - 22, text=label[:26], anchor="w", angle=90,
+                cv.create_text(x + 4, HDR_H - 20, text=label[:30], anchor="w", angle=HDR_ANGLE,
                                font=("TkDefaultFont", 9), fill=TXT)
             except tk.TclError:
                 cv.create_text(x + 2, 4, text=label[:maxchars], anchor="nw", font=small, fill=TXT)
-            cv.create_text(x + W // 2, HDR_H - 9, text=fnum(e[E_ABS], 5)[:maxchars], font=("TkDefaultFont", 8), fill=TXT)
         for j, r in enumerate(rows):
             y = HDR_H + j * CH
             ch = seq.grid[r][self.app.set_index]
@@ -954,6 +959,9 @@ class CompareWindow(tk.Toplevel):
         self.chan_filter = tk.Entry(top, width=16)
         self.chan_filter.pack(side="left")
         self.chan_filter.bind("<Return>", lambda e: self.fill())
+        self.ignore_prefixes = tk.BooleanVar(value=False)
+        tk.Checkbutton(top, text=u"match edges ignoring numeric prefixes", variable=self.ignore_prefixes,
+                       command=self.recompare).pack(side="left", padx=4)
         tk.Button(top, text=u"Copy A -> B (sel)", command=lambda: self.copy_sel("A->B")).pack(side="left", padx=3)
         tk.Button(top, text=u"Copy B -> A (sel)", command=lambda: self.copy_sel("B->A")).pack(side="left", padx=3)
         tk.Button(top, text=u"Unify all A -> B", command=lambda: self.unify("A->B")).pack(side="left", padx=3)
@@ -986,6 +994,10 @@ class CompareWindow(tk.Toplevel):
 
     def _title(self):
         self.title(u"Compare: A = %s   |   B = %s" % (os.path.basename(self.a.path or "A"), os.path.basename(self.b.path or "B")))
+
+    def recompare(self):
+        self.cmp = Comparison(self.a, self.b, ignore_prefixes=self.ignore_prefixes.get())
+        self.fill()
 
     def fill(self):
         self.tree.delete(*self.tree.get_children())
@@ -1195,6 +1207,7 @@ class App(object):
         em.add_command(label=u"Edit selected cells...", command=self.edit_selected_cells, accelerator="Return")
         em.add_command(label=u"Batch edit cells...", command=lambda: BatchDialog(self.root, self) if self.seq else None)
         em.add_command(label=u"Batch edit edges...", command=lambda: EdgeBatchDialog(self.root, self) if self.seq else None)
+        em.add_command(label=u"Simplify edge names (drop splice prefixes)...", command=self.simplify_names)
         em.add_command(label=u"Select all cells of channel", command=self.select_channel_row)
         em.add_command(label=u"Clear selection", command=self.clear_selection)
         m.add_cascade(label=u"Edit", menu=em)
@@ -1459,6 +1472,19 @@ class App(object):
         if messagebox.askyesno("Delete channel", u"Delete channel '%s'?" % name):
             self.seq.delete_channel(ch)
             self.grid.sel = set()
+            self.mark_dirty(structural=True)
+
+    def simplify_names(self):
+        if not self.seq:
+            return
+        renames = self.seq.simplify_names(dry_run=True)
+        if not renames:
+            messagebox.showinfo("Simplify edge names", u"No numeric prefixes to remove.")
+            return
+        sample = u"\n".join(u"%s  ->  %s" % (o, n) for o, n in renames[:12])
+        if messagebox.askyesno("Simplify edge names", u"%d of %d edge names change, e.g.\n\n%s\n\nApply?"
+                               % (len(renames), len(self.seq.edges), sample)):
+            self.seq.simplify_names()
             self.mark_dirty(structural=True)
 
     def repair(self):
