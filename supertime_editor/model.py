@@ -345,15 +345,37 @@ def _ramps_for(seq, ch, s=0):
     return ramps
 
 
+def _ramp_levels(v0, v1, t0, t1, step, func):
+    """The discrete levels Supertime outputs for a ramp: one new value every `step` ms from t0,
+    linear interpolation between v0 and v1 (the exact shape of the non-linear functions is not
+    reproduced; their timing is), ending on v1 at t1."""
+    T = t1 - t0
+    if T <= 0 or step <= 0:
+        return [(t0, v0), (t1, v1)]
+    n = int(T / step + 1e-9)
+    if n > 20000:                                   # keep plots responsive on huge ramps
+        step = T / 20000.0
+        n = 20000
+    pts = []
+    for k in range(n + 1):
+        t = t0 + k * step
+        if t >= t1 - 1e-9:
+            break
+        pts.append((t, v0 + (v1 - v0) * (t - t0) / T))
+    pts.append((t1, v1))
+    return pts
+
+
 def _trace(seq, ch, s=0):
-    """(time, value) points describing the channel over the cycle: holds between edges,
-    straight lines across ramps (the shape of non-linear ramps is not reproduced)."""
+    """(time, value) points describing the channel over the cycle as a step function: the value
+    holds between edges, and an enabled ramp (nonzero time constant) is drawn as the discrete
+    staircase Supertime outputs, one step per step-size interval."""
     c = seq.grid[ch][s]
     digital = c[K_SIG] == 1
     pts = []
     cur = None
-    ramp_end = None
     order = seq.edge_order()
+    skip_until = None
     for k, i in enumerate(order):
         t = seq.edges[i][E_ABS]
         if digital:
@@ -368,18 +390,28 @@ def _trace(seq, ch, s=0):
         v = Sequence.cell_value(c, K_ANLG, i)
         if lvcore.is_nan(v):
             continue
-        if ramp_end == i:                       # arriving at the end of a ramp: line already drawn
-            pts.append((t, v))
-            ramp_end = None
-        else:
-            if cur is not None:
-                pts.append((t, cur))
-            pts.append((t, v))
+        if skip_until == i:                         # end of a ramp already drawn
+            skip_until = None
+            cur = v
+            continue
+        if cur is not None:
+            pts.append((t, cur))
+        pts.append((t, v))
         cur = v
         if Sequence.cell_value(c, K_TC, i):
             for j in order[k + 1:]:
-                if not lvcore.is_nan(Sequence.cell_value(c, K_ANLG, j)):
-                    ramp_end = j
+                v1 = Sequence.cell_value(c, K_ANLG, j)
+                if not lvcore.is_nan(v1):
+                    t1 = seq.edges[j][E_ABS]
+                    levels = _ramp_levels(v, v1, t, t1, Sequence.cell_value(c, K_STEP, i),
+                                          Sequence.cell_value(c, K_FUNC, i))
+                    prev = v
+                    for tt, vv in levels[1:]:
+                        pts.append((tt, prev))
+                        pts.append((tt, vv))
+                        prev = vv
+                    cur = v1
+                    skip_until = j
                     break
     if cur is not None:
         pts.append((seq.cycle_length(), cur))

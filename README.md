@@ -57,8 +57,9 @@ supertime_editor.bat "some sequence.dt4"                 # Windows XP (uses C:\P
   value, step size or ramp (preview selects them) and sets value/step/ramp/time constant on
   all of them, so a value repeated in every cooling block changes everywhere in one go.
   "Batch edit edges..." sets the relative time of every edge matching a name pattern.
-* **Plot...** draws value against time for the selected channels (holds between edges,
-  straight lines across ramps), one strip per channel or overlaid; drag to zoom, mouse
+* **Plot...** draws value against time for the selected channels (holds between edges;
+  enabled ramps are drawn as the discrete staircase Supertime outputs, one level per step-size
+  interval, with linear interpolation between the end values), one strip per channel or overlaid; drag to zoom, mouse
   readout. From the compare window, "Plot A vs B" overlays both sequences (B dashed).
 * **Check ramps** (also run on open and before save): flags enabled ramps with no ramp
   function, steps below the 2 us clock, steps that are not whole microseconds, and simultaneous ramps on different channels
