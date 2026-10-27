@@ -1224,6 +1224,7 @@ class App(object):
         em.add_command(label=u"Batch edit cells...", command=lambda: BatchDialog(self.root, self) if self.seq else None)
         em.add_command(label=u"Batch edit edges...", command=lambda: EdgeBatchDialog(self.root, self) if self.seq else None)
         em.add_command(label=u"Simplify edge names (drop splice prefixes)...", command=self.simplify_names)
+        em.add_command(label=u"Simplify variables (rename, merge duplicates, drop unused)...", command=self.simplify_variables)
         em.add_command(label=u"Select all cells of channel", command=self.select_channel_row)
         em.add_command(label=u"Clear selection", command=self.clear_selection)
         m.add_cascade(label=u"Edit", menu=em)
@@ -1522,6 +1523,24 @@ class App(object):
         if messagebox.askyesno("Simplify edge names", u"%d of %d edge names change, e.g.\n\n%s\n\nApply?"
                                % (len(renames), len(self.seq.edges), sample)):
             self.seq.simplify_names()
+            self.mark_dirty(structural=True)
+
+    def simplify_variables(self):
+        if not self.seq:
+            return
+        rep = self.seq.simplify_variables(dry_run=True)
+        n = len(rep["renamed"]) + len(rep["merged"]) + len(rep["removed"])
+        if not n:
+            messagebox.showinfo("Simplify variables", u"Nothing to change.")
+            return
+        lines = [u"%d renamed, %d merged into duplicates, %d unused removed." % (len(rep["renamed"]), len(rep["merged"]), len(rep["removed"]))]
+        lines += [u"  rename %s -> %s" % (o, nw) for o, nw in rep["renamed"][:6]]
+        lines += [u"  merge  %s -> %s" % (o, nw) for o, nw in rep["merged"][:6]]
+        lines += [u"  remove %s" % o for o in rep["removed"][:6]]
+        if rep["kept_apart"]:
+            lines.append(u"kept apart (same name, different values): " + u" | ".join(u", ".join(k) for k in rep["kept_apart"][:3]))
+        if messagebox.askyesno("Simplify variables", u"\n".join(lines) + u"\n\nApply? (edge times do not change)"):
+            self.seq.simplify_variables()
             self.mark_dirty(structural=True)
 
     def repair(self):

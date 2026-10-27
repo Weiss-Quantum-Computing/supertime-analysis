@@ -647,3 +647,98 @@ def _simplify_names(seq, dry_run=False):
 
 
 Sequence.simplify_names = _simplify_names
+
+
+# ---------------------------------------------------------------- variable clean-up
+def simplify_variable_name(name):
+    """' 000 Spin Echo pulse p2' -> 'Spin Echo pulse p2', '0:  0: Helmholtz...' -> 'Helmholtz...'."""
+    import re
+    n = name.strip()
+    n = re.sub(r"^(?:\d+\s*:\s*|\d{2,}\s*)+", "", n)       # '0: ', '1: 0: ', '000', '001 '
+    n = re.sub(r"\s+", " ", n).strip()
+    return n or name.strip()
+
+
+def _norm_key(name):
+    import re
+    return re.sub(r"[^a-z0-9]+", " ", simplify_variable_name(name).lower()).strip()
+
+
+def _simplify_variables(seq, dry_run=False, merge_similar=True, drop_unused=True):
+    """Rename variables to their simplified names, merge duplicates (same simplified name and
+    same value), repoint the edges that use them, and remove unused variables.
+
+    Returns a report dict: renamed [(old, new)], merged [(old, into)], removed [name],
+    kept_apart [(a, b)] for same-name variables with different values that are both used.
+    Edge times are unchanged by construction (every edge keeps a variable of equal value).
+    """
+    V = seq.variables
+    E = seq.edges
+    used = collections_counter_used(E, len(V))
+    newname = [simplify_variable_name(v[V_NAME]) for v in V]
+    target = list(range(len(V)))                       # variable k is replaced by target[k]
+    report = {"renamed": [], "merged": [], "removed": [], "kept_apart": []}
+    if merge_similar:
+        by_key = {}
+        for k, v in enumerate(V):
+            key = _norm_key(v[V_NAME])
+            by_key.setdefault(key, []).append(k)
+        for key, ks in by_key.items():
+            if len(ks) < 2:
+                continue
+            # prefer a used variable, then the first one, as the survivor of each value group
+            by_val = {}
+            for k in ks:
+                by_val.setdefault(round(V[k][V_VAL], 9), []).append(k)
+            for val, group in by_val.items():
+                group.sort(key=lambda k: (0 if used[k] else 1, k))
+                keep = group[0]
+                for k in group[1:]:
+                    target[k] = keep
+                    report["merged"].append((V[k][V_NAME].strip(), V[keep][V_NAME].strip()))
+            if len(by_val) > 1:
+                vals = sorted(by_val.items())
+                report["kept_apart"].append(tuple(u"%s = %g" % (V[g[0]][V_NAME].strip(), val) for val, g in vals))
+    # repoint edges
+    for e in E:
+        e[E_VARS] = [target[k] if k < len(V) else k for k in e[E_VARS]]
+    used = collections_counter_used(E, len(V))
+    # decide which survive
+    survivors = [k for k in range(len(V)) if target[k] == k and (used[k] or not drop_unused)]
+    for k in range(len(V)):
+        if target[k] == k and not used[k] and drop_unused:
+            report["removed"].append(V[k][V_NAME].strip())
+    # unique simplified names among survivors
+    final = {}
+    seen = {}
+    for k in survivors:
+        n = newname[k]
+        if n in seen:
+            seen[n] += 1
+            n = u"%s (%d)" % (n, seen[n])
+        else:
+            seen[n] = 1
+        final[k] = n
+        if n != V[k][V_NAME]:
+            report["renamed"].append((V[k][V_NAME], n))
+    if dry_run:
+        return report
+    newindex = {k: i for i, k in enumerate(survivors)}
+    seq.data["Variable Array"] = [{V_NAME: final[k], V_VAL: V[k][V_VAL]} for k in survivors]
+    for e in E:
+        e[E_VARS] = [newindex[k] for k in e[E_VARS] if k in newindex]
+    seq.recompute_times()
+    return report
+
+
+def collections_counter_used(E, nvars):
+    used = [0] * nvars
+    for e in E:
+        if e[E_TYPE] == 1:
+            for k in e[E_VARS]:
+                if 0 <= k < nvars:
+                    used[k] += 1
+    return used
+
+
+Sequence.simplify_variables = _simplify_variables
