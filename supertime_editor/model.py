@@ -697,8 +697,10 @@ def _simplify_variables(seq, dry_run=False, merge_similar=True, drop_unused=True
                     target[k] = keep
                     report["merged"].append((V[k][V_NAME].strip(), V[keep][V_NAME].strip()))
             if len(by_val) > 1:
-                vals = sorted(by_val.items())
-                report["kept_apart"].append(tuple(u"%s = %g" % (V[g[0]][V_NAME].strip(), val) for val, g in vals))
+                # only a real conflict when more than one value is actually used by an edge
+                vals = sorted((val, g) for val, g in by_val.items() if any(used[k] for k in g) or not drop_unused)
+                if len(vals) > 1:
+                    report["kept_apart"].append(tuple(u"%s = %g" % (V[g[0]][V_NAME].strip(), val) for val, g in vals))
     # repoint edges
     for e in E:
         e[E_VARS] = [target[k] if k < len(V) else k for k in e[E_VARS]]
