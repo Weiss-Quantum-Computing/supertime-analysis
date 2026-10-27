@@ -239,6 +239,83 @@ def decode_dt4(path, record_td):
     raise ValueError("could not decode %s: %s" % (path, last_err))
 
 
+# ---------------------------------------------------------------- flatten (encoder)
+def cluster_keys(td):
+    """The dict keys unflatten() produces for a cluster's members, in member order."""
+    keys = []
+    for i, ch in enumerate(td.children):
+        key = ch.label or ch.children[0].label if ch.children else ch.label
+        key = key or ("field%d" % i)
+        while key in keys:
+            key += "_"
+        keys.append(key)
+    return keys
+
+
+def _write_path(out, s):
+    parts = s.split("\\") if s else []
+    body = struct.pack(">HH", 0, len(parts))
+    for p in parts:
+        b = p.encode("latin-1")
+        body += bytes([len(b)]) + b
+    out.append(b"PTH0" + struct.pack(">i", len(body)) + body)
+
+
+def flatten(td, value, out):
+    """Inverse of unflatten(): append the big-endian flattened bytes of `value` to list `out`."""
+    c = td.code
+    if c == 0xF1:
+        return flatten(td.children[0], value, out)
+    if c == 0x50:
+        for key, ch in zip(cluster_keys(td), td.children):
+            flatten(ch, value[key], out)
+        return
+    if c == 0x40:
+        elem = td.children[0]
+        dims = []
+        v = value
+        for _ in range(td.dims):
+            dims.append(len(v))
+            v = v[0] if v else []
+        out.append(struct.pack(">%di" % td.dims, *dims))
+
+        def walk(lst, depth):
+            if depth == td.dims - 1:
+                for x in lst:
+                    flatten(elem, x, out)
+            else:
+                for sub in lst:
+                    walk(sub, depth + 1)
+        walk(value, 0)
+        return
+    if c == 0x30:
+        b = value.encode("latin-1")
+        out.append(struct.pack(">i", len(b)) + b)
+        return
+    if c == 0x32:
+        _write_path(out, value)
+        return
+    if c in (0x15, 0x16, 0x17):
+        fmt = {0x15: ">B", 0x16: ">H", 0x17: ">I"}[c]
+        idx = td.enum_items.index(value) if isinstance(value, str) else int(value)
+        out.append(struct.pack(fmt, idx))
+        return
+    fmt = {0x01: ">b", 0x02: ">h", 0x03: ">i", 0x04: ">q",
+           0x05: ">B", 0x06: ">H", 0x07: ">I", 0x08: ">Q",
+           0x09: ">f", 0x0A: ">d", 0x21: ">B"}[c]
+    out.append(struct.pack(fmt, int(value) if c == 0x21 else value))
+
+
+def encode_dt4(data, record_td):
+    """Flatten a decoded sequence (as returned by decode_dt4) back into .dt4 bytes."""
+    dc = find_typedef(record_td, "data cluster.ctl")
+    if data.get("_format") == "dt3":
+        dc = dt3_variant(dc)
+    out = []
+    flatten(dc, data, out)
+    return b"".join(out)
+
+
 if __name__ == "__main__":
     log = sys.argv[1]
     td, _ = read_datalog_header(log)
