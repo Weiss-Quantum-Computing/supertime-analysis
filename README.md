@@ -59,8 +59,15 @@ supertime_editor.bat "some sequence.dt4"                 # Windows XP (uses C:\P
   "Batch edit edges..." sets the relative time of every edge matching a name pattern.
 * **Plot...** draws value against time for the selected channels (holds between edges;
   enabled ramps are drawn as the discrete staircase Supertime outputs, one level per step-size
-  interval, with linear interpolation between the end values), one strip per channel or overlaid; drag to zoom, mouse
+  interval). Ramp shapes follow the formula nodes in `Functions and derivatives for fit.vi`
+  with both end points fixed: Exponential `a0*exp(-x/t)+a2`, Optical `P0/(x/tau+1)^2+C`,
+  Cubic `P0*(2.777u+5.440u^2+3.663u^3)+C`, Linear. Gaussian and Blackman are drawn as pulses
+  (baseline = start value, peak = end value, width = the interval; amplitude convention not
+  verified). Custom ramps (shape from a CSV) are drawn linear., one strip per channel or overlaid; drag to zoom, mouse
   readout. From the compare window, "Plot A vs B" overlays both sequences (B dashed).
+* The **Ramp list** tab lists every enabled ramp with its step count, most steps first, and
+  the total number of output steps, for finding what eats sequence memory; click one to jump
+  to it.
 * **Check ramps** (also run on open and before save): flags enabled ramps with no ramp
   function, steps below the 2 us clock, steps that are not whole microseconds, and simultaneous ramps on different channels
   whose step sizes have no common multiple of at least 2 us (e.g. 5 us against 2 us), which

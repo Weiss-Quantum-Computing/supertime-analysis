@@ -309,6 +309,31 @@ def step_us(step_ms):
     return int(round(step_ms * 1000.0))
 
 
+PULSE_SHAPES = (u"Gaussian", u"Blackman", u"Custom")
+
+
+def is_pulse_shape(func):
+    """Ramp functions that draw a shape between equal end values (t ignored / shape from file)."""
+    return any((func or u"").startswith(p) for p in PULSE_SHAPES)
+
+
+def ramp_steps(r):
+    """Number of output levels a ramp generates."""
+    return int((r.t1 - r.t0) / r.step + 1e-9) if r.step > 0 else 0
+
+
+def ramp_report(seq, s=0, min_steps=0):
+    """All enabled ramps sorted by number of steps (largest first), for hunting memory use."""
+    rows = []
+    for ch in range(len(seq.grid)):
+        for r in seq.ramps(ch, s):
+            n = ramp_steps(r)
+            if n >= min_steps:
+                rows.append((n, r))
+    rows.sort(key=lambda x: -x[0])
+    return rows
+
+
 class Ramp(object):
     """One ramp on a channel: from edge i0 (value v0) to the next edge with a value, i1."""
 
@@ -345,10 +370,47 @@ def _ramps_for(seq, ch, s=0):
     return ramps
 
 
-def _ramp_levels(v0, v1, t0, t1, step, func):
+def ramp_shape(func, tc, u, T):
+    """Fraction of the way from the start value to the end value at time u (ms since the ramp
+    start) for a ramp of duration T with time constant tc.  Shapes follow the formula nodes in
+    'Functions and derivatives for fit.vi' with the two end points fixed ("two-point fit with
+    time constant"):
+      Exponential   y = a0*exp(-x/t) + a2
+      Optical       P = P0/(x/tau + 1)^2 + C
+      Cubic         P = P0*(2.777 u + 5.440 u^2 + 3.663 u^3) + C,  u = x/tau
+      Linear        y = a0*x + a2
+    Gaussian and Blackman are pulses (t ignored): baseline = start value, peak = end value at
+    the middle of the interval, width = the interval.  Custom and anything unknown: linear.
+    """
+    import math
+    if T <= 0:
+        return 1.0
+    f = func or u""
+    x = min(max(u, 0.0), T)
+    if f.startswith(u"Exponential") and tc > 0:
+        k = math.exp(-T / tc)
+        return (1.0 - math.exp(-x / tc)) / (1.0 - k) if k != 1.0 else x / T
+    if f.startswith(u"Optical") and tc > 0:
+        k = 1.0 / (T / tc + 1.0) ** 2
+        return (1.0 - 1.0 / (x / tc + 1.0) ** 2) / (1.0 - k) if k != 1.0 else x / T
+    if f.startswith(u"Cubic") and tc > 0:
+        g = lambda v: 2.777 * v + 5.440 * v ** 2 + 3.663 * v ** 3
+        d = g(T / tc)
+        return g(x / tc) / d if d else x / T
+    if f.startswith(u"Gaussian"):
+        w = T / 4.0
+        return math.exp(-2.0 * (x - T / 2.0) ** 2 / (w * w)) if w else 0.0
+    if f.startswith(u"Blackman"):
+        a = T / 2.0
+        if a <= 0:
+            return 0.0
+        return 0.42 + 0.5 * math.cos(math.pi * (x - a) / a) + 0.08 * math.cos(2 * math.pi * (x - a) / a)
+    return x / T
+
+
+def _ramp_levels(v0, v1, t0, t1, step, func, tc=0.0):
     """The discrete levels Supertime outputs for a ramp: one new value every `step` ms from t0,
-    linear interpolation between v0 and v1 (the exact shape of the non-linear functions is not
-    reproduced; their timing is), ending on v1 at t1."""
+    following ramp_shape(), ending on v1 at t1 (pulse shapes end back on the start value)."""
     T = t1 - t0
     if T <= 0 or step <= 0:
         return [(t0, v0), (t1, v1)]
@@ -356,13 +418,15 @@ def _ramp_levels(v0, v1, t0, t1, step, func):
     if n > 20000:                                   # keep plots responsive on huge ramps
         step = T / 20000.0
         n = 20000
+    pulse = is_pulse_shape(func) and not (func or u"").startswith(u"Custom")
     pts = []
     for k in range(n + 1):
         t = t0 + k * step
         if t >= t1 - 1e-9:
             break
-        pts.append((t, v0 + (v1 - v0) * (t - t0) / T))
-    pts.append((t1, v1))
+        frac = ramp_shape(func, tc, t - t0, T)
+        pts.append((t, v0 + (v1 - v0) * frac))
+    pts.append((t1, v0 if pulse else v1))
     return pts
 
 
@@ -404,7 +468,7 @@ def _trace(seq, ch, s=0):
                 if not lvcore.is_nan(v1):
                     t1 = seq.edges[j][E_ABS]
                     levels = _ramp_levels(v, v1, t, t1, Sequence.cell_value(c, K_STEP, i),
-                                          Sequence.cell_value(c, K_FUNC, i))
+                                          Sequence.cell_value(c, K_FUNC, i), Sequence.cell_value(c, K_TC, i))
                     prev = v
                     for tt, vv in levels[1:]:
                         pts.append((tt, prev))
@@ -439,8 +503,9 @@ def _check_ramps(seq, s=0, min_step_us=2):
                 problems.append(("step too small", r, None, su))
             elif abs(r.step * 1000.0 - su) > 1e-6:
                 problems.append(("step not a whole us", r, None, su))
-    # only ramps that actually change the value are interpolated by Supertime
-    real = sorted([r for r in all_ramps if r.v0 != r.v1 and r.t1 > r.t0], key=lambda r: r.t0)
+    # ramps between equal values output nothing unless the function is a pulse shape
+    real = sorted([r for r in all_ramps if r.t1 > r.t0 and (r.v0 != r.v1 or is_pulse_shape(r.func))],
+                  key=lambda r: r.t0)
     for a in range(len(real)):
         ra = real[a]
         for b in range(a + 1, len(real)):
@@ -509,6 +574,7 @@ def _find_edges(seq, name_pattern=None, relative=None, tol=1e-9):
 
 
 Sequence.ramps = _ramps_for
+Sequence.ramp_report = ramp_report
 Sequence.trace = _trace
 Sequence.check_ramps = _check_ramps
 Sequence.set_cells = _set_cells

@@ -1139,6 +1139,21 @@ class App(object):
         self.rtree.column("where", width=220, anchor="w")
         self.rtree.pack(fill="both", expand=True)
         self.rtree.bind("<<TreeviewSelect>>", self._ramp_selected)
+        f3b = tk.Frame(self.nb)
+        self.nb.add(f3b, text=u"Ramp list")
+        tk.Label(f3b, text=u"every enabled ramp, most steps first (click to show)").pack(anchor="w")
+        cols = ("steps", "step", "ms", "channel", "from", "to")
+        self.ltree = ttk.Treeview(f3b, columns=cols, show="headings")
+        for c, w in zip(cols, (50, 50, 55, 130, 60, 60)):
+            self.ltree.heading(c, text=c)
+            self.ltree.column(c, width=w, anchor="w")
+        vs2 = tk.Scrollbar(f3b, orient="vertical", command=self.ltree.yview)
+        self.ltree.configure(yscrollcommand=vs2.set)
+        self.ltree.pack(side="left", fill="both", expand=True)
+        vs2.pack(side="right", fill="y")
+        self.ltree.bind("<<TreeviewSelect>>", self._ramp_list_selected)
+        self.ramp_total = tk.Label(f3b, anchor="w")
+        self.ramp_total.pack(side="bottom", fill="x")
         f4 = tk.Frame(self.nb)
         self.nb.add(f4, text=u"Info")
         self.info = tk.Text(f4, width=40, wrap="word")
@@ -1335,6 +1350,15 @@ class App(object):
             if r2:
                 where += u"  +  %s @ %s" % (self.seq.grid[r2.ch][0][K_NAME], self.seq.edges[r2.i0][E_NAME])
             self.rtree.insert("", "end", iid=str(n), values=(kind, where))
+        # full ramp list
+        self.ltree.delete(*self.ltree.get_children())
+        self.ramp_rows = self.seq.ramp_report(self.set_index)
+        total = 0
+        for n, (steps, r) in enumerate(self.ramp_rows):
+            total += steps
+            self.ltree.insert("", "end", iid=str(n), values=(steps, fstep(r.step), fnum(r.t1 - r.t0, 4),
+                                                              self.seq.grid[r.ch][0][K_NAME][:22], fnum(r.v0, 4), fnum(r.v1, 4)))
+        self.ramp_total.configure(text=u"%d ramps, %d output steps in total" % (len(self.ramp_rows), total))
         self.grid.redraw()
         self.refresh_status()
         if not quiet:
@@ -1344,6 +1368,18 @@ class App(object):
                                        % (len(probs), u"\n".join(self._ramp_text(p) for p in probs[:8])))
             else:
                 messagebox.showinfo("Check ramps", u"%d ramps, no step-size conflicts." % len(ramps))
+
+    def _ramp_list_selected(self, e=None):
+        sel = self.ltree.selection()
+        if sel and self.seq:
+            steps, r = self.ramp_rows[int(sel[0])]
+            self.grid.row0 = max(0, r.ch - 3)
+            self.grid.scroll_to_edge(r.i0)
+            self.grid.sel = set([(r.ch, r.i0), (r.ch, r.i1)])
+            self.grid.redraw()
+            self.cell_info.configure(text=u"ramp: %s  %s -> %s over %s ms in %d steps of %s ms (%s -> %s)" % (
+                self.seq.grid[r.ch][0][K_NAME], fnum(r.v0), fnum(r.v1), fnum(r.t1 - r.t0), steps, fnum(r.step),
+                self.seq.edges[r.i0][E_NAME], self.seq.edges[r.i1][E_NAME]))
 
     def _ramp_selected(self, e=None):
         sel = self.rtree.selection()
