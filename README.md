@@ -21,6 +21,15 @@ PC's disk (kept separately, not in this repository).
 | `vi_printouts/` | The 2009 front-panel printout rendered from PostScript. |
 | `supertime_tools/subvi_calltree.txt`, `subvi_text_labels.txt`, `main_vi_text_labels.txt` | Call graph and all panel/diagram text, including diagram comments. |
 
+## Sequences (`sequences/`)
+
+The control PC's `Admin\My Documents\2024`, `2025` and `2026` sequence folders, tracked here so edits
+have a history. The first commit (37762bc) is the PC's state as copied on 2026-10-27; later commits are
+edits made with the editor (2026: simplified edge names, cleaned variables, cooling-block variables).
+`sequences/2026` is the working copy to open in the editor; the untouched originals also sit outside
+this repository in the "Supertime Computer" disk copy. Edited files go to the control PC through the
+USB stick's `Supertime Computer updates\sequence updates\<date>` folder (README.txt there says how).
+
 ## Sequence editor (`supertime_editor/`)
 
 A Tkinter desktop app that opens, edits, compares and saves `.dt4` sequences outside LabVIEW.
