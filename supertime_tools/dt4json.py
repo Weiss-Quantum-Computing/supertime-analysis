@@ -19,9 +19,12 @@ byte for byte.  Layout of the JSON:
 Channels are stored per data set: channels[set][channel].
 """
 import json
-import math
+import struct
 import sys
 from lvflat import read_datalog_header, decode_dt4, encode_dt4
+
+# Supertime writes "no change" as a NaN with all bits set; keep that exact pattern on import
+FILE_NAN = struct.unpack(">d", b"\xff" * 8)[0]
 
 SETTINGS = ["Target \nResolution (us):", "Digital I/O",
             "Device number for analog card which does digital outputs", "Number of installed cards",
@@ -71,7 +74,7 @@ def from_json(j):
             pe = c["edges"]
             row.append({"Channel Name": c["name"], "Card #": c["card"], "Channel #": c["channel"],
                         "Edge Name": c["edge_name_index"],
-                        "Edge Value (Anlg)": [math.nan if x[0] is None else x[0] for x in pe],
+                        "Edge Value (Anlg)": [FILE_NAN if x[0] is None else x[0] for x in pe],
                         "Edge Value (Dig)": [x[1] for x in pe],
                         "Time constant": [x[2] for x in pe],
                         "Signal\nType": c["signal_type"],
