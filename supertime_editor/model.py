@@ -295,3 +295,185 @@ class Sequence(object):
         for i in bad:
             problems.append("edge %d %r: parent chain is a cycle" % (i, self.edges[i][E_NAME]))
         return problems
+
+
+# ---------------------------------------------------------------- ramps, traces, checks, batch edits
+def _gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
+
+def step_us(step_ms):
+    """A step size in whole microseconds (the clock is 1 us)."""
+    return int(round(step_ms * 1000.0))
+
+
+class Ramp(object):
+    """One ramp on a channel: from edge i0 (value v0) to the next edge with a value, i1."""
+
+    def __init__(self, ch, i0, i1, v0, v1, func, step, tc, t0, t1):
+        self.ch, self.i0, self.i1, self.v0, self.v1 = ch, i0, i1, v0, v1
+        self.func, self.step, self.tc, self.t0, self.t1 = func, step, tc, t0, t1
+
+    def __repr__(self):
+        return "<Ramp ch%d %s edge %d->%d %g->%g step %g ms %g..%g>" % (
+            self.ch, self.func, self.i0, self.i1, self.v0, self.v1, self.step, self.t0, self.t1)
+
+
+def _ramps_for(seq, ch, s=0):
+    """Ramps on channel ch: a cell with a value and a ramp function starts a ramp that runs to
+    the next edge (in time) where the channel has a value."""
+    c = seq.grid[ch][s]
+    order = seq.edge_order()
+    ramps = []
+    for k, i in enumerate(order):
+        v0 = Sequence.cell_value(c, K_ANLG, i)
+        f = Sequence.cell_value(c, K_FUNC, i)
+        if lvcore.is_nan(v0) or not f:
+            continue
+        for j in order[k + 1:]:
+            v1 = Sequence.cell_value(c, K_ANLG, j)
+            if not lvcore.is_nan(v1):
+                ramps.append(Ramp(ch, i, j, v0, v1, f, Sequence.cell_value(c, K_STEP, i),
+                                  Sequence.cell_value(c, K_TC, i),
+                                  seq.edges[i][E_ABS], seq.edges[j][E_ABS]))
+                break
+    return ramps
+
+
+def _trace(seq, ch, s=0):
+    """(time, value) points describing the channel over the cycle: holds between edges,
+    straight lines across ramps (the shape of non-linear ramps is not reproduced)."""
+    c = seq.grid[ch][s]
+    digital = c[K_SIG] == 1
+    pts = []
+    cur = None
+    ramp_end = None
+    order = seq.edge_order()
+    for k, i in enumerate(order):
+        t = seq.edges[i][E_ABS]
+        if digital:
+            d = Sequence.cell_value(c, K_DIG, i)
+            if d == -1:
+                continue
+            if cur is not None:
+                pts.append((t, cur))
+            cur = float(d)
+            pts.append((t, cur))
+            continue
+        v = Sequence.cell_value(c, K_ANLG, i)
+        if lvcore.is_nan(v):
+            continue
+        if ramp_end == i:                       # arriving at the end of a ramp: line already drawn
+            pts.append((t, v))
+            ramp_end = None
+        else:
+            if cur is not None:
+                pts.append((t, cur))
+            pts.append((t, v))
+        cur = v
+        if Sequence.cell_value(c, K_FUNC, i):
+            for j in order[k + 1:]:
+                if not lvcore.is_nan(Sequence.cell_value(c, K_ANLG, j)):
+                    ramp_end = j
+                    break
+    if cur is not None:
+        pts.append((seq.cycle_length(), cur))
+    return pts
+
+
+class RampConflict(object):
+    def __init__(self, r1, r2, gcd_us, t0, t1):
+        self.r1, self.r2, self.gcd_us, self.t0, self.t1 = r1, r2, gcd_us, t0, t1
+
+
+def _check_ramps(seq, s=0, min_step_us=2):
+    """Flag ramps whose step is below the 2 us minimum, and pairs of simultaneous ramps whose
+    step sizes do not share a common multiple of at least 2 us: Supertime interpolates both and
+    ends up trying to output edges every gcd(step1, step2) us, which breaks below the clock."""
+    problems = []
+    all_ramps = []
+    for ch in range(len(seq.grid)):
+        for r in _ramps_for(seq, ch, s):
+            all_ramps.append(r)
+            su = step_us(r.step)
+            if su < min_step_us:
+                problems.append(("step too small", r, None, su))
+            elif abs(r.step * 1000.0 - su) > 1e-6:
+                problems.append(("step not a whole us", r, None, su))
+    # only ramps that actually change the value are interpolated by Supertime
+    real = sorted([r for r in all_ramps if r.v0 != r.v1 and r.t1 > r.t0], key=lambda r: r.t0)
+    for a in range(len(real)):
+        ra = real[a]
+        for b in range(a + 1, len(real)):
+            rb = real[b]
+            if rb.t0 >= ra.t1:
+                break
+            if ra.ch == rb.ch or rb.t1 <= ra.t0:
+                continue
+            g = _gcd(step_us(ra.step), step_us(rb.step))
+            if g < min_step_us:
+                problems.append(("simultaneous ramps need steps with a common multiple >= %d us" % min_step_us,
+                                 ra, rb, g))
+    return problems, all_ramps
+
+
+def _set_cells(seq, cells, s=0, **fields):
+    """Set the given fields on every (channel, edge) in cells; fields not given stay as they are."""
+    seq.repair()
+    n = 0
+    for ch, ei in cells:
+        seq.set_cell(ch, ei, s, **fields)
+        n += 1
+    return n
+
+
+def _find_cells(seq, channels=None, edge_pattern=None, value=None, step=None, func=None, s=0,
+                tol=1e-9):
+    """Cells matching all given criteria: channel indices, a substring of the edge name,
+    an analog (or digital) value, a step size, a ramp function name ('' = none)."""
+    import re
+    rx = re.compile(edge_pattern, re.I) if edge_pattern else None
+    out = []
+    for ch in (channels if channels is not None else range(len(seq.grid))):
+        c = seq.grid[ch][s]
+        digital = c[K_SIG] == 1
+        for ei, e in enumerate(seq.edges):
+            if rx and not rx.search(e[E_NAME]):
+                continue
+            if value is not None:
+                if digital:
+                    if Sequence.cell_value(c, K_DIG, ei) != int(value):
+                        continue
+                else:
+                    a = Sequence.cell_value(c, K_ANLG, ei)
+                    if lvcore.is_nan(a) or abs(a - value) > tol * max(1.0, abs(value)):
+                        continue
+            if step is not None and abs(Sequence.cell_value(c, K_STEP, ei) - step) > tol:
+                continue
+            if func is not None and Sequence.cell_value(c, K_FUNC, ei) != func:
+                continue
+            out.append((ch, ei))
+    return out
+
+
+def _find_edges(seq, name_pattern=None, relative=None, tol=1e-9):
+    import re
+    rx = re.compile(name_pattern, re.I) if name_pattern else None
+    out = []
+    for i, e in enumerate(seq.edges):
+        if rx and not rx.search(e[E_NAME]):
+            continue
+        if relative is not None and abs(e[E_REL] - relative) > tol:
+            continue
+        out.append(i)
+    return out
+
+
+Sequence.ramps = _ramps_for
+Sequence.trace = _trace
+Sequence.check_ramps = _check_ramps
+Sequence.set_cells = _set_cells
+Sequence.find_cells = _find_cells
+Sequence.find_edges = _find_edges

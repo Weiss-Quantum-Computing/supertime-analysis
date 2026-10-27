@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Supertime sequence editor: a Tkinter desktop app to view, edit and compare .dt4 files.
+"""Supertime sequence editor: a Tkinter desktop app to view, edit, plot and compare .dt4 files.
 
 Runs on Python 2.7 (Windows XP) and Python 3, standard library only.
 
@@ -21,7 +21,7 @@ except ImportError:                     # Python 2.7
 
 from . import lvcore
 from .model import (Sequence, K_NAME, K_CARD, K_CHAN, K_SIG, K_CONV, K_ANLG, K_DIG, K_TC, K_FUNC,
-                    K_STEP, E_ABS, E_NAME, E_PARENT, E_REL, E_VARS, E_TYPE, V_NAME, V_VAL)
+                    K_STEP, E_ABS, E_NAME, E_PARENT, E_REL, E_VARS, E_TYPE, V_NAME, V_VAL, step_us)
 from .diff import Comparison, fmt_value
 
 CELL_W = 46            # default column width; adjustable in the toolbar
@@ -37,8 +37,11 @@ C_DIG1 = "#9fe09f"
 C_DIG0 = "#f4a9a9"
 C_RAMP = "#ffd27a"
 C_GRIDLINE = "#b8b8b8"
+C_SEL = "#e00000"
+C_CONFLICT = "#ff40ff"
 FUNC_ABBR = {u"": u"", u"Linear": u"L", u"Exponential": u"E", u"Cubic": u"C", u"Custom": u"K",
              u"Optical: 1/(1+t)^2": u"O", u"Optical with offset": u"O+", u"Depth lin freq const": u"D"}
+DISPLAY_MODES = [u"value + ramp", u"value + ramp + step", u"step size", u"time constant"]
 
 
 def abbr_func(f):
@@ -55,6 +58,14 @@ def fnum(v, digits=6):
     return u"%s" % (v,)
 
 
+def fstep(st):
+    """Step size in a compact form: 1 -> '1', 0.005 -> '5u', 0.04 -> '40u', 2.5 -> '2.5'."""
+    us = st * 1000.0
+    if abs(us - round(us)) < 1e-6 and us < 1000:
+        return u"%du" % int(round(us))
+    return fnum(st, 3)
+
+
 # ======================================================================= grid widget
 class SequenceGrid(tk.Frame):
     """Virtual grid: edges (time order) as columns, channels as rows; only visible cells drawn."""
@@ -66,7 +77,9 @@ class SequenceGrid(tk.Frame):
         self.order = []
         self.col0 = 0
         self.row0 = 0
-        self.sel = None
+        self.sel = set()            # selected (channel, edge) cells
+        self.anchor = None          # for shift-click ranges
+        self.conflicts = set()      # (channel, edge) cells flagged by the ramp check
         self.cell_w = CELL_W
         self.canvas = tk.Canvas(self, bg="white", highlightthickness=0)
         self.vbar = tk.Scrollbar(self, orient="vertical", command=self._yscroll)
@@ -78,21 +91,27 @@ class SequenceGrid(tk.Frame):
         self.columnconfigure(0, weight=1)
         self.canvas.bind("<Configure>", lambda e: self.redraw())
         self.canvas.bind("<Button-1>", self._click)
+        self.canvas.bind("<Shift-Button-1>", self._shift_click)
+        self.canvas.bind("<Control-Button-1>", self._ctrl_click)
+        self.canvas.bind("<Command-Button-1>", self._ctrl_click)
         self.canvas.bind("<Double-Button-1>", self._dblclick)
         self.canvas.bind("<MouseWheel>", self._wheel)
         self.canvas.bind("<Shift-MouseWheel>", self._hwheel)
         self.canvas.bind("<Button-4>", lambda e: self._scroll_rows(-3))
         self.canvas.bind("<Button-5>", lambda e: self._scroll_rows(3))
-        self.tip = None
 
     def set_sequence(self, seq):
         self.seq = seq
         self.col0 = self.row0 = 0
-        self.sel = None
+        self.sel = set()
+        self.anchor = None
+        self.conflicts = set()
         self.refresh_order()
 
     def refresh_order(self):
         self.order = self.seq.edge_order() if self.seq else []
+        n = len(self.seq.edges) if self.seq else 0
+        self.sel = set(c for c in self.sel if c[1] < n and c[0] < len(self.seq.grid))
         self.redraw()
 
     # ---- geometry
@@ -155,7 +174,45 @@ class SequenceGrid(tk.Frame):
             return r, self.order[c]
         return None
 
+    def set_cell_width(self, w):
+        self.cell_w = max(24, min(160, int(w)))
+        self.redraw()
+
     # ---- drawing
+    def cell_text(self, ch, ei, mode):
+        """(text, fill, leftover) for one cell under the given display mode."""
+        a = Sequence.cell_value(ch, K_ANLG, ei)
+        d = Sequence.cell_value(ch, K_DIG, ei)
+        f = Sequence.cell_value(ch, K_FUNC, ei)
+        st = Sequence.cell_value(ch, K_STEP, ei)
+        tc = Sequence.cell_value(ch, K_TC, ei)
+        digital = ch[K_SIG] == 1
+        fill = C_EMPTY
+        txt = u""
+        if digital:
+            if d != -1:
+                txt = u"1" if d else u"0"
+                fill = C_DIG1 if d else C_DIG0
+        elif not lvcore.is_nan(a):
+            txt = fnum(a, 4)
+            fill = C_ANALOG
+        leftover = bool(f) and not txt
+        if f and txt:
+            fill = C_RAMP
+        if mode == u"value + ramp":
+            if f and txt:
+                txt = txt + u" " + abbr_func(f)
+        elif mode == u"value + ramp + step":
+            if f and txt:
+                txt = txt + u" " + abbr_func(f) + fstep(st)
+        elif mode == u"step size":
+            txt = fstep(st) if (st != 1.0 or (f and txt)) else u""
+            if f and txt:
+                txt = abbr_func(f) + u" " + txt
+        elif mode == u"time constant":
+            txt = fnum(tc, 4) if tc else u""
+        return txt, fill, leftover
+
     def redraw(self):
         cv = self.canvas
         cv.delete("all")
@@ -165,7 +222,6 @@ class SequenceGrid(tk.Frame):
         ncol, nrow = self._visible()
         cols = self.order[self.col0:self.col0 + ncol]
         rows = range(self.row0, min(len(seq.grid), self.row0 + nrow))
-        # scrollbars
         n = len(self.order) or 1
         self.hbar.set(self.col0 / n, min(1.0, (self.col0 + ncol) / n))
         m = len(seq.grid) or 1
@@ -173,7 +229,8 @@ class SequenceGrid(tk.Frame):
         W = self.cell_w
         small = ("TkDefaultFont", 9 if W >= 44 else 8)
         maxchars = max(3, (W - 6) // 7)
-        # column headers
+        mode = self.app.display_mode.get()
+        show_left = self.app.show_leftovers.get()
         for k, ei in enumerate(cols):
             x = ROW_HDR_W + k * W
             e = seq.edges[ei]
@@ -185,59 +242,71 @@ class SequenceGrid(tk.Frame):
             except tk.TclError:
                 cv.create_text(x + 2, 4, text=label[:maxchars], anchor="nw", font=small, fill=TXT)
             cv.create_text(x + W // 2, HDR_H - 9, text=fnum(e[E_ABS], 5)[:maxchars], font=("TkDefaultFont", 8), fill=TXT)
-        # rows
         for j, r in enumerate(rows):
             y = HDR_H + j * CELL_H
             ch = seq.grid[r][self.app.set_index]
             cv.create_rectangle(0, y, ROW_HDR_W, y + CELL_H, fill=C_ROWHDR, outline=C_GRIDLINE)
             cv.create_text(4, y + CELL_H // 2, text=u"%s  (%d.%d)" % (ch[K_NAME][:22], ch[K_CARD], ch[K_CHAN]),
                            anchor="w", font=("TkDefaultFont", 10), fill=TXT)
-            digital = ch[K_SIG] == 1
             for k, ei in enumerate(cols):
                 x = ROW_HDR_W + k * W
-                a = Sequence.cell_value(ch, K_ANLG, ei)
-                d = Sequence.cell_value(ch, K_DIG, ei)
-                f = Sequence.cell_value(ch, K_FUNC, ei)
-                fill = C_EMPTY
-                txt = u""
-                if digital:
-                    if d != -1:
-                        txt = u"1" if d else u"0"
-                        fill = C_DIG1 if d else C_DIG0
-                else:
-                    if not lvcore.is_nan(a):
-                        txt = fnum(a, 4)
-                        fill = C_ANALOG
-                leftover = False
-                if f:
-                    if txt:                                   # value + ramp function: a real ramp
-                        txt = txt + u" " + abbr_func(f)
-                        fill = C_RAMP
-                    else:                                     # function set but no value: inert leftover
-                        leftover = True
-                selected = self.sel == (r, ei)
-                cv.create_rectangle(x, y, x + W, y + CELL_H, fill=fill,
-                                    outline="#e00000" if selected else C_GRIDLINE, width=2 if selected else 1)
+                txt, fill, leftover = self.cell_text(ch, ei, mode)
+                selected = (r, ei) in self.sel
+                conflict = (r, ei) in self.conflicts
+                outline = C_SEL if selected else (C_CONFLICT if conflict else C_GRIDLINE)
+                width = 2 if (selected or conflict) else 1
+                cv.create_rectangle(x, y, x + W, y + CELL_H, fill=fill, outline=outline, width=width)
                 if txt:
                     cv.create_text(x + 3, y + CELL_H // 2, text=txt[:maxchars], anchor="w", font=small, fill=TXT)
-                elif leftover and self.app.show_leftovers.get():
-                    cv.create_text(x + W - 3, y + CELL_H // 2, text=abbr_func(f), anchor="e",
-                                   font=("TkDefaultFont", 8), fill="#a0a0a0")
+                elif leftover and show_left:
+                    cv.create_text(x + W - 3, y + CELL_H // 2, text=abbr_func(Sequence.cell_value(ch, K_FUNC, ei)),
+                                   anchor="e", font=("TkDefaultFont", 8), fill="#a0a0a0")
         cv.create_rectangle(0, 0, ROW_HDR_W, HDR_H, fill="#d4d4d4", outline=C_GRIDLINE)
         cv.create_text(6, HDR_H - 10, anchor="w", font=("TkDefaultFont", 9), fill=TXT,
-                       text=u"%d channels x %d edges" % (len(seq.grid), len(self.order)))
+                       text=u"%d channels x %d edges%s" % (len(seq.grid), len(self.order),
+                                                           (u"   %d selected" % len(self.sel)) if self.sel else u""))
 
     # ---- interaction
     def _click(self, e):
         hit = self._cell_at(e.x, e.y)
         if hit:
-            self.sel = hit
+            self.sel = set([hit])
+            self.anchor = hit
             self.app.show_cell_info(*hit)
             self.redraw()
         elif e.y < HDR_H and e.x >= ROW_HDR_W:
             c = self.col0 + (e.x - ROW_HDR_W) // self.cell_w
             if c < len(self.order):
                 self.app.select_edge(self.order[c])
+        elif e.x < ROW_HDR_W and e.y >= HDR_H:          # row header: select the whole channel row
+            r = self.row0 + (e.y - HDR_H) // CELL_H
+            if r < len(self.seq.grid):
+                self.sel = set((r, ei) for ei in self.order)
+                self.anchor = (r, self.order[0]) if self.order else None
+                self.redraw()
+
+    def _ctrl_click(self, e):
+        hit = self._cell_at(e.x, e.y)
+        if hit:
+            if hit in self.sel:
+                self.sel.discard(hit)
+            else:
+                self.sel.add(hit)
+            self.anchor = hit
+            self.app.show_cell_info(*hit)
+            self.redraw()
+
+    def _shift_click(self, e):
+        hit = self._cell_at(e.x, e.y)
+        if hit and self.anchor:
+            r0, r1 = sorted((self.anchor[0], hit[0]))
+            c0, c1 = sorted((self.order.index(self.anchor[1]), self.order.index(hit[1])))
+            for r in range(r0, r1 + 1):
+                for c in range(c0, c1 + 1):
+                    self.sel.add((r, self.order[c]))
+            self.redraw()
+        elif hit:
+            self._click(e)
 
     def _dblclick(self, e):
         hit = self._cell_at(e.x, e.y)
@@ -248,64 +317,219 @@ class SequenceGrid(tk.Frame):
             if c < len(self.order):
                 self.app.edit_edge(self.order[c])
 
-    def set_cell_width(self, w):
-        self.cell_w = max(24, min(160, int(w)))
-        self.redraw()
-
 
 # ======================================================================= dialogs
 class CellDialog(simpledialog.Dialog):
-    def __init__(self, parent, app, ch, ei):
+    """Edit one cell, or several at once (blank field = leave as it is)."""
+
+    def __init__(self, parent, app, cells):
         self.app = app
-        self.ch = ch
-        self.ei = ei
+        self.cells = list(cells)
         seq = app.seq
+        ch, ei = self.cells[0]
         c = seq.grid[ch][app.set_index]
         self.vals = [Sequence.cell_value(c, f, ei) for f in (K_ANLG, K_DIG, K_TC, K_FUNC, K_STEP)]
-        self.title_text = u"%s @ %s" % (c[K_NAME], seq.edges[ei][E_NAME])
-        simpledialog.Dialog.__init__(self, parent, self.title_text)
+        self.multi = len(self.cells) > 1
+        title = (u"%d cells" % len(self.cells)) if self.multi else u"%s @ %s" % (c[K_NAME], seq.edges[ei][E_NAME])
+        simpledialog.Dialog.__init__(self, parent, title)
 
     def body(self, master):
         a, d, tc, f, st = self.vals
-        tk.Label(master, text=u"Analog value (blank = no change)").grid(row=0, column=0, sticky="w")
+        if self.multi:
+            tk.Label(master, text=u"Editing %d cells. Leave a field blank to keep each cell's own value."
+                     % len(self.cells), fg="#a00000").grid(row=0, column=0, columnspan=2, sticky="w", pady=4)
+            a, d, tc, f, st = u"", u"", u"", u"", u""
+        tk.Label(master, text=u"Analog value (NaN or '-' = no change)").grid(row=1, column=0, sticky="w")
         self.e_a = tk.Entry(master)
-        self.e_a.insert(0, fnum(a))
-        self.e_a.grid(row=0, column=1)
-        tk.Label(master, text=u"Digital (-1 no change, 0, 1)").grid(row=1, column=0, sticky="w")
+        self.e_a.insert(0, fnum(a) if not self.multi else u"")
+        if not self.multi and lvcore.is_nan(a):
+            self.e_a.insert(0, u"-")
+        self.e_a.grid(row=1, column=1)
+        tk.Label(master, text=u"Digital (-1 no change, 0, 1)").grid(row=2, column=0, sticky="w")
         self.e_d = tk.Entry(master)
-        self.e_d.insert(0, u"%d" % d)
-        self.e_d.grid(row=1, column=1)
-        tk.Label(master, text=u"Ramp function").grid(row=2, column=0, sticky="w")
-        self.e_f = ttk.Combobox(master, values=lvcore.function_types(), state="readonly")
-        self.e_f.set(f)
-        self.e_f.grid(row=2, column=1)
-        tk.Label(master, text=u"Step size (ms)").grid(row=3, column=0, sticky="w")
+        self.e_d.insert(0, (u"%d" % d) if not self.multi else u"")
+        self.e_d.grid(row=2, column=1)
+        tk.Label(master, text=u"Ramp function").grid(row=3, column=0, sticky="w")
+        self.e_f = ttk.Combobox(master, values=([u"(keep)"] if self.multi else []) + lvcore.function_types(),
+                                state="readonly")
+        self.e_f.set(f if not self.multi else u"(keep)")
+        self.e_f.grid(row=3, column=1)
+        tk.Label(master, text=u"Step size (ms)").grid(row=4, column=0, sticky="w")
         self.e_s = tk.Entry(master)
-        self.e_s.insert(0, fnum(st))
-        self.e_s.grid(row=3, column=1)
-        tk.Label(master, text=u"Time constant").grid(row=4, column=0, sticky="w")
+        self.e_s.insert(0, fnum(st) if not self.multi else u"")
+        self.e_s.grid(row=4, column=1)
+        tk.Label(master, text=u"Time constant").grid(row=5, column=0, sticky="w")
         self.e_t = tk.Entry(master)
-        self.e_t.insert(0, fnum(tc))
-        self.e_t.grid(row=4, column=1)
+        self.e_t.insert(0, fnum(tc) if not self.multi else u"")
+        self.e_t.grid(row=5, column=1)
         return self.e_a
 
     def validate(self):
         try:
+            r = {}
             a = self.e_a.get().strip()
-            self.result = {K_ANLG: float(a) if a else lvcore.FILE_NAN,
-                           K_DIG: int(self.e_d.get()),
-                           K_FUNC: self.e_f.get(),
-                           K_STEP: float(self.e_s.get() or 1.0),
-                           K_TC: float(self.e_t.get() or 0.0)}
+            if a:
+                r[K_ANLG] = lvcore.FILE_NAN if a in (u"-", u"nan", u"NaN") else float(a)
+            if self.e_d.get().strip():
+                r[K_DIG] = int(self.e_d.get())
+            if self.e_f.get() != u"(keep)":
+                r[K_FUNC] = self.e_f.get()
+            if self.e_s.get().strip():
+                r[K_STEP] = float(self.e_s.get())
+            if self.e_t.get().strip():
+                r[K_TC] = float(self.e_t.get())
+            self.result = r
             return True
         except ValueError as e:
             messagebox.showerror("Bad value", str(e))
             return False
 
     def apply(self):
-        self.app.seq.repair()
-        self.app.seq.set_cell(self.ch, self.ei, self.app.set_index, **self.result)
+        if self.result:
+            self.app.seq.set_cells(self.cells, self.app.set_index, **self.result)
+            self.app.mark_dirty()
+
+
+class BatchDialog(simpledialog.Dialog):
+    """Find cells by channel / edge-name pattern / value / step / ramp, then set fields on all."""
+
+    def __init__(self, parent, app):
+        self.app = app
+        simpledialog.Dialog.__init__(self, parent, u"Batch edit")
+
+    def body(self, master):
+        names = [u"(all channels)"] + self.app.seq.channel_names()
+        tk.Label(master, text=u"Find cells where...", font=("TkDefaultFont", 10, "bold")).grid(row=0, column=0, columnspan=2, sticky="w")
+        tk.Label(master, text=u"Channel").grid(row=1, column=0, sticky="w")
+        self.f_ch = ttk.Combobox(master, values=names, width=40)
+        self.f_ch.set(names[0])
+        self.f_ch.grid(row=1, column=1, sticky="w")
+        tk.Label(master, text=u"Edge name contains (regex ok)").grid(row=2, column=0, sticky="w")
+        self.f_edge = tk.Entry(master, width=40)
+        self.f_edge.grid(row=2, column=1, sticky="w")
+        tk.Label(master, text=u"Value equals").grid(row=3, column=0, sticky="w")
+        self.f_val = tk.Entry(master, width=14)
+        self.f_val.grid(row=3, column=1, sticky="w")
+        tk.Label(master, text=u"Step size equals (ms)").grid(row=4, column=0, sticky="w")
+        self.f_step = tk.Entry(master, width=14)
+        self.f_step.grid(row=4, column=1, sticky="w")
+        tk.Label(master, text=u"Ramp function equals").grid(row=5, column=0, sticky="w")
+        self.f_func = ttk.Combobox(master, values=[u"(any)", u"(none)"] + lvcore.function_types()[1:], width=24)
+        self.f_func.set(u"(any)")
+        self.f_func.grid(row=5, column=1, sticky="w")
+        tk.Label(master, text=u"...and set (blank = keep)", font=("TkDefaultFont", 10, "bold")).grid(row=6, column=0, columnspan=2, sticky="w", pady=(8, 0))
+        tk.Label(master, text=u"Value").grid(row=7, column=0, sticky="w")
+        self.s_val = tk.Entry(master, width=14)
+        self.s_val.grid(row=7, column=1, sticky="w")
+        tk.Label(master, text=u"Step size (ms)").grid(row=8, column=0, sticky="w")
+        self.s_step = tk.Entry(master, width=14)
+        self.s_step.grid(row=8, column=1, sticky="w")
+        tk.Label(master, text=u"Ramp function").grid(row=9, column=0, sticky="w")
+        self.s_func = ttk.Combobox(master, values=[u"(keep)"] + lvcore.function_types(), width=24)
+        self.s_func.set(u"(keep)")
+        self.s_func.grid(row=9, column=1, sticky="w")
+        tk.Label(master, text=u"Time constant").grid(row=10, column=0, sticky="w")
+        self.s_tc = tk.Entry(master, width=14)
+        self.s_tc.grid(row=10, column=1, sticky="w")
+        tk.Button(master, text=u"Preview: select matching cells", command=self.preview).grid(row=11, column=0, columnspan=2, pady=6)
+        self.msg = tk.Label(master, text=u"")
+        self.msg.grid(row=12, column=0, columnspan=2, sticky="w")
+        return self.f_edge
+
+    def _criteria(self):
+        seq = self.app.seq
+        ch = self.f_ch.get()
+        channels = None if ch.startswith(u"(") else [seq.find_channel(ch)]
+        val = float(self.f_val.get()) if self.f_val.get().strip() else None
+        st = float(self.f_step.get()) if self.f_step.get().strip() else None
+        fn = self.f_func.get()
+        func = None if fn == u"(any)" else (u"" if fn == u"(none)" else fn)
+        return seq.find_cells(channels=channels, edge_pattern=self.f_edge.get().strip() or None,
+                              value=val, step=st, func=func, s=self.app.set_index)
+
+    def preview(self):
+        try:
+            cells = self._criteria()
+        except Exception as e:
+            messagebox.showerror("Batch edit", u"%s" % e)
+            return
+        self.app.grid.sel = set(cells)
+        self.app.grid.redraw()
+        self.msg.configure(text=u"%d cells match" % len(cells))
+
+    def validate(self):
+        try:
+            self.cells = self._criteria()
+            r = {}
+            if self.s_val.get().strip():
+                v = self.s_val.get().strip()
+                r[K_ANLG] = lvcore.FILE_NAN if v in (u"-", u"nan") else float(v)
+            if self.s_step.get().strip():
+                r[K_STEP] = float(self.s_step.get())
+            if self.s_func.get() != u"(keep)":
+                r[K_FUNC] = self.s_func.get()
+            if self.s_tc.get().strip():
+                r[K_TC] = float(self.s_tc.get())
+            self.result = r
+            return True
+        except Exception as e:
+            messagebox.showerror("Batch edit", u"%s" % e)
+            return False
+
+    def apply(self):
+        if not self.result or not self.cells:
+            return
+        seq = self.app.seq
+        # digital channels: a 'value' means the digital level
+        anlg = self.result.get(K_ANLG)
+        for ch, ei in self.cells:
+            r = dict(self.result)
+            if anlg is not None and seq.grid[ch][self.app.set_index][K_SIG] == 1:
+                r[K_DIG] = -1 if lvcore.is_nan(anlg) else int(anlg)
+                del r[K_ANLG]
+            seq.set_cells([(ch, ei)], self.app.set_index, **r)
+        self.app.grid.sel = set(self.cells)
         self.app.mark_dirty()
+        messagebox.showinfo("Batch edit", u"%d cells changed." % len(self.cells))
+
+
+class EdgeBatchDialog(simpledialog.Dialog):
+    """Change the relative time of every edge whose name matches a pattern."""
+
+    def __init__(self, parent, app):
+        self.app = app
+        simpledialog.Dialog.__init__(self, parent, u"Batch edit edges")
+
+    def body(self, master):
+        tk.Label(master, text=u"Edge name contains (regex ok)").grid(row=0, column=0, sticky="w")
+        self.f_name = tk.Entry(master, width=40)
+        self.f_name.grid(row=0, column=1)
+        tk.Label(master, text=u"Current relative time equals (ms, optional)").grid(row=1, column=0, sticky="w")
+        self.f_rel = tk.Entry(master, width=14)
+        self.f_rel.grid(row=1, column=1, sticky="w")
+        tk.Label(master, text=u"New relative time (ms)").grid(row=2, column=0, sticky="w")
+        self.s_rel = tk.Entry(master, width=14)
+        self.s_rel.grid(row=2, column=1, sticky="w")
+        tk.Label(master, text=u"(edges timed by a variable keep following the variable)").grid(row=3, column=0, columnspan=2, sticky="w")
+        return self.f_name
+
+    def validate(self):
+        try:
+            rel = float(self.f_rel.get()) if self.f_rel.get().strip() else None
+            self.edges = self.app.seq.find_edges(self.f_name.get().strip() or None, rel)
+            self.new_rel = float(self.s_rel.get())
+            return True
+        except Exception as e:
+            messagebox.showerror("Batch edit edges", u"%s" % e)
+            return False
+
+    def apply(self):
+        seq = self.app.seq
+        for i in self.edges:
+            seq.edges[i][E_REL] = self.new_rel
+        seq.recompute_times()
+        self.app.mark_dirty(structural=True)
+        messagebox.showinfo("Batch edit edges", u"%d edges changed." % len(self.edges))
 
 
 class EdgeDialog(simpledialog.Dialog):
@@ -367,7 +591,300 @@ class EdgeDialog(simpledialog.Dialog):
         self.app.mark_dirty(structural=True)
 
 
+# ======================================================================= plot window
+class PlotWindow(tk.Toplevel):
+    """Value against time for chosen channels of one or two sequences, drawn on a canvas."""
+
+    COLORS = ["#1f4fd6", "#d62728", "#2ca02c", "#9467bd", "#ff7f0e", "#17becf", "#8c564b", "#e377c2",
+              "#7f7f7f", "#bcbd22"]
+
+    def __init__(self, app, seq, seq_b=None, channels=None):
+        tk.Toplevel.__init__(self, app.root)
+        self.app = app
+        self.seq = seq
+        self.seq_b = seq_b
+        self.title(u"Plot: %s%s" % (os.path.basename(seq.path or "A"),
+                                     (u"  vs  " + os.path.basename(seq_b.path or "B")) if seq_b else u""))
+        self.geometry("1100x650")
+        left = tk.Frame(self)
+        left.pack(side="left", fill="y")
+        tk.Label(left, text=u"Channels (click to toggle)").pack()
+        self.lb = tk.Listbox(left, selectmode="multiple", width=30, exportselection=False)
+        for n in seq.channel_names():
+            self.lb.insert("end", n)
+        self.lb.pack(fill="y", expand=True)
+        self.lb.bind("<<ListboxSelect>>", lambda e: self.draw())
+        for ch in (channels or []):
+            self.lb.selection_set(ch)
+        bar = tk.Frame(left)
+        bar.pack(fill="x")
+        tk.Label(bar, text=u"t from").grid(row=0, column=0)
+        self.t0 = tk.Entry(bar, width=9)
+        self.t0.grid(row=0, column=1)
+        tk.Label(bar, text=u"to (ms)").grid(row=1, column=0)
+        self.t1 = tk.Entry(bar, width=9)
+        self.t1.grid(row=1, column=1)
+        tk.Button(bar, text=u"Apply", command=self.draw).grid(row=2, column=0, columnspan=2)
+        tk.Button(bar, text=u"Full range", command=self.full).grid(row=3, column=0, columnspan=2)
+        self.stack = tk.BooleanVar(value=True)
+        tk.Checkbutton(bar, text=u"one strip per channel", variable=self.stack, command=self.draw).grid(row=4, column=0, columnspan=2, sticky="w")
+        self.canvas = tk.Canvas(self, bg="white", highlightthickness=0)
+        self.canvas.pack(side="left", fill="both", expand=True)
+        self.canvas.bind("<Configure>", lambda e: self.draw())
+        self.canvas.bind("<Motion>", self._motion)
+        self.canvas.bind("<ButtonPress-1>", self._press)
+        self.canvas.bind("<ButtonRelease-1>", self._release)
+        self.readout = tk.Label(self, anchor="w")
+        self.readout.pack(side="bottom", fill="x")
+        self.drag = None
+        self.full()
+
+    def full(self):
+        self.t0.delete(0, "end")
+        self.t0.insert(0, u"0")
+        self.t1.delete(0, "end")
+        self.t1.insert(0, fnum(max(self.seq.cycle_length(), self.seq_b.cycle_length() if self.seq_b else 0)))
+        self.draw()
+
+    def _range(self):
+        try:
+            a, b = float(self.t0.get()), float(self.t1.get())
+        except ValueError:
+            a, b = 0.0, self.seq.cycle_length()
+        if b <= a:
+            b = a + 1.0
+        return a, b
+
+    def draw(self):
+        cv = self.canvas
+        cv.delete("all")
+        chans = [int(i) for i in self.lb.curselection()]
+        W, H = cv.winfo_width(), cv.winfo_height()
+        L, R, T, B = 60, 20, 20, 30
+        ta, tb = self._range()
+        self.geom = (L, R, T, B, ta, tb, W, H)
+        if not chans:
+            cv.create_text(W // 2, H // 2, text=u"select channels on the left", fill="#808080")
+            return
+        strips = len(chans) if self.stack.get() else 1
+        sh = (H - T - B) / strips
+        self.strip_info = []
+        for k, ch in enumerate(chans):
+            y0 = T + k * sh if self.stack.get() else T
+            y1 = y0 + sh if self.stack.get() else H - B
+            series = [(self.seq, self.COLORS[k % len(self.COLORS)], u"A")]
+            if self.seq_b:
+                chb = self.seq_b.find_channel(self.seq.channel_names()[ch])
+                if chb >= 0:
+                    series.append((self.seq_b, "#ff00ff", u"B"))
+            pts_all = []
+            for s_, col, tag in series:
+                c = ch if s_ is self.seq else self.seq_b.find_channel(self.seq.channel_names()[ch])
+                pts = s_.trace(c, self.app.set_index if s_ is self.seq else 0)
+                pts_all.append((pts, col, tag))
+            vals = [v for pts, _, _ in pts_all for t, v in pts if ta <= t <= tb] or [0.0]
+            vmin, vmax = min(vals), max(vals)
+            if vmax == vmin:
+                vmax = vmin + 1.0
+            pad = (vmax - vmin) * 0.08
+            vmin, vmax = vmin - pad, vmax + pad
+            self.strip_info.append((y0, y1, vmin, vmax, ch))
+            cv.create_rectangle(L, y0, W - R, y1, outline="#c0c0c0")
+            name = self.seq.channel_names()[ch]
+            cv.create_text(L + 4, y0 + 3, text=name, anchor="nw", fill=self.COLORS[k % len(self.COLORS)], font=("TkDefaultFont", 9))
+            cv.create_text(L - 4, y0 + 4, text=fnum(vmax, 4), anchor="ne", fill=TXT, font=("TkDefaultFont", 8))
+            cv.create_text(L - 4, y1 - 4, text=fnum(vmin, 4), anchor="se", fill=TXT, font=("TkDefaultFont", 8))
+
+            def X(t):
+                return L + (t - ta) / (tb - ta) * (W - L - R)
+
+            def Y(v):
+                return y1 - (v - vmin) / (vmax - vmin) * (y1 - y0)
+            for pts, col, tag in pts_all:
+                coords = []
+                for t, v in pts:
+                    tt = min(max(t, ta), tb)
+                    coords.extend([X(tt), Y(v)])
+                if len(coords) >= 4:
+                    cv.create_line(*coords, fill=col, width=1 if tag == u"B" else 2, dash=(4, 3) if tag == u"B" else None)
+        # time axis
+        for i in range(11):
+            t = ta + (tb - ta) * i / 10.0
+            x = L + (W - L - R) * i / 10.0
+            cv.create_line(x, H - B, x, H - B + 4, fill=TXT)
+            cv.create_text(x, H - B + 6, text=fnum(t, 5), anchor="n", fill=TXT, font=("TkDefaultFont", 8))
+        # edges as faint vertical lines when zoomed in enough
+        if (tb - ta) < 400:
+            for i in self.seq.edge_order():
+                t = self.seq.edges[i][E_ABS]
+                if ta <= t <= tb:
+                    x = L + (t - ta) / (tb - ta) * (W - L - R)
+                    cv.create_line(x, T, x, H - B, fill="#e8e8e8")
+                    cv.create_text(x + 2, T + 2, text=self.seq.edges[i][E_NAME][:18], anchor="nw", angle=270,
+                                   fill="#909090", font=("TkDefaultFont", 7)) if (tb - ta) < 60 else None
+
+    def _motion(self, e):
+        L, R, T, B, ta, tb, W, H = self.geom
+        if W - L - R <= 0:
+            return
+        t = ta + (e.x - L) / (W - L - R) * (tb - ta)
+        txt = u"t = %s ms" % fnum(t, 6)
+        for y0, y1, vmin, vmax, ch in getattr(self, "strip_info", []):
+            if y0 <= e.y <= y1:
+                v = vmax - (e.y - y0) / (y1 - y0) * (vmax - vmin)
+                txt += u"   %s: %s" % (self.seq.channel_names()[ch], fnum(v, 4))
+        self.readout.configure(text=txt)
+
+    def _press(self, e):
+        self.drag = e.x
+
+    def _release(self, e):
+        if self.drag is None or abs(e.x - self.drag) < 5:
+            self.drag = None
+            return
+        L, R, T, B, ta, tb, W, H = self.geom
+        x0, x1 = sorted((self.drag, e.x))
+        t0 = ta + (x0 - L) / (W - L - R) * (tb - ta)
+        t1 = ta + (x1 - L) / (W - L - R) * (tb - ta)
+        self.t0.delete(0, "end")
+        self.t0.insert(0, fnum(max(0.0, t0), 6))
+        self.t1.delete(0, "end")
+        self.t1.insert(0, fnum(t1, 6))
+        self.drag = None
+        self.draw()
+
+
 # ======================================================================= compare window
+class DiffGrid(tk.Frame):
+    """Graphical diff: matched channels x matched edges, cells coloured by what differs."""
+
+    C_SAME = "#ffffff"
+    C_VAL = "#ff9f9f"
+    C_RAMP = "#ffd27a"
+    C_STEP = "#c8a0ff"
+    C_ONLY = "#d0d0d0"
+
+    def __init__(self, master, win):
+        tk.Frame.__init__(self, master)
+        self.win = win
+        self.canvas = tk.Canvas(self, bg="white", highlightthickness=0)
+        self.vbar = tk.Scrollbar(self, orient="vertical", command=self._yscroll)
+        self.hbar = tk.Scrollbar(self, orient="horizontal", command=self._xscroll)
+        self.canvas.grid(row=0, column=0, sticky="nsew")
+        self.vbar.grid(row=0, column=1, sticky="ns")
+        self.hbar.grid(row=1, column=0, sticky="ew")
+        self.rowconfigure(0, weight=1)
+        self.columnconfigure(0, weight=1)
+        self.col0 = self.row0 = 0
+        self.cw = 14
+        self.rh = 14
+        self.canvas.bind("<Configure>", lambda e: self.redraw())
+        self.canvas.bind("<Button-1>", self._click)
+        self.canvas.bind("<MouseWheel>", lambda e: self._scroll(0, -3 if e.delta > 0 else 3))
+        self.canvas.bind("<Shift-MouseWheel>", lambda e: self._scroll(-3 if e.delta > 0 else 3, 0))
+        self.rebuild()
+
+    def rebuild(self):
+        """Index the comparison into a cell map keyed by (channel row, edge column)."""
+        cmp_ = self.win.cmp
+        self.edge_cols = [m for m in cmp_.edge_map]            # (ia, ib, key)
+        self.chan_rows = [m for m in cmp_.chan_map]            # (ia, ib, name)
+        # sort edge columns by time in A (or B for B-only edges)
+        a, b = cmp_.a, cmp_.b
+
+        def tkey(m):
+            ia, ib, key = m
+            return a.edges[ia][E_ABS] if ia is not None else b.edges[ib][E_ABS]
+        self.edge_cols.sort(key=tkey)
+        self.cells = {}
+        for d in cmp_.diffs:
+            if d.kind == "cell":
+                self.cells.setdefault((d.where[0], d.where[1]), []).append(d)
+        self.redraw()
+
+    def _scroll(self, dc, dr):
+        self.col0 = max(0, min(max(0, len(self.edge_cols) - 1), self.col0 + dc))
+        self.row0 = max(0, min(max(0, len(self.chan_rows) - 1), self.row0 + dr))
+        self.redraw()
+
+    def _yscroll(self, *args):
+        n = len(self.chan_rows) or 1
+        if args[0] == "moveto":
+            self.row0 = int(float(args[1]) * n)
+        else:
+            self.row0 += int(args[1]) * (10 if args[2] == "pages" else 1)
+        self.row0 = max(0, min(max(0, n - 1), self.row0))
+        self.redraw()
+
+    def _xscroll(self, *args):
+        n = len(self.edge_cols) or 1
+        if args[0] == "moveto":
+            self.col0 = int(float(args[1]) * n)
+        else:
+            self.col0 += int(args[1]) * (30 if args[2] == "pages" else 1)
+        self.col0 = max(0, min(max(0, n - 1), self.col0))
+        self.redraw()
+
+    def _label(self, key):
+        return key[0] if key[1] == 0 else u"%s (%d)" % key
+
+    def redraw(self):
+        cv = self.canvas
+        cv.delete("all")
+        W, H = cv.winfo_width(), cv.winfo_height()
+        LW, TH = 150, 70
+        ncol = max(1, (W - LW) // self.cw + 1)
+        nrow = max(1, (H - TH) // self.rh + 1)
+        cols = self.edge_cols[self.col0:self.col0 + ncol]
+        rows = self.chan_rows[self.row0:self.row0 + nrow]
+        n = len(self.edge_cols) or 1
+        self.hbar.set(self.col0 / n, min(1.0, (self.col0 + ncol) / n))
+        m = len(self.chan_rows) or 1
+        self.vbar.set(self.row0 / m, min(1.0, (self.row0 + nrow) / m))
+        for k, (ia, ib, key) in enumerate(cols):
+            x = LW + k * self.cw
+            fill = self.C_ONLY if (ia is None or ib is None) else "#eeeeee"
+            cv.create_rectangle(x, 0, x + self.cw, TH, fill=fill, outline="#d0d0d0")
+            if self.cw >= 12:
+                try:
+                    cv.create_text(x + self.cw // 2, TH - 3, text=self._label(key)[:14], anchor="w", angle=90,
+                                   fill=TXT, font=("TkDefaultFont", 7))
+                except tk.TclError:
+                    pass
+        for j, (ia, ib, name) in enumerate(rows):
+            y = TH + j * self.rh
+            cv.create_rectangle(0, y, LW, y + self.rh, fill=self.C_ONLY if (ia is None or ib is None) else "#eeeeee", outline="#d0d0d0")
+            cv.create_text(3, y + self.rh // 2, text=name[:24], anchor="w", fill=TXT, font=("TkDefaultFont", 8))
+            for k, (ea, eb, key) in enumerate(cols):
+                x = LW + k * self.cw
+                if ia is None or ib is None or ea is None or eb is None:
+                    fill = self.C_ONLY
+                else:
+                    ds = self.cells.get((name, self._label(key)))
+                    if not ds:
+                        fill = self.C_SAME
+                    else:
+                        fields = set(d.field for d in ds)
+                        fill = self.C_VAL if ("analog" in fields or "digital" in fields) else (
+                            self.C_RAMP if "ramp" in fields else self.C_STEP)
+                cv.create_rectangle(x, y, x + self.cw, y + self.rh, fill=fill, outline="#e4e4e4")
+        cv.create_rectangle(0, 0, LW, TH, fill="#d4d4d4", outline="#d0d0d0")
+        cv.create_text(4, 6, anchor="nw", fill=TXT, font=("TkDefaultFont", 8), justify="left",
+                       text=u"red: value\norange: ramp\npurple: step/tc\ngrey: only in A or B\nclick a cell")
+
+    def _click(self, e):
+        LW, TH = 150, 70
+        if e.x < LW or e.y < TH:
+            return
+        c = self.col0 + (e.x - LW) // self.cw
+        r = self.row0 + (e.y - TH) // self.rh
+        if c >= len(self.edge_cols) or r >= len(self.chan_rows):
+            return
+        ia, ib, key = self.edge_cols[c]
+        ca, cb, name = self.chan_rows[r]
+        self.win.show_cell(name, self._label(key), ia, ib, ca, cb)
+
+
 class CompareWindow(tk.Toplevel):
     KINDS = [u"all", u"cell", u"edge", u"edge-missing", u"channel", u"channel-missing", u"variable", u"setting"]
 
@@ -376,39 +893,51 @@ class CompareWindow(tk.Toplevel):
         self.app = app
         self.a = seq_a
         self.b = seq_b
-        self.title(u"Compare: A = %s   |   B = %s" % (os.path.basename(seq_a.path or "A"), os.path.basename(seq_b.path or "B")))
-        self.geometry("1100x600")
+        self._title()
+        self.geometry("1250x700")
         top = tk.Frame(self)
         top.pack(fill="x")
         tk.Label(top, text=u"Show:").pack(side="left")
-        self.kind = ttk.Combobox(top, values=self.KINDS, state="readonly", width=16)
+        self.kind = ttk.Combobox(top, values=self.KINDS, state="readonly", width=14)
         self.kind.set(u"all")
         self.kind.pack(side="left")
         self.kind.bind("<<ComboboxSelected>>", lambda e: self.fill())
-        tk.Label(top, text=u"  channel filter:").pack(side="left")
-        self.chan_filter = tk.Entry(top, width=18)
+        tk.Label(top, text=u" filter:").pack(side="left")
+        self.chan_filter = tk.Entry(top, width=16)
         self.chan_filter.pack(side="left")
         self.chan_filter.bind("<Return>", lambda e: self.fill())
-        tk.Button(top, text=u"Copy A -> B (selected)", command=lambda: self.copy_sel("A->B")).pack(side="left", padx=4)
-        tk.Button(top, text=u"Copy B -> A (selected)", command=lambda: self.copy_sel("B->A")).pack(side="left", padx=4)
-        tk.Button(top, text=u"Unify all A -> B", command=lambda: self.unify("A->B")).pack(side="left", padx=4)
-        tk.Button(top, text=u"Unify all B -> A", command=lambda: self.unify("B->A")).pack(side="left", padx=4)
-        tk.Button(top, text=u"Save A", command=lambda: self.save(self.a)).pack(side="left", padx=4)
-        tk.Button(top, text=u"Save B as...", command=lambda: self.save(self.b, True)).pack(side="left", padx=4)
+        tk.Button(top, text=u"Copy A -> B (sel)", command=lambda: self.copy_sel("A->B")).pack(side="left", padx=3)
+        tk.Button(top, text=u"Copy B -> A (sel)", command=lambda: self.copy_sel("B->A")).pack(side="left", padx=3)
+        tk.Button(top, text=u"Unify all A -> B", command=lambda: self.unify("A->B")).pack(side="left", padx=3)
+        tk.Button(top, text=u"Unify all B -> A", command=lambda: self.unify("B->A")).pack(side="left", padx=3)
+        tk.Button(top, text=u"Plot A vs B", command=self.plot).pack(side="left", padx=8)
+        tk.Button(top, text=u"Save A", command=lambda: self.save(self.a)).pack(side="left", padx=3)
+        tk.Button(top, text=u"Save B as...", command=lambda: self.save(self.b, True)).pack(side="left", padx=3)
         self.summary = tk.Label(self, anchor="w")
         self.summary.pack(fill="x")
+        self.cmp = Comparison(self.a, self.b)
+        pane = tk.PanedWindow(self, orient="vertical", sashwidth=5)
+        pane.pack(fill="both", expand=True)
+        self.dgrid = DiffGrid(pane, self)
+        pane.add(self.dgrid, height=300, stretch="always")
+        bottom = tk.Frame(pane)
+        pane.add(bottom, stretch="always")
         cols = ("kind", "where", "field", "A", "B")
-        self.tree = ttk.Treeview(self, columns=cols, show="headings", selectmode="extended")
-        for c, w in zip(cols, (100, 420, 110, 160, 160)):
+        self.tree = ttk.Treeview(bottom, columns=cols, show="headings", selectmode="extended")
+        for c, w in zip(cols, (100, 460, 110, 170, 170)):
             self.tree.heading(c, text=c)
             self.tree.column(c, width=w, anchor="w")
-        vs = tk.Scrollbar(self, orient="vertical", command=self.tree.yview)
+        vs = tk.Scrollbar(bottom, orient="vertical", command=self.tree.yview)
         self.tree.configure(yscrollcommand=vs.set)
         self.tree.pack(side="left", fill="both", expand=True)
         vs.pack(side="right", fill="y")
         self.tree.bind("<Double-Button-1>", self.goto)
-        self.cmp = Comparison(self.a, self.b)
+        self.cell_info = tk.Label(self, anchor="w", relief="sunken", justify="left")
+        self.cell_info.pack(fill="x")
         self.fill()
+
+    def _title(self):
+        self.title(u"Compare: A = %s   |   B = %s" % (os.path.basename(self.a.path or "A"), os.path.basename(self.b.path or "B")))
 
     def fill(self):
         self.tree.delete(*self.tree.get_children())
@@ -423,6 +952,26 @@ class CompareWindow(tk.Toplevel):
             self.rows.append(d)
             self.tree.insert("", "end", values=(d.kind, d.label(), d.field, fmt_value(d.va), fmt_value(d.vb)))
         self.summary.configure(text=u"%d differences: %s" % (len(self.cmp.diffs), self.cmp.summary() or u"none"))
+        self.dgrid.rebuild()
+
+    def show_cell(self, cname, ename, ea, eb, ca, cb):
+        lines = [u"%s @ %s" % (cname, ename)]
+        for tag, seq, ch, ei in ((u"A", self.a, ca, ea), (u"B", self.b, cb, eb)):
+            if ch is None or ei is None:
+                lines.append(u"  %s: (absent)" % tag)
+                continue
+            c = seq.grid[ch][0]
+            vals = [Sequence.cell_value(c, f, ei) for f in (K_ANLG, K_DIG, K_FUNC, K_STEP, K_TC)]
+            lines.append(u"  %s: analog %s  digital %s  ramp %s  step %s ms  tc %s   (edge at %s ms)" % (
+                tag, fnum(vals[0]) or u"-", vals[1], vals[2] or u"-", fnum(vals[3]), fnum(vals[4]),
+                fnum(seq.edges[ei][E_ABS])))
+        self.cell_info.configure(text=u"\n".join(lines))
+        # select the matching rows in the list
+        self.tree.selection_remove(self.tree.selection())
+        for iid, d in zip(self.tree.get_children(), self.rows):
+            if d.kind == "cell" and d.where == (cname, ename):
+                self.tree.selection_add(iid)
+                self.tree.see(iid)
 
     def _selected(self):
         idx = [self.tree.index(i) for i in self.tree.selection()]
@@ -437,7 +986,7 @@ class CompareWindow(tk.Toplevel):
                 n += 1
                 structural = structural or d.kind in self.cmp.STRUCTURAL
             if structural:
-                break           # indices change after a structural edit: recompare first
+                break
         self.cmp.run()
         self.fill()
         self.app.after_external_change()
@@ -450,6 +999,16 @@ class CompareWindow(tk.Toplevel):
         self.app.after_external_change()
         messagebox.showinfo("Compare", u"Applied %d differences (%s)." % (n, direction))
 
+    def plot(self):
+        sel = self._selected()
+        chans = []
+        for d in sel:
+            if d.kind == "cell":
+                ch = self.a.find_channel(d.where[0])
+                if ch >= 0 and ch not in chans:
+                    chans.append(ch)
+        PlotWindow(self.app, self.a, self.b, chans)
+
     def save(self, seq, ask=False):
         path = seq.path
         if ask or not path:
@@ -458,7 +1017,7 @@ class CompareWindow(tk.Toplevel):
                 return
         seq.save(path)
         self.app.after_external_change()
-        self.title(u"Compare: A = %s   |   B = %s" % (os.path.basename(self.a.path or "A"), os.path.basename(self.b.path or "B")))
+        self._title()
 
     def goto(self, e):
         sel = self._selected()
@@ -467,7 +1026,7 @@ class CompareWindow(tk.Toplevel):
             ch = sel[0].data.get("ia")
             if ch is not None:
                 self.app.grid.row0 = max(0, ch - 3)
-                self.app.grid.sel = (ch, sel[0].data["ea"])
+                self.app.grid.sel = set([(ch, sel[0].data["ea"])])
                 self.app.grid.redraw()
 
 
@@ -480,6 +1039,8 @@ class App(object):
         self.set_index = 0
         root.title(u"Supertime sequence editor")
         root.geometry("1300x750")
+        self.display_mode = tk.StringVar(value=DISPLAY_MODES[0])
+        self.show_leftovers = tk.BooleanVar(value=True)
         self._menu()
         pane = tk.PanedWindow(root, orient="horizontal", sashwidth=5)
         pane.pack(fill="both", expand=True)
@@ -487,7 +1048,6 @@ class App(object):
         pane.add(left)
         self.nb = ttk.Notebook(left)
         self.nb.pack(fill="both", expand=True)
-        # edges
         f1 = tk.Frame(self.nb)
         self.nb.add(f1, text=u"Edges")
         cols = ("i", "name", "time", "parent", "rel", "type", "var")
@@ -501,7 +1061,6 @@ class App(object):
         vs.pack(side="right", fill="y")
         self.etree.bind("<<TreeviewSelect>>", self._edge_selected)
         self.etree.bind("<Double-Button-1>", lambda e: self.edit_selected_edge())
-        # variables
         f2 = tk.Frame(self.nb)
         self.nb.add(f2, text=u"Variables")
         self.vtree = ttk.Treeview(f2, columns=("i", "name", "value"), show="headings")
@@ -510,39 +1069,52 @@ class App(object):
             self.vtree.column(c, width=w, anchor="w")
         self.vtree.pack(fill="both", expand=True)
         self.vtree.bind("<Double-Button-1>", lambda e: self.edit_variable())
-        # settings
         f3 = tk.Frame(self.nb)
-        self.nb.add(f3, text=u"Info")
-        self.info = tk.Text(f3, width=40, wrap="word")
+        self.nb.add(f3, text=u"Ramps")
+        self.rtree = ttk.Treeview(f3, columns=("problem", "where"), show="headings")
+        self.rtree.heading("problem", text=u"problem")
+        self.rtree.heading("where", text=u"where")
+        self.rtree.column("problem", width=150, anchor="w")
+        self.rtree.column("where", width=220, anchor="w")
+        self.rtree.pack(fill="both", expand=True)
+        self.rtree.bind("<<TreeviewSelect>>", self._ramp_selected)
+        f4 = tk.Frame(self.nb)
+        self.nb.add(f4, text=u"Info")
+        self.info = tk.Text(f4, width=40, wrap="word")
         self.info.pack(fill="both", expand=True)
-        # grid
         right = tk.Frame(pane)
         pane.add(right, stretch="always")
         bar = tk.Frame(right)
         bar.pack(fill="x")
-        tk.Label(bar, text=u"Data set:").pack(side="left")
-        self.set_box = ttk.Combobox(bar, values=[u"0"], state="readonly", width=24)
+        tk.Label(bar, text=u"Set:").pack(side="left")
+        self.set_box = ttk.Combobox(bar, values=[u"0"], state="readonly", width=16)
         self.set_box.set(u"0")
         self.set_box.pack(side="left")
         self.set_box.bind("<<ComboboxSelected>>", self._set_changed)
-        tk.Button(bar, text=u"Add edge", command=lambda: self.edit_edge(None)).pack(side="left", padx=3)
-        tk.Button(bar, text=u"Delete edge", command=self.delete_selected_edge).pack(side="left", padx=3)
-        tk.Button(bar, text=u"Add variable", command=self.add_variable).pack(side="left", padx=3)
-        tk.Button(bar, text=u"Add channel", command=self.add_channel).pack(side="left", padx=3)
-        tk.Button(bar, text=u"Delete channel", command=self.delete_channel).pack(side="left", padx=3)
-        tk.Button(bar, text=u"Compare with...", command=self.compare).pack(side="left", padx=12)
-        self.show_leftovers = tk.BooleanVar(value=True)
-        tk.Checkbutton(bar, text=u"grey ramp leftovers", variable=self.show_leftovers,
-                       command=lambda: self.grid.redraw()).pack(side="left", padx=6)
-        tk.Label(bar, text=u"  Column width:").pack(side="left")
+        tk.Label(bar, text=u" cells show:").pack(side="left")
+        dm = ttk.Combobox(bar, values=DISPLAY_MODES, textvariable=self.display_mode, state="readonly", width=18)
+        dm.pack(side="left")
+        dm.bind("<<ComboboxSelected>>", lambda e: self.grid.redraw())
+        tk.Checkbutton(bar, text=u"grey leftovers", variable=self.show_leftovers,
+                       command=lambda: self.grid.redraw()).pack(side="left", padx=4)
+        tk.Label(bar, text=u" width:").pack(side="left")
         self.width_var = tk.StringVar(value=u"%d" % CELL_W)
-        sp = tk.Spinbox(bar, from_=24, to=160, increment=4, width=4, textvariable=self.width_var,
-                        command=self._width_changed)
+        sp = tk.Spinbox(bar, from_=24, to=160, increment=4, width=4, textvariable=self.width_var, command=self._width_changed)
         sp.pack(side="left")
         sp.bind("<Return>", lambda e: self._width_changed())
-        root.bind("<Control-equal>", lambda e: self._zoom(4))
-        root.bind("<Control-plus>", lambda e: self._zoom(4))
-        root.bind("<Control-minus>", lambda e: self._zoom(-4))
+        bar2 = tk.Frame(right)
+        bar2.pack(fill="x")
+        tk.Button(bar2, text=u"Edit selected cells", command=self.edit_selected_cells).pack(side="left", padx=3)
+        tk.Button(bar2, text=u"Batch edit...", command=lambda: BatchDialog(self.root, self) if self.seq else None).pack(side="left", padx=3)
+        tk.Button(bar2, text=u"Batch edit edges...", command=lambda: EdgeBatchDialog(self.root, self) if self.seq else None).pack(side="left", padx=3)
+        tk.Button(bar2, text=u"Add edge", command=lambda: self.edit_edge(None)).pack(side="left", padx=3)
+        tk.Button(bar2, text=u"Delete edge", command=self.delete_selected_edge).pack(side="left", padx=3)
+        tk.Button(bar2, text=u"Add variable", command=self.add_variable).pack(side="left", padx=3)
+        tk.Button(bar2, text=u"Add channel", command=self.add_channel).pack(side="left", padx=3)
+        tk.Button(bar2, text=u"Delete channel", command=self.delete_channel).pack(side="left", padx=3)
+        tk.Button(bar2, text=u"Plot...", command=self.plot).pack(side="left", padx=8)
+        tk.Button(bar2, text=u"Check ramps", command=self.check_ramps).pack(side="left", padx=3)
+        tk.Button(bar2, text=u"Compare with...", command=self.compare).pack(side="left", padx=8)
         self.cell_info = tk.Label(right, anchor="w", relief="sunken")
         self.cell_info.pack(fill="x")
         self.grid = SequenceGrid(right, self)
@@ -550,6 +1122,10 @@ class App(object):
         self.status = tk.Label(root, anchor="w", relief="sunken")
         self.status.pack(fill="x")
         root.protocol("WM_DELETE_WINDOW", self.quit)
+        root.bind("<Control-equal>", lambda e: self._zoom(4))
+        root.bind("<Control-plus>", lambda e: self._zoom(4))
+        root.bind("<Control-minus>", lambda e: self._zoom(-4))
+        root.bind("<Return>", lambda e: self.edit_selected_cells() if self.grid.sel else None)
         if path:
             self.open(path)
 
@@ -561,10 +1137,19 @@ class App(object):
         fm.add_command(label=u"Save as...", command=lambda: self.save(True))
         fm.add_separator()
         fm.add_command(label=u"Compare with...", command=self.compare)
+        fm.add_command(label=u"Plot...", command=self.plot)
+        fm.add_command(label=u"Check ramps", command=self.check_ramps)
         fm.add_command(label=u"Repair channel arrays", command=self.repair)
         fm.add_separator()
         fm.add_command(label=u"Quit", command=self.quit)
         m.add_cascade(label=u"File", menu=fm)
+        em = tk.Menu(m, tearoff=0)
+        em.add_command(label=u"Edit selected cells...", command=self.edit_selected_cells, accelerator="Return")
+        em.add_command(label=u"Batch edit cells...", command=lambda: BatchDialog(self.root, self) if self.seq else None)
+        em.add_command(label=u"Batch edit edges...", command=lambda: EdgeBatchDialog(self.root, self) if self.seq else None)
+        em.add_command(label=u"Select all cells of channel", command=self.select_channel_row)
+        em.add_command(label=u"Clear selection", command=self.clear_selection)
+        m.add_cascade(label=u"Edit", menu=em)
         self.root.config(menu=m)
         self.root.bind("<Control-o>", lambda e: self.open())
         self.root.bind("<Control-s>", lambda e: self.save())
@@ -587,6 +1172,7 @@ class App(object):
         self.set_box.set(names[0])
         self.grid.set_sequence(self.seq)
         self.refresh_lists()
+        self.check_ramps(quiet=True)
         self.root.title(u"Supertime sequence editor - %s" % os.path.basename(path))
 
     def save(self, ask=False):
@@ -598,7 +1184,10 @@ class App(object):
             if not path:
                 return
         problems = self.seq.check()
-        if problems and not messagebox.askyesno("Save", u"%d consistency problems:\n%s\n\nSave anyway?" % (len(problems), u"\n".join(problems[:5]))):
+        rp, _ = self.seq.check_ramps(self.set_index)
+        msgs = problems[:5] + [self._ramp_text(p) for p in rp[:5]]
+        if msgs and not messagebox.askyesno("Save", u"%d consistency problems, %d ramp problems:\n%s\n\nSave anyway?"
+                                            % (len(problems), len(rp), u"\n".join(msgs))):
             return
         self.seq.save(path)
         self.dirty = False
@@ -638,9 +1227,9 @@ class App(object):
         if not self.seq:
             self.status.configure(text=u"no sequence loaded")
             return
-        self.status.configure(text=u"%s%s   edges %d   channels %d   cycle %s ms" % (
+        self.status.configure(text=u"%s%s   edges %d   channels %d   cycle %s ms   ramp problems %d" % (
             os.path.basename(self.seq.path or u"untitled"), u" *" if self.dirty else u"",
-            len(self.seq.edges), len(self.seq.grid), fnum(self.seq.cycle_length())))
+            len(self.seq.edges), len(self.seq.grid), fnum(self.seq.cycle_length()), len(self.grid.conflicts) // 2))
 
     def mark_dirty(self, structural=False):
         self.dirty = True
@@ -650,12 +1239,58 @@ class App(object):
         else:
             self.grid.redraw()
             self.refresh_status()
+        self.check_ramps(quiet=True)
 
     def after_external_change(self):
-        """Called by the compare window after it changed A (the sequence shown here)."""
         self.dirty = True
         self.grid.refresh_order()
         self.refresh_lists()
+        self.check_ramps(quiet=True)
+
+    # ---- ramps
+    def _ramp_text(self, p):
+        kind, r1, r2, g = p
+        n1 = self.seq.grid[r1.ch][0][K_NAME]
+        s = u"%s: %s step %s ms (%s..%s ms)" % (kind, n1, fnum(r1.step), fnum(r1.t0), fnum(r1.t1))
+        if r2:
+            n2 = self.seq.grid[r2.ch][0][K_NAME]
+            s += u" with %s step %s ms (%s..%s ms): common step %d us" % (n2, fnum(r2.step), fnum(r2.t0), fnum(r2.t1), g)
+        return s
+
+    def check_ramps(self, quiet=False):
+        if not self.seq:
+            return
+        probs, ramps = self.seq.check_ramps(self.set_index)
+        self.ramp_problems = probs
+        self.grid.conflicts = set()
+        self.rtree.delete(*self.rtree.get_children())
+        for n, p in enumerate(probs):
+            kind, r1, r2, g = p
+            self.grid.conflicts.add((r1.ch, r1.i0))
+            if r2:
+                self.grid.conflicts.add((r2.ch, r2.i0))
+            where = u"%s @ %s" % (self.seq.grid[r1.ch][0][K_NAME], self.seq.edges[r1.i0][E_NAME])
+            if r2:
+                where += u"  +  %s @ %s" % (self.seq.grid[r2.ch][0][K_NAME], self.seq.edges[r2.i0][E_NAME])
+            self.rtree.insert("", "end", iid=str(n), values=(kind, where))
+        self.grid.redraw()
+        self.refresh_status()
+        if not quiet:
+            if probs:
+                self.nb.select(2)
+                messagebox.showwarning("Check ramps", u"%d ramp problems (listed in the Ramps tab, cells outlined in magenta):\n\n%s"
+                                       % (len(probs), u"\n".join(self._ramp_text(p) for p in probs[:8])))
+            else:
+                messagebox.showinfo("Check ramps", u"%d ramps, no step-size conflicts." % len(ramps))
+
+    def _ramp_selected(self, e=None):
+        sel = self.rtree.selection()
+        if sel and self.seq:
+            kind, r1, r2, g = self.ramp_problems[int(sel[0])]
+            self.grid.row0 = max(0, r1.ch - 3)
+            self.grid.scroll_to_edge(r1.i0)
+            self.grid.sel = set([(r1.ch, r1.i0)] + ([(r2.ch, r2.i0)] if r2 else []))
+            self.grid.redraw()
 
     # ---- interaction
     def _width_changed(self):
@@ -671,6 +1306,7 @@ class App(object):
     def _set_changed(self, e=None):
         self.set_index = int(self.set_box.get().split(u" ", 1)[0])
         self.grid.redraw()
+        self.check_ramps(quiet=True)
 
     def show_cell_info(self, ch, ei):
         c = self.seq.grid[ch][self.set_index]
@@ -680,7 +1316,21 @@ class App(object):
                                  % (c[K_NAME], ei, e[E_NAME], fnum(e[E_ABS]), fnum(a) or u"-", d, f or u"-", fnum(st), fnum(tc)))
 
     def edit_cell(self, ch, ei):
-        CellDialog(self.root, self, ch, ei)
+        CellDialog(self.root, self, [(ch, ei)])
+
+    def edit_selected_cells(self):
+        if self.seq and self.grid.sel:
+            CellDialog(self.root, self, sorted(self.grid.sel))
+
+    def select_channel_row(self):
+        if self.seq and self.grid.sel:
+            rows = set(r for r, _ in self.grid.sel)
+            self.grid.sel = set((r, ei) for r in rows for ei in self.grid.order)
+            self.grid.redraw()
+
+    def clear_selection(self):
+        self.grid.sel = set()
+        self.grid.redraw()
 
     def select_edge(self, ei):
         try:
@@ -756,11 +1406,11 @@ class App(object):
         if not self.seq or not self.grid.sel:
             messagebox.showinfo("Delete channel", "Click a cell of the channel first.")
             return
-        ch = self.grid.sel[0]
+        ch = sorted(self.grid.sel)[0][0]
         name = self.seq.grid[ch][0][K_NAME]
         if messagebox.askyesno("Delete channel", u"Delete channel '%s'?" % name):
             self.seq.delete_channel(ch)
-            self.grid.sel = None
+            self.grid.sel = set()
             self.mark_dirty(structural=True)
 
     def repair(self):
@@ -768,6 +1418,12 @@ class App(object):
             n = self.seq.repair()
             messagebox.showinfo("Repair", u"%d channel arrays padded or trimmed to the edge count." % n)
             self.mark_dirty(structural=True)
+
+    def plot(self):
+        if not self.seq:
+            return
+        chans = sorted(set(r for r, _ in self.grid.sel))
+        PlotWindow(self, self.seq, None, chans)
 
     def compare(self):
         if not self.seq:

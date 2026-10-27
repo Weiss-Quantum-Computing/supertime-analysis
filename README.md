@@ -44,6 +44,32 @@ supertime_editor.bat "some sequence.dt4"                 # Windows XP (uses C:\P
   Two 1,400-edge cooling sequences compare in 0.1 s and unify in under a second.
 * Files whose channel arrays are shorter than the edge list (over half of the 2024-2026
   files) are read tolerantly; **File > Repair channel arrays** pads them.
+* **Step sizes at a glance:** the "cells show" box switches the grid between value + ramp,
+  value + ramp + step (`4.2 L40u` = linear ramp, 40 us steps), step size only, or time
+  constant. Ramp function entries on cells without a value (leftovers of Supertime's ring)
+  are drawn as a small grey letter; untick "grey leftovers" to hide them.
+* **Editing many cells at once:** click, Shift-click (range), Ctrl/Cmd-click (add) or click a
+  row header (whole channel) to select cells, then Return or "Edit selected cells": blank
+  fields keep each cell's own value. "Batch edit..." finds cells by channel, edge-name pattern,
+  value, step size or ramp (preview selects them) and sets value/step/ramp/time constant on
+  all of them, so a value repeated in every cooling block changes everywhere in one go.
+  "Batch edit edges..." sets the relative time of every edge matching a name pattern.
+* **Plot...** draws value against time for the selected channels (holds between edges,
+  straight lines across ramps), one strip per channel or overlaid; drag to zoom, mouse
+  readout. From the compare window, "Plot A vs B" overlays both sequences (B dashed).
+* **Check ramps** (also run on open and before save): flags ramps with steps below the 2 us
+  clock, steps that are not whole microseconds, and simultaneous ramps on different channels
+  whose step sizes have no common multiple of at least 2 us (e.g. 5 us against 2 us), which
+  makes Supertime attempt 1 us edges and breaks the sequence. Problems are listed in the Ramps
+  tab and the cells outlined in magenta. This catches the August 2025 bug in the Testbed and
+  Pre-20250731 files.
+* The compare window has a **graphical diff** above the list: matched channels x matched
+  edges, red where a value differs, orange for ramp, purple for step/time constant, grey where
+  an edge or channel exists on one side only; click a cell to see both sides and select its
+  rows.
+
+![plot](docs/editor_plot.png)
+![diff](docs/editor_diff.png)
 
 `supertime_editor/lvcore.py` is the canonical reader/writer (`record.td` carries the LabVIEW
 type descriptor so no log file is needed); `model.py` the editable model; `diff.py` the
