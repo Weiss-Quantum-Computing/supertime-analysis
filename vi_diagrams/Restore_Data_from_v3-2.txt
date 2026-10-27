@@ -1,0 +1,84 @@
+VI: Restore_Data_from_v3-2.vi
+  N1    (Un)BundleByName?  @(140,292)  [2 term]
+  N2    prim       'Strip Path' @(208,120)  [3 term]
+  N3    FPterm     'Output Cluster'  [1 term]
+  N4    FPterm     'Input Cluster'  [1 term]
+  N5    Case        @(298,117)  [4 term]
+    frame 0:
+      N10   Case        @(414,229)  [2 term]
+        frame 0:
+          N19   FPterm     'v2.1 data cluster'  [1 term]
+        frame 1:
+          N20   FPterm     'intermediate data cluster (somewhere between v2 and v3)'  [1 term]
+        frame 2:
+          N21   FPterm     'v3.2 data cluster'  [1 term]
+            wire: N21.0 -- N10.tunnel@(550,284).in
+      N11   ForLoop     @(753,141)  [3 term]
+        frame 0:
+          N22   ForLoop     @(780,154)  [3 term]
+            frame 0:
+              N23   FPterm     'channel'  [1 term]
+              N24   FPterm     'channel v3.1'  [1 term]
+              N25   node34      @(935,166)  [13 term]
+              N26   node36      @(802,166)  [12 term]
+                wire: N26.11 -- N25.12
+                wire: N26.7 -- N25.8
+                wire: N26.10 -- N25.11
+                wire: N26.9 -- N25.10
+                wire: N23.0 -- N25.1
+                wire: N26.8 -- N25.9
+                wire: N26.6 -- N25.7
+                wire: N26.5 -- N25.6
+                wire: N26.4 -- N25.5
+                wire: N26.3 -- N25.4
+                wire: N26.2 -- N25.3
+                wire: N26.1 -- N25.2
+                wire: N25.0 -- N22.tunnel@(984,198).in
+                wire: N22.tunnel@(780,194).in -- N26.0
+            wire: N22.tunnel@(984,198).out -- N11.tunnel@(1006,198).in
+            wire: N11.tunnel@(753,194).in -- N22.tunnel@(780,194).out
+      N12   node34      @(1024,384)  [16 term]
+      N13   node36      @(712,384)  [14 term]
+      N14   prim       'Open File' @(467,180)  [7 term]
+      N15   prim       'Read File' @(548,180)  [12 term]
+      N16   prim       'Close File' @(623,181)  [4 term]
+      N17   const      enum/ring 'open mode (0)'  [1 term]
+      N18   const      numeric 'Numeric'  [1 term]
+        wire: N13.13 -- N12.14
+        wire: N13.12 -- N12.13
+        wire: N13.11 -- N12.12
+        wire: N13.10 -- N12.11
+        wire: N13.9 -- N12.10
+        wire: N13.8 -- N12.9
+        wire: N13.7 -- N12.8
+        wire: N18.0 -- N10.selector
+        wire: N11.tunnel@(1006,198).out -- N12.2
+        wire: N13.1 -- N11.tunnel@(753,194).out
+        wire: N10.tunnel@(550,284).out -- N15.4
+        wire: N13.6 -- N12.7
+        wire: N13.5 -- N12.6
+        wire: N13.4 -- N12.5
+        wire: N13.3 -- N12.4
+        wire: N13.2 -- N12.3
+        wire: N5.tunnel@(298,347).in -- N12.1
+        wire: N12.0 -- N5.tunnel@(1084,438).in
+        wire: N15.2 -- N13.0
+        wire: N17.0 -- N14.1
+        wire: N14.6 -- N15.8
+        wire: N14.5 -- N15.11
+        wire: N5.tunnel@(298,176).in -- N14.0
+        wire: N15.0 -- N16.2
+        wire: N15.3 -- N16.3
+    frame 1:
+        wire: N5.tunnel@(298,347).in -- N5.tunnel@(1084,438).in
+  N6    prim       'File Dialog' @(156,183)  [9 term]
+  N7    prim       'Current VI's Path' @(100,156)  [1 term]
+  N8    const      numeric  [1 term]
+  N9    const      string 'pattern'  [1 term]
+    wire: N1.1 -- N6.3
+    wire: N5.tunnel@(1084,438).out -- N3.0
+    wire: N4.0 -- N5.tunnel@(298,347).out -- N1.0
+    wire: N9.0 -- N6.5
+    wire: N6.8 -- N5.selector
+    wire: N6.6 -- N5.tunnel@(298,176).out -- N2.0
+    wire: N8.0 -- N6.2

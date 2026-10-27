@@ -1,0 +1,212 @@
+VI: control_GPIB_instruments.vi
+  N1    (Un)BundleByName?  @(38,1171)  [3 term]
+  N2    FPterm     'Output Cluster'  [1 term]
+  N3    subVI      'add constants only.vi'  params: 0=Channel out, 1=Channel array @(350,1178)  [2 term]
+  N4    prim       'Greater Than 0?' @(429,851)  [2 term]
+  N5    prim       'Array Size' @(383,852)  [2 term]
+  N6    prim       'Array Size' @(409,1291)  [2 term]
+  N7    WhileLoop   @(448,875)  [10 term]
+    frame 0:
+      N18   Sequence    @(516,901)  [10 term]
+        frame 0:
+          N21   Case        @(592,1047)  [3 term]
+            frame 0:
+            frame 1:
+              N22   prim       'Subtract' @(818,1120)  [3 term]
+              N23   FPterm     'Delay after timing sequence (ms)'  [1 term]
+              N24   (Un)BundleByName?  @(629,1110)  [2 term]
+              N25   prim       'Wait (ms)' @(865,1120)  [2 term]
+              N26   prim       'Subtract' @(766,1117)  [3 term]
+                wire: N22.0 -- N25.1
+                wire: N23.0 -- N22.1
+                wire: N26.0 -- N22.2
+                wire: N21.tunnel@(633,1047).in -- N24.0
+                wire: N21.tunnel@(612,1212).in -- N26.1
+                wire: N24.1 -- N26.2
+            wire: N18.tunnel@(900,901).in -- N21.selector
+            wire: N18.tunnel@(516,1010).in -- N21.tunnel@(633,1047).out
+            wire: N18.tunnel@(612,1273).in -- N21.tunnel@(612,1212).out
+        frame 1:
+          N27   WhileLoop   @(532,919)  [8 term]
+            frame 0:
+              N28   prim       'Select' @(967,1068)  [4 term]
+              N29   prim       'Equal To 0?' @(916,1054)  [2 term]
+              N30   Case        @(854,1115)  [4 term]
+                frame 0:
+                  N43   FormatString?  @(922,1162)  [6 term]
+                  N44   prim       'GPIB Write' @(996,1156)  [7 term]
+                  N45   FormatString?  @(958,1136)  [6 term]
+                  N46   prim       'Multiply' @(881,1160)  [3 term]
+                  N47   const      string 'format string'  [1 term]
+                    wire: N30.selector -- N45.5
+                    wire: N30.tunnel@(854,1177).in -- N46.1
+                    wire: N47.0 -- N45.0
+                    wire: N43.2 -- N44.1
+                    wire: N46.0 -- N43.5
+                    wire: N30.tunnel@(871,1115).in -- N46.2
+                    wire: N30.tunnel@(903,1115).in -- N43.0
+                    wire: N45.2 -- N44.0
+                frame 1:
+                  N48   FPterm     'Error Out'  [1 term]
+                  N49   prim       'Quotient & Remainder' @(889,1150)  [4 term]
+                  N50   subVI      'step picomotor.vi'  params: 0=Error Out, 1=Shutdown, 2=COM Port, 3=Motor (A,B,orC), 4=Step size @(948,1144)  [5 term]
+                  N51   const      numeric 'y'  [1 term]
+                    wire: N30.selector -- N49.3
+                    wire: N50.Error Out -- N48.0
+                    wire: N30.tunnel@(854,1177).in -- N50.Step size
+                    wire: N49.1 -- N50.Motor (A,B,orC)
+                    wire: N51.0 -- N49.2
+              N31   prim       'Select' @(914,952)  [4 term]
+              N32   prim       'Less?' @(885,1011)  [3 term]
+              N33   node6c      @(921,1007)  [3 term]
+              N34   Case        @(837,1200)  [2 term]
+                frame 0:
+                frame 1:
+                  N52   node3e      @(873,1215)  [3 term]
+                  N53   prim       'One Button Dialog' @(982,1217)  [3 term]
+                  N54   const      string 'message'  [1 term]
+                    wire: N34.tunnel@(837,1217).in -- N52.1
+                    wire: N52.0 -- N53.2
+                    wire: N54.0 -- N52.2
+              N35   (Un)BundleByName?  @(828,1062)  [4 term]
+              N36   WhileLoop   @(569,1080)  [6 term]
+                frame 0:
+                  N55   prim       'Greater?' @(623,1193)  [3 term]
+                  N56   prim       'Or' @(715,1088)  [3 term]
+                  N57   Case        @(715,1117)  [5 term]
+                    frame 0:
+                      N61   IndexArray?  @(746,1141)  [3 term]
+                        wire: N57.tunnel@(787,1133).in -- N61.2
+                        wire: N61.1 -- N57.tunnel@(787,1170).in
+                        wire: N57.tunnel@(715,1142).in -- N61.0
+                    frame 1:
+                      N62   IndexArray?  @(741,1146)  [3 term]
+                        wire: N62.1 -- N57.tunnel@(787,1170).in
+                        wire: N57.tunnel@(715,1157).in -- N62.0
+                  N58   prim       'Equal?' @(613,1083)  [3 term]
+                  N59   (Un)BundleByName?  @(585,1116)  [6 term]
+                  N60   const      numeric 'y'  [1 term]
+                    wire: N59.5 -- N36.tunnel@(803,1197).in
+                    wire: N59.4 -- N57.selector
+                    wire: N59.3 -- N57.tunnel@(715,1157).out
+                    wire: N59.2 -- N57.tunnel@(715,1142).out
+                    wire: N36.tunnel@(803,1133).in -- N57.tunnel@(787,1133).out
+                    wire: N36.i -- N55.2
+                    wire: N55.0 -- N56.1 -- N36.tunnel@(698,1219).in
+                    wire: N58.0 -- N56.2
+                    wire: N60.0 -- N55.1
+                    wire: N56.0 -- N36.cond
+                    wire: N36.tunnel@(609,1080).in -- N58.2
+                    wire: N57.tunnel@(787,1170).out -- N36.tunnel@(803,1170).in
+                    wire: N59.1 -- N58.1
+                    wire: N36.tunnel@(569,1130).in -- N59.0
+              N37   prim       'Equal?' @(694,995)  [3 term]
+              N38   (Un)BundleByName?  @(651,1027)  [2 term]
+              N39   (Un)BundleByName?  @(649,950)  [4 term]
+              N40   IndexArray?  @(572,1007)  [3 term]
+              N41   prim       'Increment' @(551,1036)  [2 term]
+              N42   IndexArray?  @(571,972)  [3 term]
+                wire: N39.2 -- N36.tunnel@(609,1080).out -- N34.tunnel@(837,1217).out
+                wire: N28.0 -- N30.selector
+                wire: N35.1 -- N29.1 -- N28.1
+                wire: N36.tunnel@(803,1197).out -- N28.3
+                wire: N29.0 -- N28.2
+                wire: N35.3 -- N30.tunnel@(871,1115).out
+                wire: N31.0 -- N36.tunnel@(803,1133).out
+                wire: N39.1 -- N31.3
+                wire: N27.tunnel@(929,919).in -- N31.1
+                wire: N27.tunnel@(900,919).in -- N31.2
+                wire: N36.tunnel@(698,1219).out -- N34.selector
+                wire: N32.0 -- N33.2
+                wire: N27.tunnel@(876,919).in -- N32.2
+                wire: N41.0 -- N40.2 -- N27.shiftreg@(1034,1047).in -- N32.1
+                wire: N37.0 -- N33.1
+                wire: N33.0 -- N27.cond
+                wire: N27.shiftreg@(532,1047).in -- N42.2 -- N41.1
+                wire: N36.tunnel@(803,1170).out -- N30.tunnel@(854,1177).out
+                wire: N42.1 -- N39.0 -- N35.0
+                wire: N35.2 -- N30.tunnel@(903,1115).out
+                wire: N27.tunnel@(532,1116).in -- N36.tunnel@(569,1130).out
+                wire: N38.1 -- N37.1
+                wire: N39.3 -- N37.2 -- N27.tunnel@(1041,983).in
+                wire: N40.1 -- N38.0
+                wire: N27.tunnel@(532,977).in -- N42.0 -- N40.0
+            wire: N18.tunnel@(929,901).in -- N27.tunnel@(929,919).out
+            wire: N18.tunnel@(900,901).in -- N27.tunnel@(900,919).out
+            wire: N18.tunnel@(876,901).in -- N27.tunnel@(876,919).out
+            wire: N18.tunnel@(516,977).in -- N27.tunnel@(532,977).out
+            wire: N27.tunnel@(1041,983).out -- N18.tunnel@(1052,983).in
+            wire: N18.tunnel@(516,1116).in -- N27.tunnel@(532,1116).out
+            wire: N27.shiftreg@(1034,1047).out -- N18.tunnel@(1052,1047).in
+            wire: N18.tunnel@(516,1048).in -- N27.shiftreg@(532,1047).out
+      N19   prim       'Less?' @(1060,1285)  [3 term]
+      N20   IndexArray?  @(477,992)  [3 term]
+        wire: N7.tunnel@(929,875).in -- N18.tunnel@(929,901).out
+        wire: N7.tunnel@(900,875).in -- N18.tunnel@(900,901).out
+        wire: N7.tunnel@(448,1302).in -- N19.1 -- N18.tunnel@(876,901).out
+        wire: N18.tunnel@(1052,1047).out -- N7.shiftreg@(1101,1009).in -- N19.2
+        wire: N7.shiftreg@(448,1279).in -- N18.tunnel@(612,1273).out
+        wire: N7.tunnel@(448,977).in -- N20.0 -- N18.tunnel@(516,977).out
+        wire: N7.i -- N7.tunnel@(1108,924).in
+        wire: N18.tunnel@(1052,983).out -- N7.shiftreg@(1101,1279).in
+        wire: N7.tunnel@(448,1116).in -- N18.tunnel@(516,1116).out
+        wire: N7.shiftreg@(448,1009).in -- N20.2 -- N18.tunnel@(516,1048).out
+        wire: N19.0 -- N7.cond
+        wire: N20.1 -- N18.tunnel@(516,1010).out
+  N8    prim       'Sort 1D Array' @(408,965)  [2 term]
+  N9    ForLoop     @(-46,949)  [4 term]
+    frame 0:
+      N63   (Un)BundleByName?  @(-18,969)  [3 term]
+        wire: N63.1 -- N9.tunnel@(115,972).in
+        wire: N63.2 -- N9.tunnel@(115,987).in
+        wire: N9.tunnel@(-13,1022).in -- N63.0
+  N10   ForLoop     @(133,915)  [5 term]
+    frame 0:
+      N64   prim       'Less Than 0?' @(258,1090)  [2 term]
+      N65   Case        @(304,1052)  [1 term]
+        frame 0:
+        frame 1:
+          N70   prim       'One Button Dialog' @(327,1089)  [3 term]
+          N71   const      string 'message'  [1 term]
+            wire: N71.0 -- N70.2
+      N66   node34      @(333,937)  [8 term]
+      N67   (Un)BundleByName?  @(177,923)  [6 term]
+      N68   IndexArray?  @(207,1062)  [3 term]
+      N69   prim       'Search 1D Array' @(204,1013)  [4 term]
+        wire: N69.0 -- N68.2 -- N64.1 -- N66.7
+        wire: N64.0 -- N65.selector
+        wire: N67.2 -- N66.4
+        wire: N67.1 -- N66.3
+        wire: N68.1 -- N66.2
+        wire: N66.0 -- N10.tunnel@(374,957).in
+        wire: N67.3 -- N69.2
+        wire: N67.5 -- N66.6
+        wire: N67.4 -- N66.5
+        wire: N10.tunnel@(154,915).in -- N67.0
+        wire: N10.tunnel@(133,972).in -- N68.0
+        wire: N10.tunnel@(133,987).in -- N69.3
+  N11   FPterm     'Position in run array (sequence) or edge number (hold)'  [1 term]
+  N12   FPterm     'Sets To Run Array'  [1 term]
+  N13   FPterm     'Current data set'  [1 term]
+  N14   IndexArray?  @(302,1176)  [4 term]
+  N15   FPterm     'Channels to read for data to send to GPIB'  [1 term]
+  N16   const      numeric  [1 term]
+  N17   const      numeric 'Absolute Time (ms)'  [1 term]
+    wire: N1.2 -- N14.0
+    wire: N1.1 -- N9.tunnel@(-13,1022).out
+    wire: N2.0 -- N1.0
+    wire: N11.0 -- N7.tunnel@(929,875).out
+    wire: N10.tunnel@(374,957).out -- N6.1 -- N8.1
+    wire: N3.Channel out -- N7.tunnel@(448,1116).out
+    wire: N14.1 -- N3.Channel array
+    wire: N4.0 -- N7.tunnel@(900,875).out
+    wire: N5.0 -- N4.1
+    wire: N12.0 -- N5.1
+    wire: N17.0 -- N7.shiftreg@(448,1279).out
+    wire: N16.0 -- N7.shiftreg@(448,1009).out
+    wire: N6.0 -- N7.tunnel@(448,1302).out
+    wire: N8.0 -- N7.tunnel@(448,977).out
+    wire: N9.tunnel@(115,972).out -- N10.tunnel@(133,972).out
+    wire: N9.tunnel@(115,987).out -- N10.tunnel@(133,987).out
+    wire: N15.0 -- N10.tunnel@(154,915).out
+    wire: N13.0 -- N14.3

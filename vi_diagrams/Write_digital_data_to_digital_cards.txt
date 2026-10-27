@@ -1,0 +1,119 @@
+VI: Write_digital_data_to_digital_cards.vi
+  N1    FPterm     'Digital out error'  [1 term]
+  N2    FPterm     'taskID out'  [1 term]
+  N3    Sequence    @(-12,8)  [6 term]
+    frame 0:
+      N8    Case        @(164,115)  [1 term]
+        frame 0:
+        frame 1:
+          N9    LocalVar   '?' @(262,153)  [1 term]
+          N10   prim       'One Button Dialog' @(368,195)  [3 term]
+          N11   const      string 'message'  [1 term]
+          N12   const      enum/ring 'Channels per digital card (combine ports if desired)'  [1 term]
+            wire: N12.0 -- N9.0
+            wire: N11.0 -- N10.2
+        wire: N3.tunnel@(103,8).in -- N8.selector
+    frame 1:
+      N13   ForLoop     @(23,41)  [7 term]
+        frame 0:
+          N14   Case        @(52,63)  [7 term]
+            frame 0:
+            frame 1:
+            frame 2:
+              N15   Sequence    @(75,85)  [6 term]
+                frame 0:
+                  N16   node42      @(290,219)  [5 term]
+                  N17   prim       'Split Number' @(189,248)  [3 term]
+                  N18   prim       'Split Number' @(189,192)  [3 term]
+                  N19   prim       'Split Number' @(154,221)  [3 term]
+                    wire: N16.0 -- N15.seq@(80,215).in
+                    wire: N18.1 -- N16.4
+                    wire: N18.2 -- N16.3
+                    wire: N17.1 -- N16.2
+                    wire: N17.2 -- N16.1
+                    wire: N19.2 -- N17.0
+                    wire: N19.1 -- N18.0
+                    wire: N15.tunnel@(75,235).in -- N19.0
+                frame 1:
+                  N20   Case        @(95,294)  [2 term]
+                    frame 0:
+                      N38   const      array  [1 term]
+                        wire: N38.0 -- N20.tunnel@(205,294).in
+                    frame 1:
+                      N39   const      array  [1 term]
+                        wire: N39.0 -- N20.tunnel@(205,294).in
+                    frame 2:
+                      N40   const      array  [1 term]
+                        wire: N40.0 -- N20.tunnel@(205,294).in
+                  N21   subVI      'DIO Parameter.vi' @(317,218)  [20 term]
+                  N22   subVI      'Simple Error Handler.vi' @(459,216)  [10 term]
+                  N23   subVI      'DIO Start.vi' @(411,218)  [16 term]
+                  N24   prim       'Increment' @(182,128)  [2 term]
+                  N25   prim       'To Unsigned Byte Integer' @(143,128)  [2 term]
+                  N26   prim       'Quotient & Remainder' @(197,200)  [4 term]
+                  N27   subVI      'DIO Write.vi' @(368,218)  [16 term]
+                  N28   prim       'Array Size' @(140,150)  [2 term]
+                  N29   prim       'Increment' @(226,182)  [2 term]
+                  N30   subVI      'DIO Config.vi' @(268,218)  [16 term]
+                  N31   const      enum/ring 'handshake source'  [1 term]
+                  N32   const      numeric 'group'  [1 term]
+                  N33   const      enum/ring 'group direction'  [1 term]
+                  N34   const      enum/ring 'operation'  [1 term]
+                  N35   const      enum/ring 'parameter name'  [1 term]
+                  N36   const      enum/ring 'value in'  [1 term]
+                  N37   const      cluster? 'handshaking mode parameters'  [1 term]
+                    wire: N20.tunnel@(205,294).out -- N30.7
+                    wire: N15.tunnel@(103,85).in -- N25.1 -- N20.selector
+                    wire: N23.15 -- N22.9
+                    wire: N37.0 -- N30.12
+                    wire: N36.0 -- N21.8
+                    wire: N35.0 -- N21.3
+                    wire: N34.0 -- N21.2
+                    wire: N21.19 -- N27.11
+                    wire: N30.15 -- N21.5
+                    wire: N21.14 -- N27.0
+                    wire: N30.4 -- N21.0
+                    wire: N27.15 -- N23.11
+                    wire: N27.4 -- N23.0
+                    wire: N31.0 -- N23.7
+                    wire: N24.0 -- N26.2
+                    wire: N25.0 -- N24.1
+                    wire: N26.0 -- N30.1
+                    wire: N28.0 -- N26.3
+                    wire: N32.0 -- N30.5
+                    wire: N33.0 -- N30.9
+                    wire: N29.0 -- N30.0
+                    wire: N22.6 -- N15.tunnel@(552,377).in
+                    wire: N23.4 -- N15.tunnel@(449,377).in
+                    wire: N22.0 -- N15.tunnel@(610,164).in
+                    wire: N15.seq@(80,215).in -- N27.5 -- N28.1
+                    wire: N15.tunnel@(75,177).in -- N29.1
+                wire: N15.tunnel@(552,377).out -- N14.tunnel@(552,395).in
+                wire: N15.tunnel@(449,377).out -- N14.tunnel@(449,395).in
+                wire: N15.tunnel@(610,164).out -- N14.tunnel@(629,164).in
+                wire: N14.tunnel@(103,63).in -- N15.tunnel@(103,85).out
+                wire: N14.tunnel@(52,235).in -- N15.tunnel@(75,235).out
+                wire: N14.tunnel@(52,177).in -- N15.tunnel@(75,177).out
+            wire: N14.tunnel@(552,395).out -- N13.tunnel@(552,418).in
+            wire: N14.tunnel@(449,395).out -- N13.tunnel@(449,418).in
+            wire: N14.tunnel@(629,164).out -- N13.tunnel@(653,164).in
+            wire: N13.tunnel@(103,41).in -- N14.tunnel@(103,63).out
+            wire: N13.tunnel@(23,235).in -- N14.tunnel@(52,235).out
+            wire: N13.tunnel@(23,257).in -- N14.selector
+            wire: N13.i -- N14.tunnel@(52,177).out
+        wire: N13.tunnel@(552,418).out -- N3.tunnel@(552,444).in
+        wire: N13.tunnel@(449,418).out -- N3.tunnel@(449,444).in
+        wire: N13.tunnel@(653,164).out -- N3.tunnel@(676,163).in
+        wire: N3.tunnel@(103,8).in -- N13.tunnel@(103,41).out
+        wire: N3.tunnel@(-12,235).in -- N13.tunnel@(23,235).out
+        wire: N3.tunnel@(-12,257).in -- N13.tunnel@(23,257).out
+  N4    FPterm     'Channels per digital card (combine ports if desired)'  [1 term]
+  N5    FPterm     'Digital error?'  [1 term]
+  N6    FPterm     'DIO Values'  [1 term]
+  N7    FPterm     'Analog (0) or digital (1)'  [1 term]
+    wire: N3.tunnel@(552,444).out -- N1.0
+    wire: N4.0 -- N3.tunnel@(103,8).out
+    wire: N3.tunnel@(449,444).out -- N2.0
+    wire: N3.tunnel@(676,163).out -- N5.0
+    wire: N6.0 -- N3.tunnel@(-12,235).out
+    wire: N7.0 -- N3.tunnel@(-12,257).out

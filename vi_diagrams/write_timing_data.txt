@@ -1,0 +1,107 @@
+VI: write_timing_data.vi
+  # "0=continuous"
+  # "If you use 0 here instead of setting "Pattern generation Loop enable," I believe the data will be resent over the bus each time."
+  N1    subVI      'DIO Start.vi' @(584,289)  [16 term]
+  N2    subVI      'DIO Clear.vi' @(615,449)  [8 term]
+  N3    FPterm     'update progress'  [1 term]
+  N4    subVI      'Digital Buffer Write.vi' @(661,288)  [12 term]
+  N5    subVI      'Digital Mode Config.vi' @(304,289)  [12 term]
+  N6    Case        @(310,448)  [5 term]
+    frame 0:
+      N39   subVI      'DIO Wait.vi' @(414,511)  [16 term]
+      N40   const      enum/ring 'direction'  [1 term]
+        wire: N39.4 -- N6.tunnel@(492,485).in
+        wire: N39.15 -- N6.tunnel@(492,547).in
+        wire: N6.tunnel@(328,448).in -- N39.11
+        wire: N6.tunnel@(362,448).in -- N39.0
+        wire: N40.0 -- N39.5
+    frame 1:
+        wire: N6.tunnel@(362,448).in -- N6.tunnel@(492,485).in
+        wire: N6.tunnel@(328,448).in -- N6.tunnel@(492,547).in
+  N7    Case        @(75,453)  [2 term]
+    frame 0:
+      # "Set loop enable to On to loop without sending the data over the bus each time."
+      N41   const      enum/ring 'value in'  [1 term]
+        wire: N41.0 -- N7.tunnel@(110,453).in
+    frame 1:
+      # "Set loop enable to Off to loop in software."
+      N42   const      enum/ring 'value in'  [1 term]
+        wire: N42.0 -- N7.tunnel@(110,453).in
+  N8    FPterm     'Buffer'  [1 term]
+  N9    Case        @(58,63)  [1 term]
+    frame 0:
+    frame 1:
+      N43   prim       'One Button Dialog' @(331,85)  [3 term]
+      N44   const      string 'error source (" ")'  [1 term]
+        wire: N44.0 -- N43.2
+  N10   prim       'Not Equal To 0?' @(21,91)  [2 term]
+  N11   prim       'Quotient & Remainder' @(164,161)  [4 term]
+  N12   subVI      'DIO Parameter.vi' @(226,288)  [20 term]
+  N13   FPterm     'taskID out'  [1 term]
+  N14   FPterm     'timing error?'  [1 term]
+  N15   subVI      'Simple Error Handler.vi' @(533,524)  [10 term]
+  N16   FPterm     'timing error'  [1 term]
+  N17   FPterm     'Target 
+Resolution (us):'  [1 term]
+  N18   FPterm     'Times Out'  [1 term]
+  N19   FPterm     'Scans'  [1 term]
+  N20   FPterm     'Device number for timing card'  [1 term]
+  N21   prim       'Multiply' @(339,383)  [3 term]
+  N22   prim       'Reciprocal' @(411,380)  [2 term]
+  N23   subVI      'DIO Write.vi' @(373,289)  [16 term]
+  N24   subVI      'DIO Config.vi' @(148,288)  [16 term]
+  N25   prim       'Array Size' @(110,161)  [2 term]
+  N26   subVI      'Digital Trigger Config.vi' @(458,289)  [12 term]
+  N27   const      enum/ring 'handshake source'  [1 term]
+  N28   const      enum/ring 'mode (0: no change)'  [1 term]
+  N29   const      enum/ring 'trigger type (0: no change)'  [1 term]
+  N30   const      enum/ring 'operation'  [1 term]
+  N31   const      enum/ring 'parameter name'  [1 term]
+  N32   const      numeric  [1 term]
+  N33   const      enum/ring  [1 term]
+  N34   const      array 'Array Constant'  [1 term]
+  N35   const      numeric  [1 term]
+  N36   const      numeric 'number of scans/updates to acquire or generate'  [1 term]
+  N37   const      enum/ring 'signal mode'  [1 term]
+  N38   const      enum/ring 'request polarity'  [1 term]
+    wire: N4.1 -- N3.0
+    wire: N4.0 -- N6.tunnel@(328,448).out
+    wire: N1.15 -- N4.8
+    wire: N4.3 -- N6.tunnel@(362,448).out
+    wire: N1.4 -- N4.11
+    wire: N38.0 -- N5.1
+    wire: N37.0 -- N5.10
+    wire: N5.0 -- N23.11
+    wire: N12.19 -- N5.8
+    wire: N5.3 -- N23.0
+    wire: N12.14 -- N5.11
+    wire: N6.tunnel@(492,485).out -- N13.0 -- N2.4
+    wire: N6.tunnel@(492,547).out -- N15.9
+    wire: N8.0 -- N7.selector -- N6.selector
+    wire: N7.tunnel@(110,453).out -- N12.8
+    wire: N11.0 -- N24.1 -- N19.0 -- N1.5
+    wire: N10.0 -- N9.selector
+    wire: N11.1 -- N10.1
+    wire: N31.0 -- N12.3
+    wire: N30.0 -- N12.2
+    wire: N15.0 -- N14.0
+    wire: N15.6 -- N16.0
+    wire: N34.0 -- N24.7
+    wire: N33.0 -- N24.9
+    wire: N17.0 -- N21.2
+    wire: N35.0 -- N21.1
+    wire: N21.0 -- N22.1
+    wire: N25.0 -- N11.3
+    wire: N32.0 -- N11.2
+    wire: N23.4 -- N26.11
+    wire: N23.15 -- N26.8
+    wire: N18.0 -- N23.5 -- N25.1
+    wire: N24.4 -- N12.0
+    wire: N24.15 -- N12.5
+    wire: N26.0 -- N1.11
+    wire: N26.3 -- N1.0
+    wire: N22.0 -- N1.9
+    wire: N28.0 -- N26.9
+    wire: N29.0 -- N26.10
+    wire: N20.0 -- N24.0
+    wire: N27.0 -- N1.7

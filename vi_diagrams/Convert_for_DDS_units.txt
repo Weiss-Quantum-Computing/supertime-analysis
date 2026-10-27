@@ -1,0 +1,57 @@
+VI: Convert_for_DDS_units.vi
+  # "Convert using orginal values each time..."
+  # "...but keep track of changes for repeats."
+  N1    ForLoop     @(203,84)  [6 term]
+    frame 0:
+      # "Unconverted data should be passed to downstream conversions"
+      N5    prim       'Less Than 0?' @(281,531)  [2 term]
+      N6    node6c      @(405,307)  [4 term]
+      N7    prim       'Search 1D Array' @(251,531)  [4 term]
+      N8    nodeb9      @(873,404)  [4 term]
+      N9    (Un)BundleByName?  @(805,309)  [3 term]
+      N10   Case        @(455,177)  [6 term]
+        frame 0:
+          N14   prim       'Close LV Object Reference' @(651,292)  [3 term]
+          N15   subVI      'Simple Error Handler.vi' @(721,338)  [10 term]
+          N16   FPterm     'error out'  [1 term]
+          N17   FPterm     'type specifier VI Refnum (for type only)'  [1 term]
+          N18   prim       'Open VI Reference' @(475,261)  [8 term]
+          N19   nodeae      @(584,245)  [9 term]
+            wire: N19.2 -- N10.tunnel@(765,280).in
+            wire: N10.tunnel@(455,386).in -- N19.1
+            wire: N10.tunnel@(455,363).in -- N19.0
+            wire: N18.1 -- N19.0
+            wire: N14.0 -- N15.9 -- N16.0
+            wire: N19.1 -- N14.2
+            wire: N19.3 -- N14.1
+            wire: N18.0 -- N19.2
+            wire: N17.0 -- N18.3
+            wire: N10.tunnel@(455,269).in -- N18.6
+        frame 1:
+            wire: N10.tunnel@(455,363).in -- N10.tunnel@(765,280).in
+      N11   prim       'Empty String/Path?' @(370,312)  [2 term]
+      N12   prim       'Not A Number/Path/Refnum?' @(370,285)  [2 term]
+      N13   (Un)BundleByName?  @(235,292)  [5 term]
+        wire: N6.0 -- N10.selector
+        wire: N5.0 -- N6.3
+        wire: N7.0 -- N5.1
+        wire: N1.tunnel@(203,585).in -- N7.3
+        wire: N13.4 -- N7.2
+        wire: N13.1 -- N10.tunnel@(455,219).out
+        wire: N9.0 -- N8.2
+        wire: N10.tunnel@(765,280).out -- N9.2
+        wire: N13.3 -- N10.tunnel@(455,363).out
+        wire: N11.0 -- N6.2
+        wire: N12.0 -- N6.1
+        wire: N13.2 -- N12.1 -- N11.1 -- N10.tunnel@(455,269).out
+        wire: N1.tunnel@(203,386).in -- N10.tunnel@(455,386).out
+        wire: N8.1 -- N1.shiftreg@(936,406).in
+        wire: N1.i -- N8.3
+        wire: N1.shiftreg@(203,406).in -- N8.0
+        wire: N1.tunnel@(203,318).in -- N9.1 -- N13.0
+  N2    subVI      'find dds boards.vi'  params: 0=Array, 1=Channel Array @(148,573)  [2 term]
+  N3    FPterm     'Channel out'  [1 term]
+  N4    FPterm     'Channel array'  [1 term]
+    wire: N4.0 -- N1.shiftreg@(203,406).out -- N1.tunnel@(203,318).out -- N1.tunnel@(203,386).out -- N2.Channel Array
+    wire: N2.Array -- N1.tunnel@(203,585).out
+    wire: N1.shiftreg@(936,406).out -- N3.0

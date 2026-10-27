@@ -1,0 +1,78 @@
+VI: Z_Lattice_Main.vi
+  # "Interpolate between / power and voltage."
+  N1    subVI      'Interpolate.vi'  params: 0=Start less than Stop, 1=Error, 2=Output Array, 3=Output Calibration, 4=Input Calibration, 5=Input Array @(513,338)  [6 term]
+  N2    FPterm     'Powers'  [1 term]
+  N3    FPterm     'Time const (usec)'  [1 term]
+  N4    FPterm     'Z Lattice Power (mW)'  [1 term]
+  N5    FPterm     'Z AO Control Voltages (V)'  [1 term]
+  N6    FPterm     'Slop (mW)'  [1 term]
+  N7    FPterm     '0=None
+1=Start/Stop intensity
+     below min intensity
+     (okay to ignore)
+2=Interpolation error'  [1 term]
+  N8    prim       'Less?' @(-48,345)  [3 term]
+  N9    Case        @(0,313)  [4 term]
+    frame 0:
+      # "Stop above min / power.  OK."
+        wire: N9.tunnel@(0,336).in -- N9.tunnel@(116,336).in
+    frame 1:
+      # "Stop below min / power. Use min."
+        wire: N9.tunnel@(0,377).in -- N9.tunnel@(116,336).in
+  N10   prim       'Less?' @(-47,245)  [3 term]
+  N11   FPterm     'Start Power (mW)'  [1 term]
+  N12   Case        @(1,213)  [4 term]
+    frame 0:
+      # "Start above min / power.  OK."
+        wire: N12.tunnel@(1,236).in -- N12.tunnel@(117,258).in
+    frame 1:
+      # "Start below min / power. Use min."
+        wire: N12.tunnel@(1,277).in -- N12.tunnel@(117,258).in
+  N13   node34      @(580,450)  [4 term]
+  N14   FPterm     'Time (usec)'  [1 term]
+  N15   FPterm     'Min. Power (mW)'  [1 term]
+  N16   prim       'Equal?' @(143,289)  [3 term]
+  N17   Case        @(174,182)  [8 term]
+    frame 0:
+      # "Start and stop powers  / unequal.  Calculate P(t)."
+      N21   subVI      'Lattice Power Calculator rev3.vi'  params: 0=Start Power (mW), 1=Psymmetric, 2=Stop Power (mW), 3=Time constant (usec), 4=Slop (mW), 5=Timestep interval (usec), 6=Power Array, 7=Time values, 8=Start less than Stop? @(265,363)  [9 term]
+      N22   FPterm     'Psym'  [1 term]
+        wire: N22.0 -- N21.Psymmetric
+        wire: N17.tunnel@(174,530).in -- N21.Slop (mW)
+        wire: N17.tunnel@(174,495).in -- N21.Timestep interval (usec)
+        wire: N17.tunnel@(174,458).in -- N21.Time constant (usec)
+        wire: N17.tunnel@(174,336).in -- N21.Stop Power (mW)
+        wire: N17.tunnel@(174,258).in -- N21.Start Power (mW)
+        wire: N21.Time values -- N17.tunnel@(374,451).in
+        wire: N21.Power Array -- N17.tunnel@(374,340).in
+    frame 1:
+      # "Start and stop powers are  / equal, so curve is trivial and  / duration is one timestep."
+      N23   IndexArray?  @(277,442)  [3 term]
+      N24   IndexArray?  @(281,331)  [3 term]
+      N25   const      numeric  [1 term]
+        wire: N23.1 -- N17.tunnel@(374,451).in
+        wire: N17.tunnel@(174,495).in -- N23.0
+        wire: N24.1 -- N17.tunnel@(374,340).in
+        wire: N25.0 -- N24.2 -- N23.2
+        wire: N17.tunnel@(174,336).in -- N24.0
+  N18   FPterm     'Timestep (usec)'  [1 term]
+  N19   FPterm     'Stop Power (mW)'  [1 term]
+  N20   FPterm     'Voltages'  [1 term]
+    wire: N17.tunnel@(374,340).out -- N1.Input Array -- N2.0
+    wire: N17.tunnel@(374,451).out -- N13.2
+    wire: N3.0 -- N17.tunnel@(174,458).out
+    wire: N4.0 -- N1.Input Calibration
+    wire: N5.0 -- N1.Output Calibration
+    wire: N1.Error -- N7.0
+    wire: N6.0 -- N17.tunnel@(174,530).out
+    wire: N13.0 -- N14.0
+    wire: N1.Output Array -- N20.0 -- N13.3
+    wire: N18.0 -- N17.tunnel@(174,495).out
+    wire: N9.tunnel@(116,336).out -- N16.1 -- N17.tunnel@(174,336).out
+    wire: N19.0 -- N9.tunnel@(0,336).out -- N8.2
+    wire: N8.0 -- N9.selector
+    wire: N15.0 -- N10.1 -- N12.tunnel@(1,277).out -- N8.1 -- N9.tunnel@(0,377).out
+    wire: N12.tunnel@(117,258).out -- N16.2 -- N17.tunnel@(174,258).out
+    wire: N11.0 -- N10.2 -- N12.tunnel@(1,236).out
+    wire: N10.0 -- N12.selector
+    wire: N16.0 -- N17.selector

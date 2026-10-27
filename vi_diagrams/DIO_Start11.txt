@@ -1,0 +1,29 @@
+VI: DIO_Start11.vi
+  N1    FPterm     'Minimum pretrigger scans to update'  [1 term]
+  N2    (Un)BundleByName?  @(57,171)  [2 term]
+  N3    FPterm     'actual clock freq.'  [1 term]
+  N4    subVI      'Digital Clock Config.vi' @(42,92)  [12 term]
+  N5    subVI      'Digital Buffer Control.vi' @(173,91)  [12 term]
+  N6    FPterm     'number of scans/updates to acquire or generate'  [1 term]
+  N7    FPterm     'handshake source'  [1 term]
+  N8    FPterm     'clock frequency'  [1 term]
+  N9    FPterm     'error out'  [1 term]
+  N10   FPterm     (fp@0xa78)  [1 term]
+  N11   FPterm     'taskID out'  [1 term]
+  N12   FPterm     'taskID in'  [1 term]
+  N13   const      enum/ring 'control code'  [1 term]
+  N14   const      numeric  [1 term]
+    wire: N1.0 -- N5.7
+    wire: N14.0 -- N5.6
+    wire: N2.1 -- N3.0
+    wire: N4.1 -- N2.0
+    wire: N13.0 -- N5.10
+    wire: N5.0 -- N9.0
+    wire: N5.3 -- N11.4
+    wire: N6.0 -- N5.9
+    wire: N4.0 -- N5.8
+    wire: N4.3 -- N5.11
+    wire: N12.0 -- N4.11
+    wire: N10.0 -- N4.8
+    wire: N8.0 -- N4.9
+    wire: N7.0 -- N4.10

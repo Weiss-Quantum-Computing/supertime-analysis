@@ -1,0 +1,8 @@
+VI: temptest.vi
+  N1    prim       'Equal?' @(369,375)  [3 term]
+  N2    FPterm     'Boolean'  [1 term]
+  N3    FPterm     'New edges'  [1 term]
+  N4    FPterm     'Edges to test against'  [1 term]
+    wire: N1.0 -- N2.0
+    wire: N3.0 -- N1.1
+    wire: N4.0 -- N1.2

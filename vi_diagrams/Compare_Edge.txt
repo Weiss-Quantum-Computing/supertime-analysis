@@ -1,0 +1,29 @@
+VI: Compare_Edge.vi
+  # "This subVI takes the edge array and a suggested new element for the array / and checks for identical edge names. / Pops up an error window and then returns a boolean to direct the addition of  / the new element later."
+  N1    Sequence    @(143,132)  [0 term]
+    frame 0:
+      N2    FPterm     'Error?'  [1 term]
+      N3    const      path?  [1 term]
+        wire: N3.0 -- N2.0
+    frame 1:
+      N4    ForLoop     @(273,169)  [2 term]
+        frame 0:
+          N6    Case        @(595,285)  [1 term]
+            frame 0:
+            frame 1:
+              N11   LocalVar   '?' @(723,394)  [1 term]
+              N12   prim       'One Button Dialog' @(679,341)  [3 term]
+              N13   const      string  [1 term]
+                wire: N12.0 -- N11.0
+                wire: N13.0 -- N12.2
+          N7    prim       'Equal?' @(544,331)  [3 term]
+          N8    (Un)BundleByName?  @(406,395)  [2 term]
+          N9    (Un)BundleByName?  @(403,293)  [2 term]
+          N10   FPterm     'Cluster Input'  [1 term]
+            wire: N7.0 -- N6.selector
+            wire: N8.1 -- N7.1
+            wire: N9.1 -- N7.2
+            wire: N10.0 -- N8.0
+            wire: N4.tunnel@(273,298).in -- N9.0
+      N5    FPterm     'Edge Input Array'  [1 term]
+        wire: N5.0 -- N4.tunnel@(273,298).out

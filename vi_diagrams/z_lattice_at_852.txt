@@ -1,0 +1,193 @@
+VI: z_lattice_at_852.vi
+  # "Use either interpolation from a file of conversion data, or a function which fits the measured data."
+  # "The only"
+  N1    prim       'Multiply' @(279,422)  [3 term]
+  N2    prim       'Divide' @(564,443)  [3 term]
+  N3    prim       'Multiply' @(566,521)  [3 term]
+  N4    prim       'Multiply' @(562,478)  [3 term]
+  N5    FPterm     'Smallest waist size'  [1 term]
+  N6    FPterm     'Waist size (um)'  [1 term]
+  N7    FPterm     'Unit symbol'  [1 term]
+  N8    prim       'And Array Elements' @(-135,666)  [2 term]
+  N9    Case        @(-49,642)  [3 term]
+    frame 0:
+        wire: N9.tunnel@(44,642).in -- N9.tunnel@(53,659).in
+    frame 1:
+      N33   const      array  [1 term]
+        wire: N33.0 -- N9.tunnel@(53,659).in
+  N10   FPterm     'Index of upstream channels'  [1 term]
+  N11   prim       'Path To String' @(276,682)  [2 term]
+  N12   prim       'Current VI's Path' @(246,683)  [1 term]
+  N13   Case        @(572,557)  [4 term]
+    frame 0:
+      N34   subVI      'Simple Error Handler.vi' @(618,591)  [10 term]
+        wire: N13.tunnel@(731,557).in -- N34.3
+        wire: N13.tunnel@(572,608).in -- N34.4
+    frame 1:
+      N35   subVI      'Simple Error Handler.vi' @(618,591)  [10 term]
+      N36   const      numeric 'error code (no error:0)'  [1 term]
+      N37   const      enum/ring 'type of dialog (OK msg:1)'  [1 term]
+        wire: N37.0 -- N35.8
+        wire: N36.0 -- N35.3
+        wire: N13.tunnel@(572,630).in -- N35.4
+  N14   FPterm     'spline error'  [1 term]
+  N15   prim       'Empty String/Path?' @(513,571)  [2 term]
+  N16   node3e      @(466,621)  [6 term]
+  N17   prim       'Transpose 2D Array' @(295,557)  [2 term]
+  N18   FPterm     'Names of upstream channels (in order from source)'  [1 term]
+  N19   ForLoop     @(-53,350)  [10 term]
+    frame 0:
+      N38   Case        @(68,358)  [4 term]
+        frame 0:
+            wire: N38.tunnel@(68,406).in -- N38.tunnel@(203,405).in
+        frame 1:
+          N42   node3e      @(143,384)  [4 term]
+          N43   const      cls4e 'string'  [1 term]
+            wire: N43.0 -- N42.3
+            wire: N38.tunnel@(68,375).in -- N42.2
+            wire: N38.tunnel@(68,406).in -- N42.1
+            wire: N42.0 -- N38.tunnel@(203,405).in
+      N39   prim       'Equal To 0?' @(29,380)  [2 term]
+      N40   ForLoop     @(-24,429)  [9 term]
+        frame 0:
+          N44   prim       'Equal?' @(3,459)  [3 term]
+          N45   (Un)BundleByName?  @(-17,561)  [3 term]
+          N46   Case        @(36,435)  [9 term]
+            frame 0:
+                wire: N46.tunnel@(36,515).in -- N46.tunnel@(118,521).in
+                wire: N46.tunnel@(36,452).in -- N46.tunnel@(118,452).in
+                wire: N46.tunnel@(36,497).in -- N46.tunnel@(118,499).in
+            frame 1:
+              N47   node3a      @(69,517)  [3 term]
+              N48   prim       'Increment' @(67,451)  [2 term]
+              N49   node3a      @(66,484)  [3 term]
+                wire: N47.0 -- N46.tunnel@(118,521).in
+                wire: N46.tunnel@(36,515).in -- N47.1
+                wire: N46.tunnel@(36,528).in -- N47.2
+                wire: N48.0 -- N46.tunnel@(118,452).in
+                wire: N46.tunnel@(36,452).in -- N48.1
+                wire: N49.0 -- N46.tunnel@(118,499).in
+                wire: N46.tunnel@(97,541).in -- N49.2
+                wire: N46.tunnel@(36,497).in -- N49.1
+            wire: N46.tunnel@(118,521).out -- N40.shiftreg@(131,518).in
+            wire: N40.shiftreg@(-24,518).in -- N46.tunnel@(36,515).out
+            wire: N40.i -- N46.tunnel@(36,528).out
+            wire: N46.tunnel@(118,452).out -- N40.shiftreg@(131,450).in
+            wire: N40.shiftreg@(-24,450).in -- N46.tunnel@(36,452).out
+            wire: N46.tunnel@(118,499).out -- N40.shiftreg@(131,496).in
+            wire: N40.shiftreg@(-24,496).in -- N46.tunnel@(36,497).out
+            wire: N45.2 -- N46.tunnel@(97,541).out
+            wire: N44.0 -- N46.selector
+            wire: N45.1 -- N44.1
+            wire: N40.tunnel@(-2,429).in -- N44.2
+            wire: N40.tunnel@(-24,572).in -- N45.0
+      N41   const      numeric  [1 term]
+        wire: N39.0 -- N38.selector -- N19.tunnel@(57,350).in
+        wire: N19.shiftreg@(-53,519).in -- N40.shiftreg@(-24,518).out
+        wire: N40.shiftreg@(131,518).out -- N19.shiftreg@(211,519).in
+        wire: N19.shiftreg@(-53,405).in -- N38.tunnel@(68,406).out
+        wire: N38.tunnel@(203,405).out -- N19.shiftreg@(211,405).in
+        wire: N19.tunnel@(-53,382).in -- N40.tunnel@(-2,429).out -- N38.tunnel@(68,375).out
+        wire: N40.shiftreg@(131,450).out -- N39.1
+        wire: N41.0 -- N40.shiftreg@(-24,450).out
+        wire: N19.shiftreg@(-53,495).in -- N40.shiftreg@(-24,496).out
+        wire: N40.shiftreg@(131,496).out -- N19.shiftreg@(211,495).in
+        wire: N19.tunnel@(-53,572).in -- N40.tunnel@(-24,572).out
+  N20   FPterm     'Channel array'  [1 term]
+  N21   ForLoop     @(64,173)  [4 term]
+    frame 0:
+      # "The constant 1.0 means your unit is a fraction of 1"
+      N50   prim       'Divide' @(209,185)  [3 term]
+      N51   prim       'Subtract' @(171,216)  [3 term]
+      N52   const      numeric  [1 term]
+        wire: N52.0 -- N51.2
+        wire: N50.0 -- N21.shiftreg@(255,195).in
+        wire: N21.shiftreg@(64,195).in -- N50.2
+        wire: N51.0 -- N50.1
+        wire: N21.tunnel@(64,235).in -- N51.1
+  N22   Case        @(318,137)  [4 term]
+    frame 0:
+      N53   ForLoop     @(446,300)  [6 term]
+        frame 0:
+          N63   subVI      'Spline Interpolation.vi' @(498,327)  [6 term]
+            wire: N53.tunnel@(538,300).in -- N63.3
+            wire: N53.tunnel@(484,300).in -- N63.5
+            wire: N53.tunnel@(470,300).in -- N63.4
+            wire: N63.1 -- N53.tunnel@(557,331).in
+            wire: N53.tunnel@(446,349).in -- N63.2
+      N54   FPterm     'Path to conversion spreadsheet'  [1 term]
+      N55   prim       'Not A Number/Path/Refnum?' @(369,167)  [2 term]
+      N56   Case        @(405,180)  [3 term]
+        frame 0:
+            wire: N56.tunnel@(405,199).in -- N56.tunnel@(422,207).in
+        frame 1:
+          N64   const      bool 'file path (dialog if empty)'  [1 term]
+            wire: N64.0 -- N56.tunnel@(422,207).in
+      N57   IndexArray?  @(431,224)  [7 term]
+      N58   subVI      'Spline Interpolant.vi' @(503,225)  [6 term]
+      N59   subVI      'Read From Spreadsheet File.vi' @(369,229)  [12 term]
+      N60   const      numeric 'number of rows (all:-1)'  [1 term]
+      N61   const      numeric 'disabled index (col)'  [1 term]
+      N62   const      numeric 'index (col)'  [1 term]
+        wire: N58.0 -- N22.tunnel@(629,245).in
+        wire: N58.1 -- N53.tunnel@(538,300).out
+        wire: N57.1 -- N58.5 -- N53.tunnel@(484,300).out
+        wire: N57.4 -- N58.4 -- N53.tunnel@(470,300).out
+        wire: N53.tunnel@(557,331).out -- N22.tunnel@(629,331).in
+        wire: N22.tunnel@(318,270).in -- N53.tunnel@(446,349).out
+        wire: N56.tunnel@(422,207).out -- N59.11
+        wire: N55.0 -- N56.selector
+        wire: N54.0 -- N55.1 -- N56.tunnel@(405,199).out
+        wire: N62.0 -- N57.6
+        wire: N61.0 -- N57.3
+        wire: N59.3 -- N57.0
+        wire: N60.0 -- N59.10
+    frame 1:
+      # "Use some external progam to fit the data, then enter the function here along with all the proper constants."
+      N65   ForLoop     @(360,186)  [3 term]
+        frame 0:
+          N66   node4a      @(398,215)  [5 term]
+            wire: N66.1 -- N65.tunnel@(594,266).in
+            wire: N65.tunnel@(360,270).in -- N66.0
+        wire: N65.tunnel@(594,266).out -- N22.tunnel@(629,331).in
+        wire: N22.tunnel@(318,270).in -- N65.tunnel@(360,270).out
+  N23   FPterm     'Upstream channels affecting this conversion (in order from source)'  [1 term]
+  N24   FPterm     'Edge Value (Anlg) out'  [1 term]
+  N25   FPterm     'Edge Value (Anlg)'  [1 term]
+  N26   const      enum/ring 'Enum'  [1 term]
+  N27   const      array  [1 term]
+  N28   const      cls4e  [1 term]
+  N29   const      string 'string'  [1 term]
+  N30   const      string 'string'  [1 term]
+  N31   const      string 'string'  [1 term]
+  N32   const      array  [1 term]
+    wire: N1.0 -- N22.tunnel@(318,270).out
+    wire: N21.shiftreg@(255,195).out -- N1.2
+    wire: N22.tunnel@(629,331).out -- N24.0
+    wire: N2.0 -- N1.1
+    wire: N3.0 -- N2.1
+    wire: N4.0 -- N2.2
+    wire: N6.0 -- N4.1 -- N4.2
+    wire: N5.0 -- N3.1 -- N3.2
+    wire: N25.0 -- N21.shiftreg@(64,195).out
+    wire: N19.shiftreg@(211,519).out -- N9.tunnel@(44,642).out
+    wire: N9.tunnel@(53,659).out -- N10.0
+    wire: N8.0 -- N9.selector
+    wire: N19.tunnel@(57,350).out -- N8.1
+    wire: N32.0 -- N19.shiftreg@(-53,519).out
+    wire: N11.0 -- N13.tunnel@(572,608).out -- N16.4
+    wire: N12.0 -- N11.1
+    wire: N16.0 -- N13.tunnel@(572,630).out
+    wire: N15.0 -- N13.selector
+    wire: N22.tunnel@(629,245).out -- N14.0 -- N13.tunnel@(731,557).out
+    wire: N19.shiftreg@(211,405).out -- N16.2 -- N15.1
+    wire: N31.0 -- N16.5
+    wire: N30.0 -- N16.3
+    wire: N29.0 -- N16.1
+    wire: N28.0 -- N19.shiftreg@(-53,405).out
+    wire: N17.0 -- N23.0
+    wire: N19.shiftreg@(211,495).out -- N21.tunnel@(64,235).out -- N17.1
+    wire: N27.0 -- N19.shiftreg@(-53,495).out
+    wire: N18.0 -- N19.tunnel@(-53,382).out
+    wire: N20.0 -- N19.tunnel@(-53,572).out
+    wire: N26.0 -- N22.selector

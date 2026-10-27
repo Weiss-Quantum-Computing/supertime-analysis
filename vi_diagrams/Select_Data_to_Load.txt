@@ -1,0 +1,68 @@
+VI: Select_Data_to_Load.vi
+  N1    FPterm     'Target 
+Resolution (us):'  [1 term]
+  N2    FPterm     'Canceled?'  [1 term]
+  N3    FPterm     'Variable Ouptut Array'  [1 term]
+  N4    FPterm     'Set Name'  [1 term]
+  N5    FPterm     'Edge Output Array'  [1 term]
+  N6    FPterm     'Channel Array'  [1 term]
+  N7    Sequence    @(101,70)  [7 term]
+    frame 0:
+      N9    LocalVar   '?' @(484,277)  [1 term]
+      N10   LocalVar   '?' @(481,314)  [1 term]
+      N11   const      path?  [1 term]
+        wire: N11.0 -- N9.0 -- N10.0
+    frame 1:
+      N12   WhileLoop   @(206,130)  [2 term]
+        frame 0:
+          N13   PropertyNode 'Available Data Sets:' [4 props] @(421,274)  [5 term]
+          N14   (Un)BundleByName?  @(239,280)  [2 term]
+          N15   prim       'Wait (ms)' @(803,184)  [2 term]
+          N16   prim       'Not Or' @(822,605)  [3 term]
+          N17   FPterm     'Cancel'  [1 term]
+          N18   FPterm     'Load'  [1 term]
+          N19   const      numeric 'milliseconds to wait'  [1 term]
+            wire: N14.1 -- N13.4
+            wire: N12.tunnel@(206,284).in -- N14.0
+            wire: N19.0 -- N15.1
+            wire: N18.0 -- N16.2 -- N12.tunnel@(933,543).in
+            wire: N17.0 -- N16.1
+            wire: N16.0 -- N12.cond
+        wire: N12.tunnel@(933,543).out -- N7.seq@(974,540).in -- N7.tunnel@(983,501).in
+        wire: N7.tunnel@(101,284).in -- N12.tunnel@(206,284).out
+    frame 2:
+      N20   Case        @(172,129)  [7 term]
+        frame 0:
+          N21   const      cls4e  [1 term]
+          N22   const      numeric  [1 term]
+            wire: N22.0 -- N20.tunnel@(899,464).in
+            wire: N21.0 -- N20.tunnel@(899,402).in
+        frame 1:
+          N23   FPterm     'Available Data Sets:'  [1 term]
+          N24   IndexArray?  @(407,393)  [3 term]
+          N25   IndexArray?  @(408,233)  [4 term]
+          N26   node36      @(235,269)  [15 term]
+            wire: N26.3 -- N20.tunnel@(899,337).in
+            wire: N26.2 -- N20.tunnel@(899,288).in
+            wire: N26.6 -- N20.tunnel@(899,464).in
+            wire: N23.0 -- N24.2 -- N25.3
+            wire: N24.1 -- N20.tunnel@(899,402).in
+            wire: N25.1 -- N20.tunnel@(899,246).in
+            wire: N26.4 -- N24.0
+            wire: N26.1 -- N25.0
+            wire: N20.tunnel@(172,284).in -- N26.0
+        wire: N20.tunnel@(899,464).out -- N7.tunnel@(983,464).in
+        wire: N20.tunnel@(899,337).out -- N7.tunnel@(983,337).in
+        wire: N20.tunnel@(899,402).out -- N7.tunnel@(983,402).in
+        wire: N20.tunnel@(899,288).out -- N7.tunnel@(983,288).in
+        wire: N20.tunnel@(899,246).out -- N7.tunnel@(983,246).in
+        wire: N7.tunnel@(101,284).in -- N20.tunnel@(172,284).out
+        wire: N7.seq@(974,540).in -- N20.selector
+  N8    FPterm     'Input Cluster'  [1 term]
+    wire: N7.tunnel@(983,464).out -- N1.0
+    wire: N7.tunnel@(983,337).out -- N3.0
+    wire: N7.tunnel@(983,501).out -- N2.0
+    wire: N7.tunnel@(983,402).out -- N4.0
+    wire: N7.tunnel@(983,288).out -- N5.0
+    wire: N7.tunnel@(983,246).out -- N6.0
+    wire: N8.0 -- N7.tunnel@(101,284).out

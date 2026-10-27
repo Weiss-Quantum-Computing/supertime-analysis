@@ -1,0 +1,60 @@
+VI: iterate.vi
+  N1    FPterm     'Channel Array 2'  [1 term]
+  N2    FPterm     'Channel Array'  [1 term]
+  N3    FPterm     'Increment chan. value 2'  [1 term]
+  N4    FPterm     'Increment chan. value'  [1 term]
+  N5    ForLoop     @(325,100)  [4 term]
+    frame 0:
+      N15   ForLoop     @(352,141)  [4 term]
+        frame 0:
+          N16   nodeb9      @(701,253)  [4 term]
+          N17   (Un)BundleByName?  @(580,298)  [3 term]
+          N18   IndexArray?  @(464,254)  [3 term]
+          N19   prim       'Add' @(504,247)  [3 term]
+          N20   nodeb9      @(479,339)  [4 term]
+          N21   (Un)BundleByName?  @(421,294)  [2 term]
+          N22   IndexArray?  @(377,294)  [3 term]
+          N23   IndexArray?  @(381,166)  [7 term]
+          N24   const      numeric 'index'  [1 term]
+          N25   const      numeric 'index'  [1 term]
+          N26   const      numeric 'index'  [1 term]
+            wire: N16.1 -- N15.shiftreg@(746,296).in
+            wire: N23.1 -- N22.2 -- N16.3
+            wire: N17.0 -- N16.2
+            wire: N15.shiftreg@(352,296).in -- N22.0 -- N16.0
+            wire: N20.1 -- N17.2
+            wire: N22.1 -- N21.0 -- N17.1
+            wire: N19.0 -- N20.2
+            wire: N23.3 -- N18.2 -- N20.3
+            wire: N23.5 -- N19.2
+            wire: N18.1 -- N19.1
+            wire: N21.1 -- N18.0 -- N20.0
+            wire: N26.0 -- N23.6
+            wire: N25.0 -- N23.4
+            wire: N24.0 -- N23.2
+            wire: N15.tunnel@(386,141).in -- N23.0
+        wire: N5.tunnel@(386,100).in -- N15.tunnel@(386,141).out
+        wire: N15.shiftreg@(746,296).out -- N5.tunnel@(804,298).in
+        wire: N5.tunnel@(325,298).in -- N15.shiftreg@(352,296).out
+  N6    prim       'Transpose 2D Array' @(116,286)  [2 term]
+  N7    prim       'Transpose 2D Array' @(843,286)  [2 term]
+  N8    IndexArray?  @(59,105)  [4 term]
+  N9    node4a      @(101,83)  [3 term]
+  N10   nodeb9      @(282,88)  [8 term]
+  N11   const      numeric 'disabled index (col)'  [1 term]
+  N12   const      numeric 'index (row)'  [1 term]
+  N13   const      numeric 'disabled index (col)'  [1 term]
+  N14   const      numeric 'index (row)'  [1 term]
+    wire: N5.tunnel@(804,298).out -- N7.1
+    wire: N6.0 -- N5.tunnel@(325,298).out
+    wire: N1.0 -- N6.1
+    wire: N7.0 -- N2.0
+    wire: N14.0 -- N8.2
+    wire: N8.1 -- N9.0
+    wire: N3.0 -- N8.0 -- N10.0
+    wire: N12.0 -- N10.3
+    wire: N11.0 -- N10.6 -- N10.4 -- N10.7
+    wire: N9.1 -- N10.2
+    wire: N9.2 -- N10.5
+    wire: N10.1 -- N5.tunnel@(386,100).out -- N4.0
+    wire: N13.0 -- N8.3

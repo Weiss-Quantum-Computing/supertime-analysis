@@ -1,0 +1,59 @@
+VI: clear_ids_then_stop.vi
+  N1    Sequence    @(-16,15)  [0 term]
+    frame 0:
+      N2    subVI      'clear all task ids.vi'  params: 0=timing error out, 1=timing taskID, 2=Analog out error, 3=analog task ids, 4=Digital out error, 5=digital task ids @(125,118)  [6 term]
+      N3    FPterm     'timing taskID'  [1 term]
+      N4    FPterm     'timing error out'  [1 term]
+      N5    FPterm     'digital task ids'  [1 term]
+      N6    FPterm     'Digital out error'  [1 term]
+      N7    FPterm     'analog task ids'  [1 term]
+      N8    FPterm     'Analog out error'  [1 term]
+        wire: N4.0 -- N2.timing error out
+        wire: N3.0 -- N2.timing taskID
+        wire: N8.0 -- N2.Analog out error
+        wire: N7.0 -- N2.analog task ids -- N1.seq@(43,259).in
+        wire: N6.0 -- N2.Digital out error
+        wire: N5.0 -- N2.digital task ids -- N1.seq@(235,24).in
+    frame 1:
+      N9    ForLoop     @(163,152)  [3 term]
+        frame 0:
+          N13   prim       'Increment' @(196,170)  [2 term]
+          N14   Case        @(233,163)  [3 term]
+            frame 0:
+            frame 1:
+              N15   subVI      'Write to Digital Port .vi' @(274,198)  [8 term]
+              N16   const      numeric 'pattern'  [1 term]
+              N17   const      numeric 'port width (8)'  [1 term]
+                wire: N17.0 -- N15.1
+                wire: N14.tunnel@(260,163).in -- N15.2
+                wire: N16.0 -- N15.3
+                wire: N14.tunnel@(233,182).in -- N15.0
+            wire: N13.0 -- N14.tunnel@(233,182).out
+            wire: N9.tunnel@(228,152).in -- N14.tunnel@(260,163).out
+            wire: N9.i -- N13.1
+            wire: N9.tunnel@(163,209).in -- N14.selector
+      N10   ForLoop     @(20,49)  [3 term]
+        frame 0:
+          N18   prim       'Increment' @(57,46)  [2 term]
+          N19   Case        @(41,73)  [3 term]
+            frame 0:
+            frame 1:
+              N20   nodec5     'AO Update Channels.vi' @(80,93)  [3 term]
+              N21   const      array 'values'  [1 term]
+                wire: N19.tunnel@(129,100).in -- N20.1
+                wire: N21.0 -- N20.0
+                wire: N19.tunnel@(84,73).in -- N20.2
+            wire: N18.0 -- N19.tunnel@(84,73).out
+            wire: N10.tunnel@(141,100).in -- N19.tunnel@(129,100).out
+            wire: N10.i -- N18.1
+            wire: N10.tunnel@(20,81).in -- N19.selector
+      N11   const      string  [1 term]
+      N12   const      string  [1 term]
+        wire: N1.seq@(43,259).in -- N10.tunnel@(20,81).out
+        wire: N1.seq@(235,24).in -- N9.tunnel@(163,209).out
+        wire: N12.0 -- N9.tunnel@(228,152).out
+        wire: N11.0 -- N10.tunnel@(141,100).out
+    frame 2:
+      N22   prim       'Stop' @(137,120)  [1 term]
+      N23   const      path? 'stop? (T)'  [1 term]
+        wire: N23.0 -- N22.0

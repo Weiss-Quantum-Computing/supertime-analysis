@@ -1,0 +1,46 @@
+VI: Local_copy_Lev-Mar_xx.vi
+  N1    prim       'Equal To 0?' @(23,172)  [2 term]
+  N2    FPterm     'chiSqr'  [1 term]
+  N3    Case        @(59,63)  [2 term]
+    frame 0:
+      N5    const      numeric  [1 term]
+        wire: N5.0 -- N3.tunnel@(360,109).in
+    frame 1:
+      N6    prim       'Reciprocal' @(228,234)  [2 term]
+      N7    prim       'Multiply' @(198,234)  [3 term]
+      N8    FPterm     'Standard Deviation'  [1 term]
+      N9    FPterm     'X'  [1 term]
+      N10   FPterm     'Y'  [1 term]
+      N11   ForLoop     @(143,83)  [7 term]
+        frame 0:
+          N14   subVI      'Functions and derivatives for fit.vi'  params: 0=Derivatives, 1=Y, 2=X, 3=Coefficients, 4=Flag @(158,141)  [5 term]
+          N15   prim       'Multiply' @(265,139)  [3 term]
+          N16   prim       'Multiply' @(232,133)  [3 term]
+          N17   prim       'Subtract' @(202,138)  [3 term]
+          N18   prim       'Add' @(301,112)  [3 term]
+          N19   const      enum/ring  [1 term]
+            wire: N11.tunnel@(258,219).in -- N15.1
+            wire: N16.0 -- N15.2
+            wire: N15.0 -- N18.1
+            wire: N19.0 -- N14.Flag
+            wire: N14.Y -- N17.1
+            wire: N11.tunnel@(143,162).in -- N14.X
+            wire: N11.tunnel@(143,150).in -- N14.Coefficients
+            wire: N17.0 -- N16.1 -- N16.2
+            wire: N11.tunnel@(143,196).in -- N17.2
+            wire: N18.0 -- N11.shiftreg@(332,105).in
+            wire: N11.shiftreg@(143,105).in -- N18.2
+      N12   FPterm     'Coefficients'  [1 term]
+      N13   const      numeric  [1 term]
+        wire: N6.0 -- N11.tunnel@(258,219).out
+        wire: N7.0 -- N6.1
+        wire: N8.0 -- N7.2 -- N7.1
+        wire: N9.0 -- N11.tunnel@(143,162).out
+        wire: N13.0 -- N11.shiftreg@(143,105).out
+        wire: N10.0 -- N11.tunnel@(143,196).out
+        wire: N11.shiftreg@(332,105).out -- N3.tunnel@(360,109).in
+        wire: N12.0 -- N11.tunnel@(143,150).out
+  N4    FPterm     'error'  [1 term]
+    wire: N3.tunnel@(360,109).out -- N2.0
+    wire: N1.0 -- N3.selector
+    wire: N4.0 -- N1.1

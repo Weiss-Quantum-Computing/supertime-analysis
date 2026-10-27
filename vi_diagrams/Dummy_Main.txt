@@ -1,0 +1,11 @@
+VI: Dummy_Main.vi
+  N1    IndexArray?  @(181,87)  [3 term]
+  N2    FPterm     'Output Voltages'  [1 term]
+  N3    FPterm     'Timestep (usec)'  [1 term]
+  N4    FPterm     'Stop Value'  [1 term]
+  N5    FPterm     'Start Value'  [1 term]
+  N6    const      numeric  [1 term]
+  N7    const      numeric  [1 term]
+    wire: N7.0 -- N1.0
+    wire: N1.1 -- N2.0
+    wire: N6.0 -- N1.2

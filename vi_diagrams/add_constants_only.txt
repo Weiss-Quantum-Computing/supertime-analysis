@@ -1,0 +1,62 @@
+VI: add_constants_only.vi
+  # "Conversion of Power (or other UD units) to volts.  This is where the conversion of AOM driver voltages to power for a specific AOM is done."
+  N1    ForLoop     @(45,15)  [4 term]
+    frame 0:
+      # "Indexing input sets N but cannot be used in loop."
+      N4    Case        @(217,41)  [5 term]
+        frame 0:
+          N9    ForLoop     @(277,191)  [5 term]
+            frame 0:
+              # "Replace -1s with appropriate constant in digital array."
+              N11   Case        @(328,249)  [4 term]
+                frame 0:
+                    wire: N11.tunnel@(328,308).in -- N11.tunnel@(425,274).in
+                frame 1:
+                    wire: N11.tunnel@(328,274).in -- N11.tunnel@(425,274).in
+              N12   prim       'Less Than 0?' @(292,328)  [2 term]
+                wire: N11.tunnel@(425,274).out -- N9.shiftreg@(476,272).in -- N9.tunnel@(483,308).in
+                wire: N9.shiftreg@(277,272).in -- N11.tunnel@(328,274).out
+                wire: N9.tunnel@(277,311).in -- N11.tunnel@(328,308).out -- N12.1
+                wire: N12.0 -- N11.selector
+          N10   const      numeric  [1 term]
+            wire: N4.tunnel@(217,177).in -- N4.tunnel@(536,139).in
+            wire: N4.tunnel@(217,192).in -- N9.tunnel@(277,311).out
+            wire: N9.tunnel@(483,308).out -- N4.tunnel@(536,308).in
+            wire: N10.0 -- N9.shiftreg@(277,272).out
+        frame 1:
+          N13   ForLoop     @(277,61)  [5 term]
+            frame 0:
+              # "Replace NaNs with appropriate constant in Analog array."
+              N15   prim       'Not A Number/Path/Refnum?' @(325,155)  [2 term]
+              N16   Case        @(359,101)  [4 term]
+                frame 0:
+                    wire: N16.tunnel@(359,147).in -- N16.tunnel@(435,138).in
+                frame 1:
+                    wire: N16.tunnel@(359,117).in -- N16.tunnel@(435,138).in
+                wire: N15.0 -- N16.selector
+                wire: N16.tunnel@(435,138).out -- N13.shiftreg@(476,115).in -- N13.tunnel@(483,139).in
+                wire: N13.tunnel@(277,176).in -- N16.tunnel@(359,147).out -- N15.1
+                wire: N13.shiftreg@(277,115).in -- N16.tunnel@(359,117).out
+          N14   const      numeric  [1 term]
+            wire: N4.tunnel@(217,177).in -- N13.tunnel@(277,176).out
+            wire: N4.tunnel@(217,192).in -- N4.tunnel@(536,308).in
+            wire: N13.tunnel@(483,139).out -- N4.tunnel@(536,139).in
+            wire: N14.0 -- N13.shiftreg@(277,115).out
+      N5    IndexArray?  @(74,239)  [3 term]
+      N6    (Un)BundleByName?  @(584,131)  [4 term]
+      N7    nodeb9      @(612,184)  [4 term]
+      N8    (Un)BundleByName?  @(86,174)  [4 term]
+        wire: N8.1 -- N4.tunnel@(217,177).out
+        wire: N8.3 -- N4.selector
+        wire: N8.2 -- N4.tunnel@(217,192).out
+        wire: N5.1 -- N6.1 -- N8.0
+        wire: N1.shiftreg@(45,294).in -- N7.0 -- N5.0
+        wire: N4.tunnel@(536,139).out -- N6.2
+        wire: N4.tunnel@(536,308).out -- N6.3
+        wire: N6.0 -- N7.2
+        wire: N1.i -- N7.3 -- N5.2
+        wire: N7.1 -- N1.shiftreg@(722,294).in
+  N2    FPterm     'Channel array'  [1 term]
+  N3    FPterm     'Channel out'  [1 term]
+    wire: N2.0 -- N1.tunnel@(45,267).out -- N1.shiftreg@(45,294).out
+    wire: N1.shiftreg@(722,294).out -- N3.0

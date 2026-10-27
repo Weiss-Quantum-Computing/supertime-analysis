@@ -1,0 +1,100 @@
+VI: visualize_times_out_array.vi
+  N1    IndexArray?  @(345,671)  [3 term]
+  N2    prim       'Array Size' @(297,636)  [2 term]
+  N3    node3a      @(834,652)  [3 term]
+  N4    ForLoop     @(416,606)  [5 term]
+    frame 0:
+      N23   prim       'Quotient & Remainder' @(460,666)  [4 term]
+      N24   IndexArray?  @(503,674)  [3 term]
+      N25   node3a      @(495,641)  [3 term]
+      N26   const      numeric 'y'  [1 term]
+        wire: N4.tunnel@(507,709).in -- N24.2
+        wire: N23.1 -- N24.0
+        wire: N26.0 -- N23.2
+        wire: N4.i -- N23.3
+        wire: N25.0 -- N4.shiftreg@(594,637).in
+        wire: N24.1 -- N25.2
+        wire: N4.shiftreg@(416,637).in -- N25.1
+  N5    prim       'Boolean To (0,1)' @(792,560)  [2 term]
+  N6    prim       'Transpose 2D Array' @(656,526)  [2 term]
+  N7    FPterm     'timing word as one long string of on/off'  [1 term]
+  N8    prim       'Multiply' @(728,598)  [3 term]
+  N9    IndexArray?  @(686,624)  [5 term]
+  N10   prim       'Array Size' @(645,618)  [2 term]
+  N11   IndexArray?  @(703,562)  [3 term]
+  N12   FPterm     'Output as it should come from the timing box'  [1 term]
+  N13   FPterm     'times in binary, grouped in 32-bit rows, lsb (channel 0) first'  [1 term]
+  N14   node40      @(119,165)  [5 term]
+  N15   ForLoop     @(292,274)  [9 term]
+    frame 0:
+      N27   node3a      @(473,492)  [3 term]
+      N28   node3a      @(409,479)  [5 term]
+      N29   prim       'Number To Boolean Array' @(350,499)  [2 term]
+      N30   prim       'Number To Boolean Array' @(349,484)  [2 term]
+      N31   prim       'Number To Boolean Array' @(349,472)  [2 term]
+      N32   prim       'Number To Boolean Array' @(348,458)  [2 term]
+      N33   prim       'Reverse String' @(383,408)  [2 term]
+      N34   prim       'Reverse String' @(398,366)  [2 term]
+      N35   prim       'Reverse String' @(380,328)  [2 term]
+      N36   prim       'Reverse String' @(388,296)  [2 term]
+      N37   node3a      @(524,344)  [3 term]
+      N38   node3e      @(444,331)  [5 term]
+      N39   FormatString?  @(349,418)  [6 term]
+      N40   FormatString?  @(350,376)  [6 term]
+      N41   FormatString?  @(348,340)  [6 term]
+      N42   FormatString?  @(347,306)  [6 term]
+      N43   const      string 'format string'  [1 term]
+        wire: N15.shiftreg@(292,534).in -- N27.1
+        wire: N28.0 -- N27.2
+        wire: N27.0 -- N15.shiftreg@(621,534).in
+        wire: N29.0 -- N28.4
+        wire: N30.0 -- N28.3
+        wire: N31.0 -- N28.2
+        wire: N32.0 -- N28.1
+        wire: N15.tunnel@(292,437).in -- N39.5 -- N29.1
+        wire: N15.tunnel@(292,387).in -- N40.5 -- N30.1
+        wire: N15.tunnel@(292,342).in -- N41.5 -- N31.1
+        wire: N15.tunnel@(292,309).in -- N42.5 -- N32.1
+        wire: N33.0 -- N38.4
+        wire: N34.0 -- N38.3
+        wire: N35.0 -- N38.2
+        wire: N36.0 -- N38.1
+        wire: N38.0 -- N37.2
+        wire: N15.shiftreg@(292,366).in -- N37.1
+        wire: N37.0 -- N15.shiftreg@(621,366).in
+        wire: N39.2 -- N33.1
+        wire: N40.2 -- N34.1
+        wire: N41.2 -- N35.1
+        wire: N42.2 -- N36.1
+        wire: N43.0 -- N42.0 -- N41.0 -- N40.0 -- N39.0
+  N16   FPterm     'times out array'  [1 term]
+  N17   const      array  [1 term]
+  N18   const      array  [1 term]
+  N19   const      numeric 'index'  [1 term]
+  N20   const      numeric 'index'  [1 term]
+  N21   const      array  [1 term]
+  N22   const      numeric 'index'  [1 term]
+    wire: N1.1 -- N4.tunnel@(507,709).out
+    wire: N22.0 -- N1.2
+    wire: N2.0 -- N1.0
+    wire: N15.shiftreg@(621,534).out -- N6.1 -- N2.1
+    wire: N6.0 -- N10.1 -- N11.0 -- N4.tunnel@(601,614).out
+    wire: N3.0 -- N12.0
+    wire: N4.shiftreg@(594,637).out -- N3.2
+    wire: N21.0 -- N4.shiftreg@(416,637).out
+    wire: N11.1 -- N7.0 -- N5.1
+    wire: N5.0 -- N3.1
+    wire: N9.3 -- N8.1
+    wire: N9.1 -- N8.2
+    wire: N20.0 -- N9.4
+    wire: N8.0 -- N11.2
+    wire: N19.0 -- N9.2
+    wire: N10.0 -- N9.0
+    wire: N18.0 -- N15.shiftreg@(292,534).out
+    wire: N15.shiftreg@(621,366).out -- N13.0
+    wire: N17.0 -- N15.shiftreg@(292,366).out
+    wire: N14.4 -- N15.tunnel@(292,437).out
+    wire: N14.3 -- N15.tunnel@(292,387).out
+    wire: N14.2 -- N15.tunnel@(292,342).out
+    wire: N14.1 -- N15.tunnel@(292,309).out
+    wire: N16.0 -- N14.0

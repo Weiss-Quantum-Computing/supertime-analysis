@@ -1,0 +1,82 @@
+VI: compare_channel_array1D_except_NaNs.vi
+  N1    ForLoop     @(267,203)  [4 term]
+    frame 0:
+      N6    prim       'Not Equal?' @(489,498)  [3 term]
+      N7    prim       'Or' @(758,334)  [3 term]
+      N8    ForLoop     @(583,210)  [4 term]
+        frame 0:
+          N20   prim       'Or' @(616,268)  [3 term]
+          N21   Case        @(649,221)  [6 term]
+            frame 0:
+              N24   prim       'Not Equal?' @(689,237)  [3 term]
+                wire: N24.0 -- N21.tunnel@(734,249).in
+                wire: N21.tunnel@(691,287).in -- N24.1
+                wire: N21.tunnel@(672,287).in -- N24.2
+            frame 1:
+              N25   prim       'Not' @(703,237)  [2 term]
+              N26   prim       'And' @(673,237)  [3 term]
+                wire: N25.0 -- N21.tunnel@(734,249).in
+                wire: N26.0 -- N25.1
+                wire: N21.tunnel@(649,235).in -- N26.2
+                wire: N21.tunnel@(649,258).in -- N26.1
+          N22   prim       'Not A Number/Path/Refnum?' @(596,246)  [2 term]
+          N23   prim       'Not A Number/Path/Refnum?' @(594,223)  [2 term]
+            wire: N21.tunnel@(734,249).out -- N8.tunnel@(750,249).in
+            wire: N8.tunnel@(583,235).in -- N23.1 -- N21.tunnel@(672,287).out
+            wire: N23.0 -- N21.tunnel@(649,235).out -- N20.2
+            wire: N22.0 -- N21.tunnel@(649,258).out -- N20.1
+            wire: N20.0 -- N21.selector
+            wire: N8.tunnel@(583,255).in -- N22.1 -- N21.tunnel@(691,287).out
+      N9    prim       'Not Equal?' @(489,455)  [3 term]
+      N10   prim       'Not Equal?' @(489,419)  [3 term]
+      N11   prim       'Not Equal?' @(489,384)  [3 term]
+      N12   prim       'Not Equal?' @(489,348)  [3 term]
+      N13   prim       'Not Equal?' @(489,313)  [3 term]
+      N14   prim       'Not Equal?' @(489,277)  [3 term]
+      N15   prim       'Not Equal?' @(489,242)  [3 term]
+      N16   prim       'Not Equal?' @(489,207)  [3 term]
+      N17   node6c      @(539,318)  [10 term]
+      N18   (Un)BundleByName?  @(297,373)  [11 term]
+      N19   (Un)BundleByName?  @(296,211)  [11 term]
+        wire: N6.0 -- N17.9
+        wire: N18.10 -- N6.1
+        wire: N19.10 -- N6.2
+        wire: N8.tunnel@(750,249).out -- N7.2
+        wire: N7.0 -- N1.tunnel@(793,346).in
+        wire: N18.5 -- N8.tunnel@(583,255).out
+        wire: N19.5 -- N8.tunnel@(583,235).out
+        wire: N17.0 -- N7.1
+        wire: N9.0 -- N17.8
+        wire: N10.0 -- N17.7
+        wire: N11.0 -- N17.6
+        wire: N12.0 -- N17.5
+        wire: N13.0 -- N17.4
+        wire: N14.0 -- N17.3
+        wire: N15.0 -- N17.2
+        wire: N16.0 -- N17.1
+        wire: N18.9 -- N9.1
+        wire: N18.8 -- N10.1
+        wire: N18.7 -- N11.1
+        wire: N18.6 -- N12.1
+        wire: N18.4 -- N13.1
+        wire: N18.3 -- N14.1
+        wire: N18.2 -- N15.1
+        wire: N18.1 -- N16.1
+        wire: N19.9 -- N9.2
+        wire: N19.8 -- N10.2
+        wire: N19.7 -- N11.2
+        wire: N19.6 -- N12.2
+        wire: N19.4 -- N13.2
+        wire: N19.3 -- N14.2
+        wire: N19.2 -- N15.2
+        wire: N19.1 -- N16.2
+        wire: N1.tunnel@(267,435).in -- N18.0
+        wire: N1.tunnel@(267,275).in -- N19.0
+  N2    prim       'Or Array Elements' @(851,335)  [2 term]
+  N3    FPterm     'Channel Array'  [1 term]
+  N4    FPterm     'Not Equal?'  [1 term]
+  N5    FPterm     'Channel Array'  [1 term]
+    wire: N3.0 -- N1.tunnel@(267,435).out
+    wire: N5.0 -- N1.tunnel@(267,275).out
+    wire: N2.0 -- N4.0
+    wire: N1.tunnel@(793,346).out -- N2.1

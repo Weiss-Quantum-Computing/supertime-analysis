@@ -1,0 +1,14 @@
+VI: set_calibration_to_user.vi
+  N1    FPterm     'error out'  [1 term]
+  N2    FPterm     'channels (0)'  [1 term]
+  N3    FPterm     'device (1)'  [1 term]
+  N4    subVI      'AO Config.vi' @(316,290)  [16 term]
+  N5    subVI      'E-Series Calibrate.vi' @(409,289)  [12 term]
+  N6    const      enum/ring 'operation'  [1 term]
+  N7    const      enum/ring 'calibration constants'  [1 term]
+    wire: N5.0 -- N1.0
+    wire: N7.0 -- N5.9
+    wire: N6.0 -- N5.10
+    wire: N4.4 -- N5.11
+    wire: N2.0 -- N4.5
+    wire: N3.0 -- N4.0

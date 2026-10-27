@@ -1,0 +1,1 @@
+VI: type_specifier_for_external_vi.ctl

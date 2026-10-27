@@ -1,0 +1,94 @@
+VI: zeroallchannels.vi
+  N1    Sequence    @(198,52)  [3 term]
+    frame 0:
+      N5    ForLoop     @(237,96)  [3 term]
+        frame 0:
+          N6    ForLoop     @(263,119)  [6 term]
+            frame 0:
+              N9    Case        @(402,131)  [7 term]
+                frame 0:
+                    wire: N9.tunnel@(402,465).in -- N9.tunnel@(705,465).in
+                frame 1:
+                  N12   Case        @(423,169)  [6 term]
+                    frame 0:
+                      N13   nodec5     'AO Update Channel.vi' @(615,274)  [3 term]
+                      N14   FormatString?  @(507,314)  [6 term]
+                      N15   const      string  [1 term]
+                      N16   const      numeric 'value'  [1 term]
+                        wire: N16.0 -- N13.0
+                        wire: N12.tunnel@(617,446).in -- N12.tunnel@(652,446).in
+                        wire: N14.2 -- N13.1
+                        wire: N12.tunnel@(584,446).in -- N13.2
+                        wire: N15.0 -- N14.0
+                        wire: N12.tunnel@(423,241).in -- N14.5
+                    frame 1:
+                      N17   Case        @(454,195)  [5 term]
+                        frame 0:
+                            wire: N17.tunnel@(617,393).in -- N17.tunnel@(652,393).in
+                        frame 1:
+                          # "Keeps from resetting all other lines to zero each time"
+                          N18   prim       'Increment' @(622,348)  [2 term]
+                          N19   subVI      'Write to Digital Line.vi' @(571,241)  [9 term]
+                          N20   const      numeric 'port width (8)'  [1 term]
+                          N21   const      refnum? 'digital channel'  [1 term]
+                          N22   const      path? 'line state'  [1 term]
+                            wire: N22.0 -- N19.4
+                            wire: N21.0 -- N19.2
+                            wire: N18.0 -- N17.tunnel@(652,393).in
+                            wire: N17.tunnel@(617,393).in -- N19.8 -- N18.1
+                            wire: N17.tunnel@(454,241).in -- N19.3
+                            wire: N17.tunnel@(584,393).in -- N19.0
+                            wire: N20.0 -- N19.1
+                        wire: N12.tunnel@(423,387).in -- N17.selector
+                        wire: N17.tunnel@(652,393).out -- N12.tunnel@(652,446).in
+                        wire: N12.tunnel@(617,446).in -- N17.tunnel@(617,393).out
+                        wire: N12.tunnel@(584,446).in -- N17.tunnel@(584,393).out
+                        wire: N12.tunnel@(423,241).in -- N17.tunnel@(454,241).out
+                    wire: N9.tunnel@(402,387).in -- N12.tunnel@(423,387).out
+                    wire: N12.tunnel@(652,446).out -- N9.tunnel@(705,465).in
+                    wire: N9.tunnel@(402,465).in -- N12.tunnel@(617,446).out
+                    wire: N9.tunnel@(402,277).in -- N12.selector
+                    wire: N9.tunnel@(584,480).in -- N12.tunnel@(584,446).out
+                    wire: N9.tunnel@(402,241).in -- N12.tunnel@(423,241).out
+              N10   prim       'Equal?' @(285,336)  [3 term]
+              N11   (Un)BundleByName?  @(294,238)  [4 term]
+                wire: N6.tunnel@(263,387).in -- N9.tunnel@(402,387).out
+                wire: N9.tunnel@(705,465).out -- N6.shiftreg@(721,463).in
+                wire: N6.shiftreg@(263,463).in -- N9.tunnel@(402,465).out
+                wire: N6.tunnel@(340,534).in -- N10.1 -- N9.tunnel@(584,480).out
+                wire: N11.2 -- N10.2
+                wire: N11.3 -- N9.tunnel@(402,277).out
+                wire: N11.1 -- N9.tunnel@(402,241).out
+                wire: N10.0 -- N9.selector
+                wire: N6.tunnel@(263,242).in -- N11.0
+          N7    prim       'Increment' @(265,547)  [2 term]
+          N8    const      numeric  [1 term]
+            wire: N5.tunnel@(237,387).in -- N6.tunnel@(263,387).out
+            wire: N8.0 -- N6.shiftreg@(263,463).out
+            wire: N7.0 -- N6.tunnel@(340,534).out
+            wire: N5.i -- N7.1
+            wire: N5.tunnel@(237,242).in -- N6.tunnel@(263,242).out
+        wire: N1.tunnel@(198,387).in -- N5.tunnel@(237,387).out
+        wire: N1.tunnel@(198,89).in -- N5.N
+        wire: N1.tunnel@(198,242).in -- N5.tunnel@(237,242).out
+    frame 1:
+      N23   subVI      'find dds boards.vi'  params: 0=Array, 1=Channel Array @(304,319)  [2 term]
+      N24   ForLoop     @(381,196)  [2 term]
+        frame 0:
+          N25   subVI      'ddscontrol.vi' @(535,342)  [20 term]
+          N26   prim       'Quotient & Remainder' @(391,324)  [4 term]
+          N27   const      numeric 'y'  [1 term]
+          N28   const      cluster 'Operation'  [1 term]
+            wire: N28.0 -- N25.5
+            wire: N26.1 -- N25.1
+            wire: N26.0 -- N25.0
+            wire: N24.tunnel@(381,330).in -- N26.3
+            wire: N27.0 -- N26.2
+        wire: N1.tunnel@(198,242).in -- N23.Channel Array
+        wire: N23.Array -- N24.tunnel@(381,330).out
+  N2    FPterm     'Digital I/O'  [1 term]
+  N3    FPterm     'Number of installed cards'  [1 term]
+  N4    FPterm     'Array'  [1 term]
+    wire: N2.0 -- N1.tunnel@(198,387).out
+    wire: N3.0 -- N1.tunnel@(198,89).out
+    wire: N4.0 -- N1.tunnel@(198,242).out

@@ -1,0 +1,98 @@
+VI: Extract_Data_from_log_v3.2.vi
+  N1    node36      @(849,339)  [14 term]
+  N2    node34      @(940,339)  [16 term]
+  N3    FPterm     'Output cluster'  [1 term]
+  N4    FPterm     'error out'  [1 term]
+  N5    IndexArray?  @(284,440)  [5 term]
+  N6    IndexArray?  @(583,464)  [4 term]
+  N7    PropertyNode 'Edge Name' [4 props] @(559,559)  [5 term]
+  N8    subVI      'Add Value to Edge Names.vi'  params: 0=Item Names, 1=Edge Names, 2=Edit/View Channel, 3=Channel Array @(494,539)  [4 term]
+  N9    subVI      'Get Edge Names.vi'  params: 0=Edge Names, 1=Edge Input Array @(413,539)  [2 term]
+  N10   PropertyNode 'Channel Array' [4 props] @(200,430)  [5 term]
+  N11   (Un)BundleByName?  @(438,442)  [4 term]
+  N12   FPterm     'Save to data file'  [1 term]
+  N13   Case        @(782,492)  [2 term]
+    frame 0:
+    frame 1:
+      N33   subVI      'General Error Handler.vi' @(1016,622)  [16 term]
+      N34   prim       'Close File' @(981,572)  [4 term]
+      N35   prim       'Write File' @(927,572)  [10 term]
+      N36   prim       'New File' @(877,572)  [9 term]
+      N37   prim       'File Dialog' @(816,530)  [9 term]
+      N38   const      enum/ring 'select mode (2)'  [1 term]
+      N39   const      string 'prompt'  [1 term]
+      N40   const      string 'pattern'  [1 term]
+        wire: N40.0 -- N37.5
+        wire: N34.0 -- N33.11
+        wire: N35.0 -- N34.2
+        wire: N35.2 -- N34.3
+        wire: N13.tunnel@(934,677).in -- N35.4
+        wire: N36.0 -- N35.6
+        wire: N36.1 -- N35.9
+        wire: N39.0 -- N37.1
+        wire: N38.0 -- N37.2
+        wire: N37.6 -- N36.8
+  N14   LocalVar   '?' @(744,419)  [1 term]
+  N15   FPterm     'time'  [1 term]
+  N16   FPterm     'date'  [1 term]
+  N17   node36      @(728,365)  [4 term]
+  N18   FPterm     'record number'  [1 term]
+  N19   prim       'Read File' @(656,223)  [12 term]
+  N20   prim       'Strip Path' @(271,130)  [3 term]
+  N21   prim       'Close File' @(725,223)  [4 term]
+  N22   prim       'Get Date/Time String' @(395,289)  [5 term]
+  N23   node34      @(495,317)  [5 term]
+  N24   prim       'Build Path' @(338,136)  [3 term]
+  N25   prim       'Open File' @(437,222)  [7 term]
+  N26   FPterm     'Input Cluster'  [1 term]
+  N27   prim       'Current VI's Path' @(200,126)  [1 term]
+  N28   const      enum/ring 'open mode (0)'  [1 term]
+  N29   const      string 'name or relative path'  [1 term]
+  N30   const      numeric 'index'  [1 term]
+  N31   const      numeric 'index'  [1 term]
+  N32   const      cluster 'Output cluster'  [1 term]
+    wire: N32.0 -- N2.1 -- N13.tunnel@(934,677).out
+    wire: N17.3 -- N14.0 -- N11.0 -- N1.0
+    wire: N1.13 -- N2.14
+    wire: N1.12 -- N2.13
+    wire: N1.11 -- N2.12
+    wire: N1.10 -- N2.11
+    wire: N1.9 -- N2.10
+    wire: N1.8 -- N2.9
+    wire: N1.7 -- N2.8
+    wire: N1.6 -- N2.7
+    wire: N1.5 -- N2.6
+    wire: N1.4 -- N2.5
+    wire: N1.3 -- N2.4
+    wire: N1.2 -- N2.3
+    wire: N1.1 -- N2.2
+    wire: N2.0 -- N3.0
+    wire: N5.3 -- N8.Edit/View Channel
+    wire: N31.0 -- N5.4
+    wire: N5.1 -- N6.2
+    wire: N30.0 -- N5.2
+    wire: N10.4 -- N5.0
+    wire: N6.1 -- N8.Channel Array
+    wire: N8.Item Names -- N7.4
+    wire: N9.Edge Names -- N8.Edge Names
+    wire: N11.1 -- N6.0
+    wire: N11.2 -- N9.Edge Input Array
+    wire: N12.0 -- N13.selector
+    wire: N17.2 -- N15.0
+    wire: N17.1 -- N16.0
+    wire: N19.2 -- N17.0
+    wire: N18.0 -- N19.9
+    wire: N25.5 -- N19.11
+    wire: N25.6 -- N19.8
+    wire: N20.1 -- N24.2
+    wire: N27.0 -- N20.0
+    wire: N23.0 -- N25.4
+    wire: N24.0 -- N25.0
+    wire: N21.0 -- N4.0
+    wire: N19.0 -- N21.2
+    wire: N19.3 -- N21.3
+    wire: N22.0 -- N23.3
+    wire: N22.1 -- N23.2
+    wire: N26.0 -- N23.4
+    wire: N29.0 -- N24.1
+    wire: N28.0 -- N25.1

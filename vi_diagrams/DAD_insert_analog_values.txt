@@ -1,0 +1,61 @@
+VI: DAD_insert_analog_values.vi
+  # "FIXME: unused boolean constant"
+  N1    ForLoop     @(931,92)  [8 term]
+    frame 0:
+      N9    Case        @(1312,104)  [4 term]
+        frame 0:
+            wire: N9.tunnel@(1312,129).in -- N9.tunnel@(1430,156).in
+        frame 1:
+          N20   node34      @(1356,151)  [13 term]
+            wire: N20.0 -- N9.tunnel@(1430,156).in
+            wire: N9.tunnel@(1320,224).in -- N20.6
+            wire: N9.tunnel@(1312,129).in -- N20.1
+      N10   prim       'And' @(1262,222)  [3 term]
+      N11   prim       'Equal?' @(1219,186)  [3 term]
+      N12   prim       'Equal?' @(1219,153)  [3 term]
+      N13   node36      @(1162,158)  [12 term]
+      N14   prim       'And' @(1011,232)  [3 term]
+      N15   prim       'Equal?' @(1003,194)  [3 term]
+      N16   Case        @(1041,101)  [4 term]
+        frame 0:
+            wire: N16.tunnel@(1041,116).in -- N16.tunnel@(1125,162).in
+        frame 1:
+          N21   node34      @(1069,125)  [13 term]
+            wire: N21.0 -- N16.tunnel@(1125,162).in
+            wire: N16.tunnel@(1073,206).in -- N21.6
+            wire: N16.tunnel@(1041,116).in -- N21.1
+      N17   prim       'Equal?' @(977,130)  [3 term]
+      N18   node36      @(964,182)  [12 term]
+      N19   const      path?  [1 term]
+        wire: N1.tunnel@(1203,260).in -- N11.1
+        wire: N1.tunnel@(996,260).in -- N15.1
+        wire: N1.tunnel@(931,160).in -- N17.1 -- N12.1
+        wire: N1.tunnel@(1318,260).in -- N9.tunnel@(1320,224).out
+        wire: N9.tunnel@(1430,156).out -- N1.tunnel@(1471,162).in
+        wire: N16.tunnel@(1125,162).out -- N13.0 -- N9.tunnel@(1312,129).out
+        wire: N10.0 -- N9.selector
+        wire: N11.0 -- N10.1
+        wire: N12.0 -- N10.2
+        wire: N13.3 -- N11.2
+        wire: N13.2 -- N12.2
+        wire: N14.0 -- N16.selector
+        wire: N1.tunnel@(1059,260).in -- N16.tunnel@(1073,206).out
+        wire: N1.tunnel@(931,191).in -- N18.0 -- N16.tunnel@(1041,116).out
+        wire: N17.0 -- N14.1
+        wire: N15.0 -- N14.2
+        wire: N18.3 -- N15.2
+        wire: N18.2 -- N17.2
+  N2    FPterm     '1st D-A-D channel on analog card for digital outputs'  [1 term]
+  N3    FPterm     '2nd D-A-D channel on analog card for digital outputs'  [1 term]
+  N4    FPterm     'Array 4'  [1 term]
+  N5    FPterm     'Array 3'  [1 term]
+  N6    FPterm     'Array 2'  [1 term]
+  N7    FPterm     'Device number for analog card which does digital outputs'  [1 term]
+  N8    FPterm     'Array'  [1 term]
+    wire: N3.0 -- N1.tunnel@(1203,260).out
+    wire: N2.0 -- N1.tunnel@(996,260).out
+    wire: N1.tunnel@(1471,162).out -- N4.0
+    wire: N5.0 -- N1.tunnel@(1059,260).out
+    wire: N6.0 -- N1.tunnel@(1318,260).out
+    wire: N7.0 -- N1.tunnel@(931,160).out
+    wire: N8.0 -- N1.tunnel@(931,191).out

@@ -1,0 +1,50 @@
+VI: put_new_edge_in_channels.vi
+  N1    FPterm     'index of element'  [1 term]
+  N2    FPterm     'Channel Array Output'  [1 term]
+  N3    FPterm     'Channel Array Input'  [1 term]
+  N4    FPterm     'Edge Name'  [1 term]
+  N5    FPterm     'Edge Output Array'  [1 term]
+  N6    ForLoop     @(336,86)  [4 term]
+    frame 0:
+      N9    nodebb      @(599,288)  [4 term]
+      N10   nodebb      @(537,278)  [4 term]
+      N11   (Un)BundleByName?  @(363,157)  [12 term]
+      N12   (Un)BundleByName?  @(639,221)  [7 term]
+      N13   nodebb      @(535,236)  [4 term]
+      N14   nodebb      @(529,179)  [4 term]
+      N15   nodebb      @(531,123)  [4 term]
+      N16   const      numeric 'new element/subarray'  [1 term]
+      N17   const      numeric 'new element/subarray'  [1 term]
+      N18   const      cluster 'new element/subarray'  [1 term]
+      N19   const      numeric 'new edge value'  [1 term]
+      N20   const      numeric 'new element/subarray'  [1 term]
+        wire: N20.0 -- N9.3
+        wire: N17.0 -- N13.3
+        wire: N6.tunnel@(336,190).in -- N15.2 -- N14.2 -- N13.2 -- N10.2 -- N9.2
+        wire: N11.11 -- N9.0
+        wire: N9.1 -- N12.6
+        wire: N10.1 -- N12.5
+        wire: N18.0 -- N10.3
+        wire: N11.9 -- N10.0
+        wire: N13.1 -- N12.4
+        wire: N14.1 -- N12.3
+        wire: N6.tunnel@(336,245).in -- N11.0 -- N12.1
+        wire: N15.1 -- N12.2
+        wire: N16.0 -- N14.3
+        wire: N19.0 -- N15.3
+        wire: N11.7 -- N13.0
+        wire: N11.6 -- N14.0
+        wire: N11.5 -- N15.0
+        wire: N12.0 -- N6.tunnel@(767,243).in
+  N7    ForLoop     @(102,124)  [3 term]
+    frame 0:
+      N21   node36      @(139,157)  [7 term]
+        wire: N21.2 -- N7.tunnel@(202,165).in
+        wire: N7.tunnel@(102,177).in -- N21.0
+  N8    prim       'Search 1D Array' @(273,197)  [4 term]
+    wire: N7.tunnel@(202,165).out -- N8.3
+    wire: N6.tunnel@(767,243).out -- N2.0
+    wire: N3.0 -- N6.tunnel@(336,245).out
+    wire: N4.0 -- N8.2
+    wire: N8.0 -- N6.tunnel@(336,190).out -- N1.0
+    wire: N5.0 -- N7.tunnel@(102,177).out

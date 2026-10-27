@@ -1,0 +1,48 @@
+VI: Resize_Array.vi
+  N1    FPterm     'New size'  [1 term]
+  N2    prim       'Equal?' @(64,157)  [3 term]
+  N3    prim       'Array Size' @(29,128)  [2 term]
+  N4    Case        @(112,53)  [5 term]
+    frame 0:
+      N7    prim       'Decrement' @(171,127)  [2 term]
+      N8    prim       'Less Than 0?' @(174,158)  [2 term]
+      N9    Case        @(218,77)  [6 term]
+        frame 0:
+          # "Take subset / of array of / specified size."
+          N11   node48      @(297,105)  [4 term]
+          N12   const      numeric  [1 term]
+            wire: N11.1 -- N9.tunnel@(394,107).in
+            wire: N12.0 -- N11.2
+            wire: N9.tunnel@(218,222).in -- N11.3
+            wire: N9.tunnel@(218,107).in -- N11.0
+        frame 1:
+          # "Appending last element to  / make array specified size."
+          N13   prim       'Absolute Value' @(236,190)  [2 term]
+          N14   IndexArray?  @(252,121)  [3 term]
+          N15   IndexArray?  @(301,184)  [3 term]
+          N16   node3a      @(318,106)  [3 term]
+            wire: N13.0 -- N15.2
+            wire: N9.tunnel@(218,202).in -- N13.1
+            wire: N15.1 -- N16.2
+            wire: N14.1 -- N15.0
+            wire: N9.tunnel@(218,139).in -- N14.2
+            wire: N9.tunnel@(218,107).in -- N16.1 -- N14.0
+            wire: N16.0 -- N9.tunnel@(394,107).in
+      N10   prim       'Subtract' @(137,158)  [3 term]
+        wire: N4.tunnel@(112,202).in -- N10.1 -- N9.tunnel@(218,222).out
+        wire: N7.0 -- N9.tunnel@(218,139).out
+        wire: N4.tunnel@(112,139).in -- N10.2 -- N7.1
+        wire: N10.0 -- N8.1 -- N9.tunnel@(218,202).out
+        wire: N9.tunnel@(394,107).out -- N4.tunnel@(411,107).in
+        wire: N4.tunnel@(112,107).in -- N9.tunnel@(218,107).out
+        wire: N8.0 -- N9.selector
+    frame 1:
+      # "Array already specified size.  Do nothing."
+        wire: N4.tunnel@(112,107).in -- N4.tunnel@(411,107).in
+  N5    FPterm     'Array Resized'  [1 term]
+  N6    FPterm     'Array'  [1 term]
+    wire: N1.0 -- N2.1 -- N4.tunnel@(112,202).out
+    wire: N3.0 -- N2.2 -- N4.tunnel@(112,139).out
+    wire: N4.tunnel@(411,107).out -- N5.0
+    wire: N2.0 -- N4.selector
+    wire: N6.0 -- N3.1 -- N4.tunnel@(112,107).out

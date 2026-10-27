@@ -1,0 +1,2 @@
+VI: tt.vi
+  N1    FPterm     'Array'  [1 term]

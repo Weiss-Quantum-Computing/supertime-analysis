@@ -1,0 +1,51 @@
+VI: diovalues.vi
+  # "Edge array should / come after having  / ramps added. / The best place to / get this is from / Generate Array Data."
+  N1    prim       'Wait (ms)' @(479,385)  [2 term]
+  N2    node3a      @(542,301)  [3 term]
+  N3    node34      @(487,319)  [4 term]
+  N4    node34      @(486,288)  [4 term]
+  N5    ForLoop     @(178,260)  [3 term]
+    frame 0:
+      N14   (Un)BundleByName?  @(198,285)  [2 term]
+        wire: N14.1 -- N5.tunnel@(328,288).in
+        wire: N5.tunnel@(178,289).in -- N14.0
+  N6    FPterm     'Edge Array'  [1 term]
+  N7    FPterm     'XY Graph'  [1 term]
+  N8    IndexArray?  @(104,106)  [4 term]
+  N9    ForLoop     @(177,71)  [5 term]
+    frame 0:
+      N15   prim       'Increment' @(396,157)  [2 term]
+      N16   prim       'Increment' @(370,157)  [2 term]
+      N17   FPterm     'Plot 1: channel'  [1 term]
+      N18   prim       'Boolean To (0,1)' @(335,157)  [2 term]
+      N19   prim       'Boolean To (0,1)' @(325,199)  [2 term]
+      N20   FPterm     'Plot 0: channel'  [1 term]
+      N21   IndexArray?  @(306,153)  [3 term]
+      N22   IndexArray?  @(259,154)  [3 term]
+      N23   prim       'Number To Boolean Array' @(228,103)  [2 term]
+        wire: N15.0 -- N9.tunnel@(437,169).in
+        wire: N16.0 -- N15.1
+        wire: N17.0 -- N22.2
+        wire: N20.0 -- N21.2
+        wire: N22.1 -- N19.1
+        wire: N19.0 -- N9.tunnel@(343,228).in
+        wire: N18.0 -- N16.1
+        wire: N21.1 -- N18.1
+        wire: N23.0 -- N9.tunnel@(437,115).in -- N22.0 -- N21.0
+        wire: N9.tunnel@(177,115).in -- N23.1
+  N10   FPterm     'Boolean array'  [1 term]
+  N11   FPterm     'DIO Values'  [1 term]
+  N12   const      numeric 'index (row)'  [1 term]
+  N13   const      numeric 'milliseconds to wait'  [1 term]
+    wire: N6.0 -- N5.tunnel@(178,289).out
+    wire: N13.0 -- N1.1
+    wire: N3.0 -- N2.2
+    wire: N4.0 -- N2.1
+    wire: N2.0 -- N7.0
+    wire: N5.tunnel@(328,288).out -- N4.2 -- N3.2
+    wire: N9.tunnel@(343,228).out -- N3.3
+    wire: N9.tunnel@(437,169).out -- N4.3
+    wire: N8.1 -- N9.tunnel@(177,115).out
+    wire: N9.tunnel@(437,115).out -- N10.0
+    wire: N12.0 -- N8.2
+    wire: N11.0 -- N8.0

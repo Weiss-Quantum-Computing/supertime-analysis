@@ -1,0 +1,39 @@
+VI: find_dds_boards.vi
+  N1    FPterm     'Channel Array'  [1 term]
+  N2    FPterm     'Array'  [1 term]
+  N3    ForLoop     @(86,48)  [4 term]
+    frame 0:
+      N5    node6c      @(190,101)  [4 term]
+      N6    prim       'Less Than 0?' @(224,74)  [2 term]
+      N7    prim       'Search 1D Array' @(232,125)  [4 term]
+      N8    Case        @(137,148)  [4 term]
+        frame 0:
+            wire: N8.tunnel@(137,174).in -- N8.tunnel@(206,174).in
+        frame 1:
+          N15   node3a      @(163,170)  [3 term]
+            wire: N8.tunnel@(164,189).in -- N15.2
+            wire: N8.tunnel@(137,174).in -- N15.1
+            wire: N15.0 -- N8.tunnel@(206,174).in
+      N9    (Un)BundleByName?  @(140,56)  [2 term]
+      N10   prim       'Quotient & Remainder' @(127,86)  [4 term]
+      N11   prim       'Greater Than 0?' @(154,97)  [2 term]
+      N12   prim       'Less?' @(164,71)  [3 term]
+      N13   const      numeric 'y'  [1 term]
+      N14   const      numeric 'y'  [1 term]
+        wire: N9.1 -- N10.3 -- N8.tunnel@(164,189).out -- N7.2
+        wire: N10.0 -- N11.1
+        wire: N5.0 -- N8.selector
+        wire: N6.0 -- N5.1
+        wire: N12.0 -- N5.2
+        wire: N11.0 -- N5.3
+        wire: N7.0 -- N6.1
+        wire: N3.shiftreg@(86,172).in -- N8.tunnel@(137,174).out -- N7.3
+        wire: N8.tunnel@(206,174).out -- N3.shiftreg@(260,172).in
+        wire: N3.tunnel@(125,48).in -- N9.0
+        wire: N14.0 -- N10.2
+        wire: N10.1 -- N12.2
+        wire: N13.0 -- N12.1
+  N4    const      array  [1 term]
+    wire: N4.0 -- N3.shiftreg@(86,172).out
+    wire: N1.0 -- N3.tunnel@(125,48).out
+    wire: N3.shiftreg@(260,172).out -- N2.0

@@ -1,0 +1,47 @@
+VI: Send_arrays_to_step_program.vi
+  # "Why make default?  Removed."
+  N1    node a9     @(809,54)  [10 term]
+  N2    prim       'Flatten To String' @(511,159)  [3 term]
+  N3    prim       'Flatten To String' @(383,158)  [3 term]
+  N4    prim       'Flatten To String' @(169,105)  [3 term]
+  N5    PropertyNode 'Variable Array' [4 props] @(500,-20)  [5 term]
+  N6    PropertyNode 'Channel Array' [4 props] @(380,-10)  [5 term]
+  N7    PropertyNode 'Edge Array' [4 props] @(178,34)  [5 term]
+  N8    FPterm     'error out'  [1 term]
+  N9    prim       'Close LV Object Reference' @(912,54)  [3 term]
+  N10   node a9     @(545,54)  [12 term]
+  N11   node a9     @(421,54)  [12 term]
+  N12   FPterm     'vi path'  [1 term]
+  N13   prim       'Open VI Reference' @(226,-34)  [8 term]
+  N14   node a9     @(290,54)  [12 term]
+  N15   FPterm     'Edge Array'  [1 term]
+  N16   FPterm     'Channel Array'  [1 term]
+  N17   FPterm     'Variable Array'  [1 term]
+  N18   const      path? 'Wait until done'  [1 term]
+  N19   const      path? 'Auto Dispose Ref'  [1 term]
+    wire: N10.3 -- N1.2
+    wire: N10.1 -- N1.0
+    wire: N19.0 -- N1.8
+    wire: N18.0 -- N1.6
+    wire: N1.3 -- N9.1
+    wire: N1.1 -- N9.2
+    wire: N17.0 -- N2.0
+    wire: N2.2 -- N10.10
+    wire: N2.1 -- N10.8
+    wire: N16.0 -- N3.0
+    wire: N3.2 -- N11.10
+    wire: N3.1 -- N11.8
+    wire: N4.2 -- N14.10
+    wire: N4.1 -- N14.8
+    wire: N15.0 -- N4.0
+    wire: N5.4 -- N10.6
+    wire: N6.4 -- N11.6
+    wire: N7.4 -- N14.6
+    wire: N9.0 -- N8.0
+    wire: N13.0 -- N14.2
+    wire: N11.3 -- N10.2
+    wire: N14.3 -- N11.2
+    wire: N11.1 -- N10.0
+    wire: N14.1 -- N11.0
+    wire: N13.1 -- N14.0
+    wire: N12.0 -- N13.6

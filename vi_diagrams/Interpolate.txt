@@ -1,0 +1,60 @@
+VI: Interpolate.vi
+  N1    FPterm     'Input Array'  [1 term]
+  N2    FPterm     'Start less than Stop'  [1 term]
+  N3    subVI      'Sort & Permute.vi'  params: 0=Permutation, 1=Sorted Array, 2=Input Permutation, 3=Input Array @(-103,332)  [4 term]
+  N4    subVI      'Sort & Permute.vi'  params: 0=Permutation, 1=Sorted Array, 2=Input Permutation, 3=Input Array @(-96,446)  [4 term]
+  N5    FPterm     '0=None
+1=Input out of range'  [1 term]
+  N6    FPterm     'Output Calibration'  [1 term]
+  N7    FPterm     'Input Calibration'  [1 term]
+  N8    prim       'Or' @(39,249)  [3 term]
+  N9    prim       'Less?' @(18,277)  [3 term]
+  N10   prim       'Greater?' @(19,219)  [3 term]
+  N11   prim       'Array Max & Min' @(-23,274)  [5 term]
+  N12   prim       'Array Max & Min' @(-25,219)  [5 term]
+  N13   Case        @(81,126)  [6 term]
+    frame 0:
+      # "Calibration interval okay."
+      # "Input array is within calibration interval.  Proceed with interpolation."
+      N17   ForLoop     @(134,197)  [5 term]
+        frame 0:
+          N20   prim       'Interpolate 1D Array' @(247,349)  [3 term]
+          N21   prim       'Threshold 1D Array' @(169,248)  [4 term]
+          N22   const      numeric  [1 term]
+            wire: N20.0 -- N17.tunnel@(302,361).in
+            wire: N21.0 -- N20.1
+            wire: N17.tunnel@(134,393).in -- N20.2
+            wire: N17.tunnel@(134,336).in -- N21.3
+            wire: N22.0 -- N21.1
+            wire: N17.tunnel@(134,260).in -- N21.2
+      N18   const      numeric  [1 term]
+      N19   const      numeric  [1 term]
+        wire: N18.0 -- N13.tunnel@(356,457).in
+        wire: N17.tunnel@(302,361).out -- N13.tunnel@(356,361).in
+        wire: N13.tunnel@(81,393).in -- N17.tunnel@(134,393).out
+        wire: N13.tunnel@(81,171).in -- N17.tunnel@(134,260).out
+        wire: N13.tunnel@(81,336).in -- N17.tunnel@(134,336).out
+    frame 1:
+      # "Input array contains elements / outside of calibration interval."
+      N23   const      numeric  [1 term]
+        wire: N23.0 -- N13.tunnel@(356,457).in
+        wire: N13.tunnel@(81,171).in -- N13.tunnel@(356,361).in
+  N14   node34      @(9,438)  [4 term]
+  N15   FPterm     'Output Calibration'  [1 term]
+  N16   FPterm     'Output Array'  [1 term]
+    wire: N13.tunnel@(356,361).out -- N16.0
+    wire: N1.0 -- N12.0 -- N13.tunnel@(81,171).out
+    wire: N4.Sorted Array -- N13.tunnel@(81,393).out -- N14.3
+    wire: N14.0 -- N15.0
+    wire: N3.Permutation -- N4.Input Permutation
+    wire: N6.0 -- N4.Input Array
+    wire: N3.Sorted Array -- N13.tunnel@(81,336).out -- N14.2 -- N11.0
+    wire: N7.0 -- N3.Input Array
+    wire: N13.tunnel@(356,457).out -- N5.0
+    wire: N8.0 -- N13.selector
+    wire: N9.0 -- N8.1
+    wire: N10.0 -- N8.2
+    wire: N11.3 -- N9.1
+    wire: N12.3 -- N9.2
+    wire: N11.1 -- N10.1
+    wire: N12.1 -- N10.2

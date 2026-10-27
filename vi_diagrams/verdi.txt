@@ -1,0 +1,429 @@
+VI: verdi.vi
+  N1    Sequence    @(-10,-12)  [0 term]
+    frame 0:
+      N2    PropertyNode 'Power' [4 props] @(529,390)  [5 term]
+      N3    PropertyNode 'State' [4 props] @(528,298)  [5 term]
+      N4    PropertyNode 'Shutter' [4 props] @(528,343)  [5 term]
+      N5    FPterm     'error code'  [1 term]
+      N6    subVI      'Serial Port Init.vi' @(287,219)  [8 term]
+      N7    const      numeric 'port number'  [1 term]
+      N8    const      numeric 'baud rate'  [1 term]
+      N9    const      numeric 'data bits'  [1 term]
+      N10   const      enum/ring 'stop bits'  [1 term]
+      N11   const      enum/ring 'parity'  [1 term]
+      N12   const      cluster? 'flow control etc.'  [1 term]
+      N13   const      numeric 'buffer size'  [1 term]
+      N14   const      numeric  [1 term]
+        wire: N14.0 -- N3.4 -- N4.4 -- N2.4
+        wire: N13.0 -- N6.3
+        wire: N6.0 -- N5.0
+        wire: N12.0 -- N6.1
+        wire: N11.0 -- N6.2
+        wire: N10.0 -- N6.4
+        wire: N9.0 -- N6.5
+        wire: N8.0 -- N6.6
+        wire: N7.0 -- N6.7
+    frame 1:
+      N15   subVI      'Serial Port Write.vi' @(63,381)  [3 term]
+      N16   FPterm     'Other command string'  [1 term]
+      N17   FPterm     'Power'  [1 term]
+      N18   FPterm     'Shutter'  [1 term]
+      N19   FPterm     'State'  [1 term]
+      N20   WhileLoop   @(105,21)  [12 term]
+        frame 0:
+          N23   prim       'Wait Until Next ms Multiple' @(670,464)  [2 term]
+          N24   Case        @(589,130)  [1 term]
+            frame 0:
+              N35   PropertyNode 'State' [4 props] @(655,183)  [5 term]
+              N36   PropertyNode 'Shutter' [4 props] @(603,164)  [5 term]
+              N37   PropertyNode 'Power' [4 props] @(602,206)  [5 term]
+              N38   const      numeric  [1 term]
+                wire: N38.0 -- N35.4 -- N36.4 -- N37.4
+            frame 1:
+          N25   node34      @(596,272)  [7 term]
+          N26   FPterm     'Current'  [1 term]
+          N27   FPterm     'Update rate'  [1 term]
+          N28   Case        @(637,377)  [2 term]
+            frame 0:
+              N39   const      numeric  [1 term]
+                wire: N39.0 -- N28.tunnel@(679,443).in
+            frame 1:
+              N40   const      numeric  [1 term]
+                wire: N40.0 -- N28.tunnel@(679,443).in
+          N29   Sequence    @(140,36)  [14 term]
+            frame 0:
+              N41   prim       'And' @(529,144)  [3 term]
+              N42   Case        @(249,413)  [1 term]
+                frame 0:
+                frame 1:
+                  N54   PropertyNode 'State' [4 props] @(326,489)  [5 term]
+                  N55   PropertyNode 'Shutter' [4 props] @(353,444)  [5 term]
+                  N56   PropertyNode 'Power' [4 props] @(299,443)  [5 term]
+                  N57   const      numeric  [1 term]
+                    wire: N57.0 -- N56.4 -- N55.4 -- N54.4
+              N43   FPterm     'Click to confirm cooling water is on'  [1 term]
+              N44   prim       'Wait (ms)' @(519,452)  [2 term]
+              N45   Case        @(202,303)  [2 term]
+                frame 0:
+                frame 1:
+                  N58   node3e      @(296,329)  [3 term]
+                  N59   FPterm     'error code 2'  [1 term]
+                  N60   subVI      'Serial Port Write.vi' @(374,328)  [3 term]
+                  N61   const      numeric 'port number'  [1 term]
+                  N62   const      cls4e  [1 term]
+                    wire: N58.0 -- N60.1
+                    wire: N62.0 -- N58.2
+                    wire: N45.tunnel@(202,312).in -- N58.1
+                    wire: N60.0 -- N59.0
+                    wire: N61.0 -- N60.2
+              N46   Case        @(203,213)  [2 term]
+                frame 0:
+                frame 1:
+                  N63   FPterm     'error code 3'  [1 term]
+                  N64   FormatString?  @(288,240)  [6 term]
+                  N65   subVI      'Serial Port Write.vi' @(375,238)  [3 term]
+                  N66   const      numeric 'port number'  [1 term]
+                  N67   const      string 'format string'  [1 term]
+                    wire: N65.0 -- N63.0
+                    wire: N67.0 -- N64.0
+                    wire: N46.tunnel@(203,222).in -- N64.5
+                    wire: N64.2 -- N65.1
+                    wire: N66.0 -- N65.2
+              N47   Case        @(202,134)  [3 term]
+                frame 0:
+                  N68   const      numeric  [1 term]
+                    wire: N68.0 -- N47.tunnel@(506,189).in
+                frame 1:
+                  N69   FPterm     'error code 4'  [1 term]
+                  N70   FormatString?  @(287,161)  [6 term]
+                  N71   subVI      'Serial Port Write.vi' @(374,159)  [3 term]
+                  N72   const      numeric 'port number'  [1 term]
+                  N73   const      string 'format string'  [1 term]
+                    wire: N47.tunnel@(202,143).in -- N70.5 -- N47.tunnel@(506,189).in
+                    wire: N71.0 -- N69.0
+                    wire: N73.0 -- N70.0
+                    wire: N70.2 -- N71.1
+                    wire: N72.0 -- N71.2
+              N48   Case        @(200,54)  [3 term]
+                frame 0:
+                  N74   const      numeric  [1 term]
+                    wire: N74.0 -- N48.tunnel@(504,108).in
+                frame 1:
+                  N75   FPterm     'error code 5'  [1 term]
+                  N76   FormatString?  @(285,81)  [6 term]
+                  N77   subVI      'Serial Port Write.vi' @(372,79)  [3 term]
+                  N78   const      string 'format string'  [1 term]
+                  N79   const      numeric 'port number'  [1 term]
+                    wire: N48.tunnel@(200,63).in -- N76.5 -- N48.tunnel@(504,108).in
+                    wire: N77.0 -- N75.0
+                    wire: N78.0 -- N76.0
+                    wire: N76.2 -- N77.1
+                    wire: N79.0 -- N77.2
+              N49   prim       'Not Equal?' @(158,284)  [3 term]
+              N50   prim       'Not Equal?' @(159,206)  [3 term]
+              N51   prim       'Not Equal?' @(159,136)  [3 term]
+              N52   prim       'Not Equal?' @(159,65)  [3 term]
+              N53   const      numeric 'milliseconds to wait'  [1 term]
+                wire: N47.tunnel@(506,189).out -- N41.1
+                wire: N48.tunnel@(504,108).out -- N41.2
+                wire: N41.0 -- N29.tunnel@(569,156).in
+                wire: N43.0 -- N42.selector
+                wire: N53.0 -- N44.1
+                wire: N29.tunnel@(140,289).in -- N45.tunnel@(202,312).out -- N49.2
+                wire: N29.tunnel@(140,211).in -- N46.tunnel@(203,222).out -- N50.2
+                wire: N29.tunnel@(140,71).in -- N48.tunnel@(200,63).out -- N52.2
+                wire: N29.tunnel@(140,142).in -- N47.tunnel@(202,143).out -- N51.2
+                wire: N49.0 -- N45.selector
+                wire: N50.0 -- N46.selector
+                wire: N51.0 -- N47.selector
+                wire: N52.0 -- N48.selector
+                wire: N29.tunnel@(140,301).in -- N49.1
+                wire: N29.tunnel@(140,223).in -- N50.1
+                wire: N29.tunnel@(140,154).in -- N51.1
+                wire: N29.tunnel@(140,83).in -- N52.1
+            frame 1:
+              N80   FPterm     'byte count 2'  [1 term]
+              N81   FPterm     'error code 8'  [1 term]
+              N82   prim       'Greater Than 0?' @(242,340)  [2 term]
+              N83   Case        @(278,339)  [2 term]
+                frame 0:
+                frame 1:
+                  N86   FPterm     'error code 11'  [1 term]
+                  N87   FPterm     'Verdi response'  [1 term]
+                  N88   subVI      'Serial Port Read.vi' @(348,405)  [4 term]
+                  N89   const      numeric 'port number'  [1 term]
+                    wire: N88.0 -- N86.0
+                    wire: N88.1 -- N87.0
+                    wire: N89.0 -- N88.3
+                    wire: N83.tunnel@(278,376).in -- N88.2
+              N84   subVI      'Bytes At Serial Port.vi' @(207,348)  [3 term]
+              N85   const      numeric 'port number'  [1 term]
+                wire: N84.2 -- N81.0
+                wire: N82.0 -- N83.selector
+                wire: N84.1 -- N82.1 -- N83.tunnel@(278,376).out -- N80.0
+                wire: N85.0 -- N84.0
+            frame 2:
+              N90   prim       'Wait (ms)' @(496,444)  [2 term]
+              N91   FPterm     'error code 10'  [1 term]
+              N92   subVI      'Serial Port Write.vi' @(375,238)  [3 term]
+              N93   const      numeric 'port number'  [1 term]
+              N94   const      string 'format string'  [1 term]
+              N95   const      numeric 'milliseconds to wait'  [1 term]
+                wire: N95.0 -- N90.1
+                wire: N94.0 -- N92.1
+                wire: N92.0 -- N91.0
+                wire: N93.0 -- N92.2
+            frame 3:
+              N96   FPterm     'error code 9'  [1 term]
+              N97   prim       'Greater Than 0?' @(233,401)  [2 term]
+              N98   Case        @(271,375)  [2 term]
+                frame 0:
+                frame 1:
+                  N101  node92      @(365,420)  [9 term]
+                  N102  FPterm     'Power 3'  [1 term]
+                  N103  FPterm     'error code 14'  [1 term]
+                  N104  subVI      'Serial Port Read.vi' @(339,466)  [4 term]
+                  N105  const      numeric 'port number'  [1 term]
+                  N106  const      string 'format string'  [1 term]
+                    wire: N106.0 -- N101.0
+                    wire: N104.1 -- N101.1
+                    wire: N101.8 -- N102.0
+                    wire: N104.0 -- N103.0
+                    wire: N105.0 -- N104.3
+                    wire: N98.tunnel@(271,437).in -- N104.2
+              N99   subVI      'Bytes At Serial Port.vi' @(198,409)  [3 term]
+              N100  const      numeric 'port number'  [1 term]
+                wire: N99.2 -- N96.0
+                wire: N97.0 -- N98.selector
+                wire: N99.1 -- N97.1 -- N98.tunnel@(271,437).out
+                wire: N100.0 -- N99.0
+            frame 4:
+              N107  prim       'Wait (ms)' @(496,444)  [2 term]
+              N108  FPterm     'error code 12'  [1 term]
+              N109  subVI      'Serial Port Write.vi' @(375,238)  [3 term]
+              N110  const      numeric 'milliseconds to wait'  [1 term]
+              N111  const      string 'format string'  [1 term]
+              N112  const      numeric 'port number'  [1 term]
+                wire: N110.0 -- N107.1
+                wire: N111.0 -- N109.1
+                wire: N109.0 -- N108.0
+                wire: N112.0 -- N109.2
+            frame 5:
+              N113  FPterm     'error code 13'  [1 term]
+              N114  prim       'Greater Than 0?' @(233,401)  [2 term]
+              N115  Case        @(271,375)  [3 term]
+                frame 0:
+                frame 1:
+                  N118  prim       'Get Date/Time In Seconds' @(463,436)  [1 term]
+                  N119  FPterm     'Current'  [1 term]
+                  N120  node92      @(365,420)  [9 term]
+                  N121  FPterm     'error code 15'  [1 term]
+                  N122  subVI      'Serial Port Read.vi' @(339,466)  [4 term]
+                  N123  const      numeric 'port number'  [1 term]
+                  N124  const      string 'format string'  [1 term]
+                    wire: N120.8 -- N119.0 -- N115.tunnel@(484,375).in
+                    wire: N124.0 -- N120.0
+                    wire: N122.1 -- N120.1
+                    wire: N122.0 -- N121.0
+                    wire: N123.0 -- N122.3
+                    wire: N115.tunnel@(271,437).in -- N122.2
+              N116  subVI      'Bytes At Serial Port.vi' @(198,409)  [3 term]
+              N117  const      numeric 'port number'  [1 term]
+                wire: N115.tunnel@(484,375).out -- N29.tunnel@(569,252).in
+                wire: N116.1 -- N114.1 -- N115.tunnel@(271,437).out
+                wire: N116.2 -- N113.0
+                wire: N114.0 -- N115.selector
+                wire: N117.0 -- N116.0
+            frame 6:
+              N125  prim       'Wait (ms)' @(496,444)  [2 term]
+              N126  FPterm     'error code 16'  [1 term]
+              N127  subVI      'Serial Port Write.vi' @(375,238)  [3 term]
+              N128  const      numeric 'milliseconds to wait'  [1 term]
+              N129  const      string 'format string'  [1 term]
+              N130  const      numeric 'port number'  [1 term]
+                wire: N128.0 -- N125.1
+                wire: N129.0 -- N127.1
+                wire: N127.0 -- N126.0
+                wire: N130.0 -- N127.2
+            frame 7:
+              N131  FPterm     'error code 17'  [1 term]
+              N132  prim       'Greater Than 0?' @(233,401)  [2 term]
+              N133  Case        @(271,375)  [3 term]
+                frame 0:
+                frame 1:
+                  N136  prim       'Get Date/Time In Seconds' @(463,436)  [1 term]
+                  N137  node92      @(365,420)  [9 term]
+                  N138  FPterm     'error code 18'  [1 term]
+                  N139  subVI      'Serial Port Read.vi' @(339,466)  [4 term]
+                  N140  const      numeric 'port number'  [1 term]
+                  N141  const      string 'format string'  [1 term]
+                    wire: N137.8 -- N133.tunnel@(487,375).in
+                    wire: N141.0 -- N137.0
+                    wire: N139.1 -- N137.1
+                    wire: N139.0 -- N138.0
+                    wire: N140.0 -- N139.3
+                    wire: N133.tunnel@(271,437).in -- N139.2
+              N134  subVI      'Bytes At Serial Port.vi' @(198,409)  [3 term]
+              N135  const      numeric 'port number'  [1 term]
+                wire: N133.tunnel@(487,375).out -- N29.tunnel@(569,280).in
+                wire: N134.1 -- N132.1 -- N133.tunnel@(271,437).out
+                wire: N134.2 -- N131.0
+                wire: N132.0 -- N133.selector
+                wire: N135.0 -- N134.0
+            frame 8:
+              N142  prim       'Wait (ms)' @(496,444)  [2 term]
+              N143  FPterm     'error code 19'  [1 term]
+              N144  subVI      'Serial Port Write.vi' @(375,238)  [3 term]
+              N145  const      numeric 'milliseconds to wait'  [1 term]
+              N146  const      string 'format string'  [1 term]
+              N147  const      numeric 'port number'  [1 term]
+                wire: N145.0 -- N142.1
+                wire: N146.0 -- N144.1
+                wire: N144.0 -- N143.0
+                wire: N147.0 -- N144.2
+            frame 9:
+              N148  FPterm     'error code 20'  [1 term]
+              N149  prim       'Greater Than 0?' @(233,401)  [2 term]
+              N150  Case        @(271,375)  [3 term]
+                frame 0:
+                frame 1:
+                  N153  prim       'Get Date/Time In Seconds' @(463,436)  [1 term]
+                  N154  node92      @(365,420)  [9 term]
+                  N155  FPterm     'error code 21'  [1 term]
+                  N156  subVI      'Serial Port Read.vi' @(339,466)  [4 term]
+                  N157  const      numeric 'port number'  [1 term]
+                  N158  const      string 'format string'  [1 term]
+                    wire: N154.8 -- N150.tunnel@(487,375).in
+                    wire: N158.0 -- N154.0
+                    wire: N156.1 -- N154.1
+                    wire: N156.0 -- N155.0
+                    wire: N157.0 -- N156.3
+                    wire: N150.tunnel@(271,437).in -- N156.2
+              N151  subVI      'Bytes At Serial Port.vi' @(198,409)  [3 term]
+              N152  const      numeric 'port number'  [1 term]
+                wire: N150.tunnel@(487,375).out -- N29.tunnel@(569,300).in
+                wire: N151.1 -- N149.1 -- N150.tunnel@(271,437).out
+                wire: N151.2 -- N148.0
+                wire: N149.0 -- N150.selector
+                wire: N152.0 -- N151.0
+            frame 10:
+              N159  prim       'Wait (ms)' @(496,444)  [2 term]
+              N160  FPterm     'error code 22'  [1 term]
+              N161  subVI      'Serial Port Write.vi' @(375,238)  [3 term]
+              N162  const      numeric 'milliseconds to wait'  [1 term]
+              N163  const      string 'format string'  [1 term]
+              N164  const      numeric 'port number'  [1 term]
+                wire: N162.0 -- N159.1
+                wire: N163.0 -- N161.1
+                wire: N161.0 -- N160.0
+                wire: N164.0 -- N161.2
+            frame 11:
+              N165  FPterm     'error code 23'  [1 term]
+              N166  prim       'Greater Than 0?' @(233,401)  [2 term]
+              N167  Case        @(271,375)  [3 term]
+                frame 0:
+                frame 1:
+                  N170  prim       'Multiply' @(425,393)  [3 term]
+                  N171  prim       'Get Date/Time In Seconds' @(463,436)  [1 term]
+                  N172  node92      @(365,420)  [9 term]
+                  N173  FPterm     'error code 24'  [1 term]
+                  N174  subVI      'Serial Port Read.vi' @(339,466)  [4 term]
+                  N175  const      numeric 'port number'  [1 term]
+                  N176  const      string 'format string'  [1 term]
+                  N177  const      numeric 'x'  [1 term]
+                    wire: N177.0 -- N170.2
+                    wire: N170.0 -- N167.tunnel@(487,375).in
+                    wire: N172.8 -- N170.1
+                    wire: N176.0 -- N172.0
+                    wire: N174.1 -- N172.1
+                    wire: N174.0 -- N173.0
+                    wire: N175.0 -- N174.3
+                    wire: N167.tunnel@(271,437).in -- N174.2
+              N168  subVI      'Bytes At Serial Port.vi' @(198,409)  [3 term]
+              N169  const      numeric 'port number'  [1 term]
+                wire: N167.tunnel@(487,375).out -- N29.tunnel@(569,322).in
+                wire: N168.1 -- N166.1 -- N167.tunnel@(271,437).out
+                wire: N168.2 -- N165.0
+                wire: N166.0 -- N167.selector
+                wire: N169.0 -- N168.0
+            frame 12:
+              N178  prim       'Wait (ms)' @(496,444)  [2 term]
+              N179  FPterm     'error code 25'  [1 term]
+              N180  subVI      'Serial Port Write.vi' @(375,238)  [3 term]
+              N181  const      numeric 'milliseconds to wait'  [1 term]
+              N182  const      string 'format string'  [1 term]
+              N183  const      numeric 'port number'  [1 term]
+                wire: N181.0 -- N178.1
+                wire: N182.0 -- N180.1
+                wire: N180.0 -- N179.0
+                wire: N183.0 -- N180.2
+            frame 13:
+              N184  FPterm     'error code 26'  [1 term]
+              N185  prim       'Greater Than 0?' @(233,401)  [2 term]
+              N186  Case        @(271,375)  [3 term]
+                frame 0:
+                frame 1:
+                  N189  prim       'Multiply' @(425,393)  [3 term]
+                  N190  prim       'Get Date/Time In Seconds' @(463,436)  [1 term]
+                  N191  node92      @(365,420)  [9 term]
+                  N192  FPterm     'error code 27'  [1 term]
+                  N193  subVI      'Serial Port Read.vi' @(339,466)  [4 term]
+                  N194  const      numeric 'port number'  [1 term]
+                  N195  const      string 'format string'  [1 term]
+                  N196  const      numeric 'x'  [1 term]
+                    wire: N196.0 -- N189.2
+                    wire: N189.0 -- N186.tunnel@(487,375).in
+                    wire: N191.8 -- N189.1
+                    wire: N195.0 -- N191.0
+                    wire: N193.1 -- N191.1
+                    wire: N193.0 -- N192.0
+                    wire: N194.0 -- N193.3
+                    wire: N186.tunnel@(271,437).in -- N193.2
+              N187  subVI      'Bytes At Serial Port.vi' @(198,409)  [3 term]
+              N188  const      numeric 'port number'  [1 term]
+                wire: N186.tunnel@(487,375).out -- N29.tunnel@(569,344).in
+                wire: N187.1 -- N185.1 -- N186.tunnel@(271,437).out
+                wire: N187.2 -- N184.0
+                wire: N185.0 -- N186.selector
+                wire: N188.0 -- N187.0
+          N30   LocalVar   '?' @(678,65)  [1 term]
+          N31   LocalVar   '?' @(679,98)  [1 term]
+          N32   LocalVar   '?' @(693,249)  [1 term]
+          N33   LocalVar   '?' @(617,343)  [1 term]
+          N34   FPterm     'stop'  [1 term]
+            wire: N29.tunnel@(569,344).out -- N25.6
+            wire: N29.tunnel@(569,156).out -- N24.selector
+            wire: N30.0 -- N20.shiftreg@(729,69).in
+            wire: N31.0 -- N20.shiftreg@(729,140).in
+            wire: N29.tunnel@(569,322).out -- N25.5
+            wire: N29.tunnel@(569,300).out -- N25.4
+            wire: N25.0 -- N26.0
+            wire: N29.tunnel@(569,280).out -- N25.3
+            wire: N29.tunnel@(569,252).out -- N25.2
+            wire: N28.tunnel@(679,443).out -- N23.1
+            wire: N27.0 -- N28.selector
+            wire: N33.0 -- N20.shiftreg@(729,287).in
+            wire: N32.0 -- N20.shiftreg@(729,209).in
+            wire: N20.shiftreg@(105,287).in -- N29.tunnel@(140,289).out
+            wire: N20.shiftreg@(105,209).in -- N29.tunnel@(140,211).out
+            wire: N20.shiftreg@(105,69).in -- N29.tunnel@(140,71).out
+            wire: N20.shiftreg@(105,140).in -- N29.tunnel@(140,142).out
+            wire: N20.shiftreg@(105,299).in -- N29.tunnel@(140,301).out
+            wire: N20.shiftreg@(105,221).in -- N29.tunnel@(140,223).out
+            wire: N20.shiftreg@(105,152).in -- N29.tunnel@(140,154).out
+            wire: N20.shiftreg@(105,81).in -- N29.tunnel@(140,83).out
+            wire: N34.0 -- N20.cond
+      N21   const      numeric 'port number'  [1 term]
+      N22   const      string 'string to write'  [1 term]
+        wire: N22.0 -- N15.1
+        wire: N21.0 -- N15.2
+        wire: N16.0 -- N20.shiftreg@(105,287).out -- N20.shiftreg@(105,299).out
+        wire: N17.0 -- N20.shiftreg@(105,209).out -- N20.shiftreg@(105,221).out
+        wire: N18.0 -- N20.shiftreg@(105,140).out -- N20.shiftreg@(105,152).out
+        wire: N19.0 -- N20.shiftreg@(105,69).out -- N20.shiftreg@(105,81).out
+    frame 2:
+      N197  FPterm     'error'  [1 term]
+      N198  subVI      'Close Serial Driver.vi' @(258,175)  [2 term]
+      N199  const      numeric 'port number'  [1 term]
+        wire: N198.0 -- N197.0
+        wire: N199.0 -- N198.1

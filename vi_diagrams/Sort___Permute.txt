@@ -1,0 +1,49 @@
+VI: Sort___Permute.vi
+  N1    prim       'Greater Than 0?' @(122,370)  [2 term]
+  N2    prim       'Array Size' @(78,371)  [2 term]
+  N3    FPterm     'Input Permutation'  [1 term]
+  N4    Case        @(161,127)  [7 term]
+    frame 0:
+      # "No given permutation, so sort in ascending / order and return resultant permutation."
+      N11   ForLoop     @(179,161)  [6 term]
+        frame 0:
+          # "Find min elt. and its index."
+          # "Replace smallest / elt. of this pass / with guaranteed / large elt (max+1)."
+          N12   nodeb9      @(377,204)  [4 term]
+          N13   prim       'Array Max & Min' @(248,204)  [5 term]
+            wire: N13.3 -- N11.tunnel@(477,307).in
+            wire: N13.4 -- N12.3 -- N11.tunnel@(477,333).in
+            wire: N11.tunnel@(179,290).in -- N12.2
+            wire: N11.shiftreg@(179,212).in -- N13.0 -- N12.0
+            wire: N12.1 -- N11.shiftreg@(470,212).in
+        wire: N4.tunnel@(161,164).in -- N11.N
+        wire: N11.tunnel@(477,307).out -- N4.tunnel@(523,307).in
+        wire: N11.tunnel@(477,333).out -- N4.tunnel@(523,333).in
+        wire: N4.tunnel@(161,290).in -- N11.tunnel@(179,290).out
+        wire: N4.tunnel@(161,214).in -- N11.shiftreg@(179,212).out
+    frame 1:
+      # "We have a given input permutation, so permute input array and return it."
+      N14   ForLoop     @(284,183)  [4 term]
+        frame 0:
+          N15   IndexArray?  @(321,261)  [3 term]
+            wire: N14.tunnel@(284,333).in -- N15.2
+            wire: N15.1 -- N14.tunnel@(393,214).in
+            wire: N14.tunnel@(284,214).in -- N15.0
+        wire: N4.tunnel@(161,333).in -- N14.tunnel@(284,333).out -- N4.tunnel@(523,333).in
+        wire: N14.tunnel@(393,214).out -- N4.tunnel@(523,307).in
+        wire: N4.tunnel@(161,214).in -- N14.tunnel@(284,214).out
+  N5    prim       'Increment' @(125,278)  [2 term]
+  N6    prim       'Array Max & Min' @(73,289)  [5 term]
+  N7    prim       'Array Size' @(71,153)  [2 term]
+  N8    FPterm     'Permutation'  [1 term]
+  N9    FPterm     'Sorted Array'  [1 term]
+  N10   FPterm     'Input Array'  [1 term]
+    wire: N7.0 -- N4.tunnel@(161,164).out
+    wire: N4.tunnel@(523,333).out -- N8.0
+    wire: N4.tunnel@(523,307).out -- N9.0
+    wire: N2.0 -- N1.1
+    wire: N3.0 -- N2.1 -- N4.tunnel@(161,333).out
+    wire: N1.0 -- N4.selector
+    wire: N5.0 -- N4.tunnel@(161,290).out
+    wire: N6.1 -- N5.1
+    wire: N10.0 -- N7.1 -- N6.0 -- N4.tunnel@(161,214).out

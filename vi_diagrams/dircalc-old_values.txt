@@ -1,0 +1,61 @@
+VI: dircalc-old_values.vi
+  N1    WhileLoop   @(-25,156)  [0 term]
+    frame 0:
+      N2    prim       'Negate' @(453,418)  [2 term]
+      N3    prim       'Negate' @(452,357)  [2 term]
+      N4    prim       'Divide' @(444,304)  [3 term]
+      N5    node4a      @(470,173)  [6 term]
+      N6    prim       'Reciprocal' @(472,381)  [2 term]
+      N7    prim       'Reciprocal' @(473,445)  [2 term]
+      N8    FPterm     (fp@0x25b4)  [1 term]
+      N9    FPterm     (fp@0x2e6c)  [1 term]
+      N10   FPterm     (fp@0x2bb0)  [1 term]
+      N11   FPterm     (fp@0x295c)  [1 term]
+      N12   FPterm     (fp@0x22f8)  [1 term]
+      N13   FPterm     (fp@0x2090)  [1 term]
+      N14   (Un)BundleByName?  @(76,318)  [2 term]
+      N15   IndexArray?  @(58,386)  [3 term]
+      N16   PropertyNode 'Array' [4 props] @(16,294)  [5 term]
+      N17   FPterm     'Array'  [1 term]
+      N18   prim       'Wait Until Next ms Multiple' @(393,482)  [2 term]
+      N19   FPterm     'stop'  [1 term]
+      N20   prim       'Multiply' @(169,338)  [3 term]
+      N21   FPterm     (fp@0xca0)  [1 term]
+      N22   FPterm     (fp@0xa34)  [1 term]
+      N23   FPterm     (fp@0x7f0)  [1 term]
+      N24   IndexArray?  @(42,343)  [3 term]
+      N25   IndexArray?  @(132,337)  [7 term]
+      N26   FPterm     'Factor'  [1 term]
+      N27   node4a      @(221,321)  [5 term]
+      N28   const      numeric 'index'  [1 term]
+      N29   const      numeric 'disabled index (col)'  [1 term]
+      N30   const      numeric 'disabled index (col)'  [1 term]
+      N31   const      numeric 'disabled index (col)'  [1 term]
+      N32   const      numeric 'millisecond multiple'  [1 term]
+      N33   const      numeric 'x'  [1 term]
+        wire: N20.0 -- N21.0 -- N27.0 -- N4.1 -- N5.0 -- N5.5 -- N9.0
+        wire: N5.4 -- N11.0
+        wire: N5.3 -- N10.0
+        wire: N27.2 -- N23.0 -- N2.1 -- N5.2
+        wire: N27.1 -- N22.0 -- N3.1 -- N5.1
+        wire: N33.0 -- N4.2
+        wire: N4.0 -- N8.0
+        wire: N3.0 -- N6.1
+        wire: N6.0 -- N12.0
+        wire: N7.0 -- N13.0
+        wire: N2.0 -- N7.1
+        wire: N31.0 -- N25.6
+        wire: N30.0 -- N25.4
+        wire: N29.0 -- N25.2
+        wire: N14.1 -- N25.0
+        wire: N15.1 -- N14.0
+        wire: N17.0 -- N15.0
+        wire: N24.1 -- N15.2
+        wire: N16.4 -- N24.0
+        wire: N32.0 -- N18.1
+        wire: N19.0 -- N1.cond
+        wire: N26.0 -- N20.2
+        wire: N25.1 -- N20.1
+        wire: N25.5 -- N27.4
+        wire: N25.3 -- N27.3
+        wire: N28.0 -- N24.2

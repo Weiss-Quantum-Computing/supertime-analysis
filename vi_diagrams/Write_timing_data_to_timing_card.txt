@@ -1,0 +1,72 @@
+VI: Write_timing_data_to_timing_card.vi
+  N1    Sequence    @(412,388)  [5 term]
+    frame 0:
+      N29   prim       'Wait (ms)' @(455,408)  [2 term]
+      N30   const      numeric 'milliseconds to wait'  [1 term]
+        wire: N30.0 -- N29.1
+        wire: N29.0 -- N1.tunnel@(514,420).in
+        wire: N1.tunnel@(412,404).in -- N1.tunnel@(514,404).in
+        wire: N1.tunnel@(412,434).in -- N1.tunnel@(514,434).in
+  N2    FPterm     'Timing error'  [1 term]
+  N3    subVI      'Digital Mode Config.vi' @(304,289)  [12 term]
+  N4    Case        @(58,63)  [1 term]
+    frame 0:
+    frame 1:
+      N31   prim       'One Button Dialog' @(331,85)  [3 term]
+      N32   const      string 'error source (" ")'  [1 term]
+        wire: N32.0 -- N31.2
+  N5    prim       'Not Equal To 0?' @(21,91)  [2 term]
+  N6    prim       'Quotient & Remainder' @(164,161)  [4 term]
+  N7    subVI      'DIO Parameter.vi' @(226,288)  [20 term]
+  N8    FPterm     'taskID out'  [1 term]
+  N9    FPterm     'timing error?'  [1 term]
+  N10   subVI      'Simple Error Handler.vi' @(573,309)  [10 term]
+  N11   FPterm     'Times Out'  [1 term]
+  N12   FPterm     'Scans'  [1 term]
+  N13   FPterm     'Device number for timing card'  [1 term]
+  N14   subVI      'DIO Write.vi' @(373,289)  [16 term]
+  N15   subVI      'DIO Config.vi' @(148,288)  [16 term]
+  N16   prim       'Array Size' @(110,161)  [2 term]
+  N17   subVI      'Digital Trigger Config.vi' @(522,289)  [12 term]
+  N18   const      enum/ring 'value in'  [1 term]
+  N19   const      enum/ring 'mode (0: no change)'  [1 term]
+  N20   const      enum/ring 'trigger type (0: no change)'  [1 term]
+  N21   const      enum/ring 'operation'  [1 term]
+  N22   const      enum/ring 'parameter name'  [1 term]
+  N23   const      numeric  [1 term]
+  N24   const      enum/ring  [1 term]
+  N25   const      array 'Array Constant'  [1 term]
+  N26   const      enum/ring 'signal mode'  [1 term]
+  N27   const      enum/ring 'request polarity'  [1 term]
+  N28   const      enum/ring 'trigger condition (0: no change)'  [1 term]
+    wire: N1.tunnel@(514,434).out -- N17.8
+    wire: N14.15 -- N1.tunnel@(412,434).out
+    wire: N1.tunnel@(514,404).out -- N17.11
+    wire: N14.4 -- N1.tunnel@(412,404).out
+    wire: N18.0 -- N7.8
+    wire: N17.3 -- N8.0
+    wire: N17.0 -- N10.9
+    wire: N6.0 -- N15.1 -- N12.0
+    wire: N28.0 -- N17.4
+    wire: N27.0 -- N3.1
+    wire: N26.0 -- N3.10
+    wire: N3.0 -- N14.11
+    wire: N7.19 -- N3.8
+    wire: N3.3 -- N14.0
+    wire: N7.14 -- N3.11
+    wire: N5.0 -- N4.selector
+    wire: N6.1 -- N5.1
+    wire: N22.0 -- N7.3
+    wire: N21.0 -- N7.2
+    wire: N10.0 -- N9.0
+    wire: N10.6 -- N2.0
+    wire: N25.0 -- N15.7
+    wire: N24.0 -- N15.9
+    wire: N16.0 -- N6.3
+    wire: N23.0 -- N6.2
+    wire: N11.0 -- N14.5 -- N16.1
+    wire: N15.4 -- N7.0
+    wire: N15.15 -- N7.5
+    wire: N19.0 -- N17.9
+    wire: N20.0 -- N17.10
+    wire: N13.0 -- N15.0

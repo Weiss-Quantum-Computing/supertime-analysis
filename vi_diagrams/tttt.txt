@@ -1,0 +1,133 @@
+VI: tttt.vi
+  N1    WhileLoop   @(149,88)  [9 term]
+    frame 0:
+      # "X"
+      # "Z"
+      # "Y"
+      N2    LocalVar   '?' @(671,363)  [1 term]
+      N3    LocalVar   '?' @(670,397)  [1 term]
+      N4    LocalVar   '?' @(434,355)  [1 term]
+      N5    Case        @(469,127)  [4 term]
+        frame 0:
+          N35   LocalVar   '?' @(603,200)  [1 term]
+          N36   LocalVar   '?' @(606,276)  [1 term]
+          N37   LocalVar   '?' @(605,238)  [1 term]
+          N38   node4a      @(482,183)  [6 term]
+          N39   PropertyNode '|B| (mG)' [4 props] @(683,285)  [5 term]
+          N40   PropertyNode 'Phi (deg.)' [4 props] @(669,244)  [5 term]
+          N41   PropertyNode 'Theta (deg.)' [4 props] @(658,201)  [5 term]
+          N42   PropertyNode 'Helmholtz_Z' [4 props] @(626,157)  [5 term]
+          N43   PropertyNode 'Helmholtz_Y' [4 props] @(555,157)  [5 term]
+          N44   PropertyNode 'Helmholtz_X' [4 props] @(482,157)  [5 term]
+          N45   FPterm     'Helmholtz_Z'  [1 term]
+          N46   FPterm     'Helmholtz_Y'  [1 term]
+          N47   FPterm     'Helmholtz_X'  [1 term]
+          N48   const      path?  [1 term]
+          N49   const      path?  [1 term]
+            wire: N46.0 -- N5.tunnel@(637,346).in -- N38.2
+            wire: N47.0 -- N5.tunnel@(510,346).in -- N38.0
+            wire: N45.0 -- N5.tunnel@(574,346).in -- N38.1
+            wire: N38.3 -- N35.0
+            wire: N38.4 -- N37.0
+            wire: N38.5 -- N36.0
+            wire: N49.0 -- N42.4 -- N43.4 -- N44.4
+            wire: N48.0 -- N39.4 -- N40.4 -- N41.4
+        frame 1:
+          N50   PropertyNode 'Helmholtz_Z' [4 props] @(678,309)  [5 term]
+          N51   PropertyNode 'Helmholtz_Y' [4 props] @(678,265)  [5 term]
+          N52   PropertyNode 'Helmholtz_X' [4 props] @(680,219)  [5 term]
+          N53   PropertyNode 'Phi (deg.)' [4 props] @(627,155)  [5 term]
+          N54   PropertyNode 'Theta (deg.)' [4 props] @(558,155)  [5 term]
+          N55   PropertyNode '|B| (mG)' [4 props] @(505,153)  [5 term]
+          N56   node4a      @(495,228)  [6 term]
+          N57   FPterm     'Theta (deg.)'  [1 term]
+          N58   FPterm     'Phi (deg.)'  [1 term]
+          N59   FPterm     '|B| (mG)'  [1 term]
+          N60   const      path? 'Visible'  [1 term]
+          N61   const      path?  [1 term]
+            wire: N56.3 -- N5.tunnel@(510,346).in
+            wire: N56.4 -- N5.tunnel@(637,346).in
+            wire: N61.0 -- N52.4 -- N51.4 -- N50.4
+            wire: N60.0 -- N55.4 -- N54.4 -- N53.4
+            wire: N59.0 -- N56.0
+            wire: N58.0 -- N56.1
+            wire: N57.0 -- N56.2
+            wire: N56.5 -- N5.tunnel@(574,346).in
+      N6    FPterm     'Mode'  [1 term]
+      N7    FPterm     'Y'  [1 term]
+      N8    FPterm     'Z'  [1 term]
+      N9    FPterm     'X'  [1 term]
+      N10   IndexArray?  @(485,433)  [3 term]
+      N11   IndexArray?  @(619,430)  [3 term]
+      N12   IndexArray?  @(549,431)  [3 term]
+      N13   node3a      @(551,375)  [2 term]
+      N14   node3a      @(620,374)  [2 term]
+      N15   node3a      @(492,379)  [2 term]
+      N16   subVI      'HelmholtzZ.vi'  params: 0=Edge Value (Anlg), 1=Channel array, 2=Edge Value (Anlg) out, 3=Unit symbol, 4=Index of upstream channels @(551,394)  [5 term]
+      N17   subVI      'HelmholtzY.vi'  params: 0=Edge Value (Anlg), 1=Channel array, 2=Edge Value (Anlg) out, 3=Unit symbol, 4=Index of upstream channels @(619,390)  [5 term]
+      N18   subVI      'HelmholtzX.vi'  params: 0=Edge Value (Anlg), 1=Channel array, 2=Edge Value (Anlg) out, 3=Unit symbol, 4=Index of upstream channels @(484,395)  [5 term]
+      N19   Case        @(308,272)  [4 term]
+        frame 0:
+        frame 1:
+          N62   nodec5     'AO Update Channel.vi' @(319,290)  [3 term]
+            wire: N19.tunnel@(331,324).in -- N62.0
+            wire: N19.tunnel@(308,302).in -- N62.1
+            wire: N19.tunnel@(308,291).in -- N62.2
+      N20   Case        @(291,355)  [4 term]
+        frame 0:
+        frame 1:
+          N63   nodec5     'AO Update Channel.vi' @(308,379)  [3 term]
+            wire: N20.tunnel@(320,413).in -- N63.0
+            wire: N20.tunnel@(291,380).in -- N63.2
+            wire: N20.tunnel@(291,391).in -- N63.1
+      N21   Case        @(297,165)  [4 term]
+        frame 0:
+        frame 1:
+          N64   nodec5     'AO Update Channel.vi' @(317,185)  [3 term]
+            wire: N21.tunnel@(323,219).in -- N64.0
+            wire: N21.tunnel@(297,201).in -- N64.1
+            wire: N21.tunnel@(297,190).in -- N64.2
+      N22   prim       'Not Equal?' @(170,398)  [3 term]
+      N23   prim       'Not Equal?' @(172,310)  [3 term]
+      N24   prim       'Not Equal?' @(170,236)  [3 term]
+      N25   prim       'Wait (ms)' @(222,458)  [2 term]
+      N26   FPterm     (fp@0x1fe0)  [1 term]
+      N27   FPterm     'device'  [1 term]
+      N28   FPterm     'device'  [1 term]
+      N29   FPterm     (fp@0x1658)  [1 term]
+      N30   FPterm     (fp@0x10c0)  [1 term]
+      N31   FPterm     'device'  [1 term]
+      N32   FPterm     'Stop'  [1 term]
+      N33   const      numeric 'milliseconds to wait'  [1 term]
+      N34   const      numeric 'index'  [1 term]
+        wire: N5.tunnel@(510,346).out -- N15.1 -- N4.0
+        wire: N5.tunnel@(574,346).out -- N13.1 -- N2.0
+        wire: N5.tunnel@(637,346).out -- N14.1 -- N3.0
+        wire: N6.0 -- N5.selector
+        wire: N12.1 -- N19.tunnel@(331,324).out -- N8.0 -- N1.shiftreg@(752,315).in
+        wire: N11.1 -- N20.tunnel@(320,413).out -- N7.0 -- N1.shiftreg@(752,403).in
+        wire: N10.1 -- N21.tunnel@(323,219).out -- N9.0 -- N1.shiftreg@(752,241).in
+        wire: N17.Edge Value (Anlg) out -- N11.0
+        wire: N16.Edge Value (Anlg) out -- N12.0
+        wire: N18.Edge Value (Anlg) out -- N10.0
+        wire: N34.0 -- N11.2 -- N12.2 -- N10.2
+        wire: N14.0 -- N17.Edge Value (Anlg)
+        wire: N13.0 -- N16.Edge Value (Anlg)
+        wire: N15.0 -- N18.Edge Value (Anlg)
+        wire: N22.0 -- N20.selector
+        wire: N23.0 -- N19.selector
+        wire: N24.0 -- N21.selector
+        wire: N1.shiftreg@(149,415).in -- N22.1
+        wire: N1.shiftreg@(149,403).in -- N22.2
+        wire: N1.shiftreg@(149,327).in -- N23.1
+        wire: N1.shiftreg@(149,315).in -- N23.2
+        wire: N1.shiftreg@(149,253).in -- N24.1
+        wire: N1.shiftreg@(149,241).in -- N24.2
+        wire: N33.0 -- N25.1
+        wire: N26.0 -- N19.tunnel@(308,302).out
+        wire: N27.0 -- N19.tunnel@(308,291).out
+        wire: N28.0 -- N20.tunnel@(291,380).out
+        wire: N29.0 -- N20.tunnel@(291,391).out
+        wire: N30.0 -- N21.tunnel@(297,201).out
+        wire: N31.0 -- N21.tunnel@(297,190).out
+        wire: N32.0 -- N1.cond

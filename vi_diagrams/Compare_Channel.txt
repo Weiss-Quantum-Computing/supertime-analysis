@@ -1,0 +1,60 @@
+VI: Compare_Channel.vi
+  # "This subVI takes the channel array and a suggested new element for the array / and checks for identical channel names or the same card and channel number. / Pops up an error window and then returns a boolean to direct the addition of  / the new element later."
+  N1    Sequence    @(143,132)  [0 term]
+    frame 0:
+      N2    FPterm     'Error?'  [1 term]
+      N3    const      path?  [1 term]
+        wire: N3.0 -- N2.0
+    frame 1:
+      N4    ForLoop     @(273,169)  [2 term]
+        frame 0:
+          N6    FPterm     'Cluster Input'  [1 term]
+          N7    Sequence    @(378,213)  [2 term]
+            frame 0:
+              N8    Case        @(595,285)  [1 term]
+                frame 0:
+                frame 1:
+                  N12   LocalVar   '?' @(723,394)  [1 term]
+                  N13   prim       'One Button Dialog' @(679,341)  [3 term]
+                  N14   const      string  [1 term]
+                    wire: N13.0 -- N12.0
+                    wire: N14.0 -- N13.2
+              N9    prim       'Equal?' @(544,331)  [3 term]
+              N10   (Un)BundleByName?  @(398,395)  [2 term]
+              N11   (Un)BundleByName?  @(395,293)  [2 term]
+                wire: N9.0 -- N8.selector
+                wire: N10.1 -- N9.1
+                wire: N11.1 -- N9.2
+                wire: N7.tunnel@(378,400).in -- N10.0
+                wire: N7.tunnel@(378,298).in -- N11.0
+            frame 1:
+              N15   prim       'Equal?' @(502,419)  [3 term]
+              N16   node6c      @(557,336)  [4 term]
+              N17   Case        @(598,277)  [1 term]
+                frame 0:
+                frame 1:
+                  N22   LocalVar   '?' @(710,397)  [1 term]
+                  N23   prim       'One Button Dialog' @(672,349)  [3 term]
+                  N24   const      string  [1 term]
+                    wire: N23.0 -- N22.0
+                    wire: N24.0 -- N23.2
+              N18   prim       'Equal?' @(511,353)  [3 term]
+              N19   prim       'Equal?' @(511,308)  [3 term]
+              N20   (Un)BundleByName?  @(408,388)  [4 term]
+              N21   (Un)BundleByName?  @(412,288)  [4 term]
+                wire: N20.3 -- N15.1
+                wire: N21.3 -- N15.2
+                wire: N15.0 -- N16.3
+                wire: N18.0 -- N16.2
+                wire: N19.0 -- N16.1
+                wire: N16.0 -- N17.selector
+                wire: N20.2 -- N18.1
+                wire: N21.2 -- N18.2
+                wire: N20.1 -- N19.1
+                wire: N21.1 -- N19.2
+                wire: N7.tunnel@(378,400).in -- N20.0
+                wire: N7.tunnel@(378,298).in -- N21.0
+            wire: N6.0 -- N7.tunnel@(378,400).out
+            wire: N4.tunnel@(273,298).in -- N7.tunnel@(378,298).out
+      N5    FPterm     'Channel Array Input'  [1 term]
+        wire: N5.0 -- N4.tunnel@(273,298).out

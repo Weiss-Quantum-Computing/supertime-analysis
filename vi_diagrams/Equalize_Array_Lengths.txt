@@ -1,0 +1,42 @@
+VI: Equalize_Array_Lengths.vi
+  N1    Case        @(197,57)  [7 term]
+    frame 0:
+      N9    Case        @(255,79)  [7 term]
+        frame 0:
+          N11   subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(307,99)  [3 term]
+            wire: N9.tunnel@(255,178).in -- N11.New size
+            wire: N11.Array Resized -- N9.tunnel@(353,103).in
+            wire: N9.tunnel@(255,103).in -- N11.Array
+            wire: N9.tunnel@(255,213).in -- N9.tunnel@(353,213).in
+        frame 1:
+          N12   subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(312,210)  [3 term]
+            wire: N9.tunnel@(255,142).in -- N12.New size
+            wire: N12.Array Resized -- N9.tunnel@(353,213).in
+            wire: N9.tunnel@(255,213).in -- N12.Array
+            wire: N9.tunnel@(255,103).in -- N9.tunnel@(353,103).in
+      N10   prim       'Greater?' @(219,147)  [3 term]
+        wire: N1.tunnel@(197,178).in -- N10.1 -- N9.tunnel@(255,178).out
+        wire: N1.tunnel@(197,142).in -- N10.2 -- N9.tunnel@(255,142).out
+        wire: N9.tunnel@(353,213).out -- N1.tunnel@(370,213).in
+        wire: N9.tunnel@(353,103).out -- N1.tunnel@(370,103).in
+        wire: N1.tunnel@(197,213).in -- N9.tunnel@(255,213).out
+        wire: N1.tunnel@(197,103).in -- N9.tunnel@(255,103).out
+        wire: N10.0 -- N9.selector
+    frame 1:
+      # "Already equal lengths.  / Do nothing."
+        wire: N1.tunnel@(197,213).in -- N1.tunnel@(370,213).in
+        wire: N1.tunnel@(197,103).in -- N1.tunnel@(370,103).in
+  N2    prim       'Equal?' @(159,147)  [3 term]
+  N3    prim       'Array Size' @(111,167)  [2 term]
+  N4    prim       'Array Size' @(112,131)  [2 term]
+  N5    FPterm     'Array 2 resized'  [1 term]
+  N6    FPterm     'Array 1 resized'  [1 term]
+  N7    FPterm     'Array 2'  [1 term]
+  N8    FPterm     'Array 1'  [1 term]
+    wire: N3.0 -- N2.1 -- N1.tunnel@(197,178).out
+    wire: N4.0 -- N2.2 -- N1.tunnel@(197,142).out
+    wire: N1.tunnel@(370,213).out -- N5.0
+    wire: N1.tunnel@(370,103).out -- N6.0
+    wire: N2.0 -- N1.selector
+    wire: N8.0 -- N4.1 -- N1.tunnel@(197,103).out
+    wire: N7.0 -- N3.1 -- N1.tunnel@(197,213).out

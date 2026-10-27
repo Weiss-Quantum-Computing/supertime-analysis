@@ -1,0 +1,85 @@
+VI: Search_Channels.vi
+  # "This subVI takes the channel array and searches for elements that match the input cluster. / If found, it returns the indices of matching elements and a boolean true."
+  N1    FPterm     'Input Index'  [1 term]
+  N2    FPterm     'Matching Elements'  [1 term]
+  N3    ForLoop     @(273,169)  [7 term]
+    frame 0:
+      N8    prim       'Not Equal?' @(458,358)  [3 term]
+      N9    prim       'Not Equal?' @(512,255)  [3 term]
+      N10   prim       'Not Equal?' @(338,492)  [3 term]
+      N11   node6c      @(558,328)  [6 term]
+      N12   Case        @(590,199)  [9 term]
+        frame 0:
+            wire: N12.tunnel@(590,244).in -- N12.tunnel@(808,244).in
+            wire: N12.tunnel@(590,456).in -- N12.tunnel@(808,460).in
+        frame 1:
+          N20   prim       'Greater Or Equal?' @(620,329)  [3 term]
+          N21   prim       'Or' @(645,347)  [3 term]
+          N22   prim       'Equal?' @(632,386)  [3 term]
+          N23   Case        @(681,294)  [6 term]
+            frame 0:
+              # "Analog cards can have digital channels 0--7 as well"
+                wire: N23.tunnel@(681,321).in -- N23.tunnel@(774,294).in
+                wire: N23.tunnel@(692,423).in -- N23.tunnel@(741,423).in
+            frame 1:
+              N26   node3a      @(721,394)  [3 term]
+              N27   const      path?  [1 term]
+                wire: N26.0 -- N23.tunnel@(741,423).in
+                wire: N23.tunnel@(721,423).in -- N26.2
+                wire: N23.tunnel@(692,423).in -- N26.1
+                wire: N27.0 -- N23.tunnel@(774,294).in
+          N24   const      numeric 'y'  [1 term]
+          N25   const      path?  [1 term]
+            wire: N25.0 -- N23.selector
+            wire: N24.0 -- N20.1
+            wire: N12.tunnel@(590,406).in -- N20.2
+            wire: N20.0 -- N21.2
+            wire: N22.0 -- N21.1
+            wire: N12.tunnel@(590,244).in -- N23.tunnel@(681,321).out
+            wire: N23.tunnel@(741,423).out -- N12.tunnel@(808,460).in
+            wire: N12.tunnel@(721,482).in -- N23.tunnel@(721,423).out
+            wire: N12.tunnel@(590,456).in -- N23.tunnel@(692,423).out
+            wire: N23.tunnel@(774,294).out -- N12.tunnel@(808,244).in
+            wire: N12.tunnel@(590,421).in -- N22.1
+            wire: N12.tunnel@(590,380).in -- N22.2
+      N13   prim       'Equal?' @(513,333)  [3 term]
+      N14   prim       'Equal?' @(511,308)  [3 term]
+      N15   (Un)BundleByName?  @(358,373)  [5 term]
+      N16   (Un)BundleByName?  @(405,273)  [5 term]
+      N17   FPterm     'Cluster Input'  [1 term]
+      N18   const      string 'x'  [1 term]
+      N19   const      string 'x'  [1 term]
+        wire: N15.3 -- N13.1 -- N12.tunnel@(590,406).out
+        wire: N16.4 -- N12.tunnel@(590,380).out
+        wire: N15.4 -- N12.tunnel@(590,421).out
+        wire: N10.0 -- N11.4
+        wire: N8.0 -- N11.5
+        wire: N19.0 -- N8.2
+        wire: N15.1 -- N8.1
+        wire: N18.0 -- N9.2
+        wire: N9.0 -- N11.1
+        wire: N16.1 -- N9.1
+        wire: N3.shiftreg@(273,242).in -- N12.tunnel@(590,244).out
+        wire: N12.tunnel@(808,244).out -- N3.shiftreg@(829,242).in
+        wire: N13.0 -- N11.3
+        wire: N14.0 -- N11.2
+        wire: N11.0 -- N12.selector
+        wire: N16.3 -- N13.2
+        wire: N15.2 -- N14.1
+        wire: N16.2 -- N14.2
+        wire: N3.i -- N10.1 -- N12.tunnel@(721,482).out
+        wire: N3.tunnel@(273,499).in -- N10.2
+        wire: N3.shiftreg@(273,456).in -- N12.tunnel@(590,456).out
+        wire: N12.tunnel@(808,460).out -- N3.shiftreg@(829,456).in
+        wire: N17.0 -- N15.0
+        wire: N3.tunnel@(273,298).in -- N16.0
+  N4    FPterm     'Channel Array Input'  [1 term]
+  N5    FPterm     'Matching?'  [1 term]
+  N6    const      array '  '  [1 term]
+  N7    const      path?  [1 term]
+    wire: N3.shiftreg@(829,242).out -- N5.0
+    wire: N7.0 -- N3.shiftreg@(273,242).out
+    wire: N1.0 -- N3.tunnel@(273,499).out
+    wire: N3.shiftreg@(829,456).out -- N2.0
+    wire: N6.0 -- N3.shiftreg@(273,456).out
+    wire: N4.0 -- N3.tunnel@(273,298).out

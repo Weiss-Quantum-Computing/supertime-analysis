@@ -1,0 +1,55 @@
+VI: build_array_with_-1_padding.vi
+  N1    prim       'Greater Or Equal?' @(136,41)  [3 term]
+  N2    node3a      @(381,59)  [3 term]
+  N3    Case        @(178,-30)  [8 term]
+    frame 0:
+      N12   node3a      @(306,20)  [3 term]
+      N13   IndexArray?  @(247,34)  [3 term]
+      N14   prim       'Subtract' @(211,40)  [3 term]
+      N15   const      numeric 'dimension size'  [1 term]
+        wire: N12.0 -- N3.tunnel@(354,91).in
+        wire: N3.tunnel@(210,-30).in -- N3.tunnel@(354,59).in
+        wire: N13.1 -- N12.2
+        wire: N3.tunnel@(178,3).in -- N12.1
+        wire: N14.0 -- N13.2
+        wire: N15.0 -- N13.0
+        wire: N3.tunnel@(178,24).in -- N14.1
+        wire: N3.tunnel@(178,82).in -- N14.2
+    frame 1:
+      N16   prim       'Transpose 2D Array' @(317,47)  [2 term]
+      N17   prim       'Transpose 2D Array' @(251,-12)  [2 term]
+      N18   node3a      @(278,55)  [3 term]
+      N19   IndexArray?  @(241,91)  [4 term]
+      N20   prim       'Subtract' @(213,35)  [3 term]
+      N21   const      numeric 'dimension size'  [1 term]
+        wire: N3.tunnel@(178,3).in -- N3.tunnel@(354,91).in
+        wire: N16.0 -- N3.tunnel@(354,59).in
+        wire: N17.0 -- N18.1
+        wire: N18.0 -- N16.1
+        wire: N3.tunnel@(210,-30).in -- N17.1
+        wire: N19.1 -- N18.2
+        wire: N3.tunnel@(178,116).in -- N19.3
+        wire: N20.0 -- N19.2
+        wire: N21.0 -- N19.0
+        wire: N3.tunnel@(178,82).in -- N20.1
+        wire: N3.tunnel@(178,24).in -- N20.2
+  N4    IndexArray?  @(82,90)  [5 term]
+  N5    prim       'Array Size' @(80,5)  [2 term]
+  N6    prim       'Array Size' @(36,84)  [2 term]
+  N7    FPterm     'Concatenated array'  [1 term]
+  N8    FPterm     'Original array'  [1 term]
+  N9    FPterm     'added array'  [1 term]
+  N10   const      numeric 'index'  [1 term]
+  N11   const      numeric 'index'  [1 term]
+    wire: N9.0 -- N5.1 -- N3.tunnel@(178,3).out
+    wire: N3.tunnel@(354,91).out -- N2.2
+    wire: N2.0 -- N7.0
+    wire: N3.tunnel@(354,59).out -- N2.1
+    wire: N8.0 -- N6.1 -- N3.tunnel@(210,-30).out
+    wire: N4.3 -- N3.tunnel@(178,116).out
+    wire: N11.0 -- N4.4
+    wire: N4.1 -- N1.1 -- N3.tunnel@(178,82).out
+    wire: N5.0 -- N1.2 -- N3.tunnel@(178,24).out
+    wire: N1.0 -- N3.selector
+    wire: N10.0 -- N4.2
+    wire: N6.0 -- N4.0

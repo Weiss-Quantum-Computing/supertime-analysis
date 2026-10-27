@@ -1,0 +1,565 @@
+VI: Prepare_Output_Voltage_Array.vi
+  N1    (Un)BundleByName?  @(156,-118)  [9 term]
+  N2    FPterm     'lattice AO's'  [1 term]
+  N3    FPterm     'Total power into 1st AO'  [1 term]
+  N4    FPterm     'Output Powers'  [1 term]
+  N5    Case        @(335,11)  [36 term]
+    frame 0:
+      N44   Case        @(382,116)  [28 term]
+        frame 0:
+          N47   FPterm     'confirm'  [1 term]
+          N48   Case        @(482,187)  [12 term]
+            frame 0:
+              N59   subVI      'Z Lattice Main.vi'  params: 0=Start Power (mW), 1=Z Lattice Power (mW), 2=Stop Power (mW), 3=Time const (usec), 4=Z AO Control Voltages (V), 5=Timestep (usec), 6=Voltages, 7=Psym, 8=Powers @(511,230)  [9 term]
+                wire: N48.tunnel@(563,288).in -- N59.Z AO Control Voltages (V)
+                wire: N48.tunnel@(563,187).in -- N59.Z Lattice Power (mW)
+                wire: N59.Voltages -- N48.tunnel@(563,221).in
+                wire: N59.Powers -- N48.tunnel@(563,242).in
+                wire: N48.tunnel@(529,305).in -- N59.Psym
+                wire: N48.tunnel@(509,305).in -- N59.Timestep (usec)
+                wire: N48.tunnel@(482,239).in -- N59.Time const (usec)
+                wire: N48.tunnel@(482,233).in -- N59.Stop Power (mW)
+                wire: N48.tunnel@(509,187).in -- N59.Start Power (mW)
+            frame 1:
+              N60   subVI      'Z Lattice Main.vi'  params: 0=Start Power (mW), 1=Z Lattice Power (mW), 2=Stop Power (mW), 3=Time const (usec), 4=Z AO Control Voltages (V), 5=Timestep (usec), 6=Voltages, 7=Psym, 8=Powers @(509,220)  [9 term]
+                wire: N60.Powers -- N48.tunnel@(563,242).in
+                wire: N60.Voltages -- N48.tunnel@(563,221).in
+                wire: N48.tunnel@(509,305).in -- N60.Timestep (usec)
+                wire: N48.tunnel@(482,233).in -- N60.Stop Power (mW)
+                wire: N48.tunnel@(509,187).in -- N60.Start Power (mW)
+                wire: N48.tunnel@(482,239).in -- N60.Time const (usec)
+                wire: N48.tunnel@(482,283).in -- N60.Z AO Control Voltages (V)
+                wire: N48.tunnel@(534,187).in -- N60.Z Lattice Power (mW)
+                wire: N48.tunnel@(529,305).in -- N60.Psym
+          N49   subVI      'Dummy Main.vi'  params: 0=Output Voltages, 1=Timestep (usec), 2=Stop Value, 3=Start Value @(458,452)  [4 term]
+          N50   subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(682,270)  [3 term]
+          N51   subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(659,453)  [3 term]
+          N52   node3a      @(604,176)  [2 term]
+          N53   node3a      @(717,341)  [3 term]
+          N54   prim       'Array Max & Min' @(630,313)  [5 term]
+          N55   node3a      @(587,321)  [3 term]
+          N56   prim       'Array Size' @(556,451)  [2 term]
+          N57   prim       'Array Size' @(610,231)  [2 term]
+          N58   const      path?  [1 term]
+            wire: N54.1 -- N50.New size -- N51.New size -- N44.tunnel@(666,116).in
+            wire: N57.0 -- N55.1
+            wire: N44.tunnel@(626,116).in -- N48.tunnel@(563,288).out
+            wire: N44.tunnel@(640,116).in -- N48.tunnel@(563,187).out
+            wire: N58.0 -- N47.0
+            wire: N44.tunnel@(382,298).in -- N48.selector
+            wire: N52.0 -- N44.tunnel@(768,176).in
+            wire: N48.tunnel@(563,242).out -- N52.1
+            wire: N53.0 -- N44.tunnel@(768,296).in
+            wire: N51.Array Resized -- N53.2
+            wire: N50.Array Resized -- N53.1
+            wire: N49.Output Voltages -- N56.1 -- N51.Array
+            wire: N48.tunnel@(563,221).out -- N50.Array -- N57.1
+            wire: N55.0 -- N54.0
+            wire: N56.0 -- N55.2
+            wire: N44.tunnel@(382,592).in -- N49.Timestep (usec) -- N48.tunnel@(509,305).out
+            wire: N44.tunnel@(382,489).in -- N49.Stop Value
+            wire: N44.tunnel@(382,482).in -- N49.Start Value
+            wire: N44.tunnel@(382,150).in -- N48.tunnel@(482,233).out
+            wire: N44.tunnel@(382,146).in -- N48.tunnel@(509,187).out
+            wire: N44.tunnel@(382,157).in -- N48.tunnel@(482,239).out
+            wire: N44.tunnel@(410,116).in -- N48.tunnel@(482,283).out
+            wire: N44.tunnel@(437,116).in -- N48.tunnel@(534,187).out
+            wire: N44.tunnel@(529,712).in -- N48.tunnel@(529,305).out
+        frame 1:
+          N61   subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(659,456)  [3 term]
+          N62   subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(682,273)  [3 term]
+          N63   subVI      'Dummy Main.vi'  params: 0=Output Voltages, 1=Timestep (usec), 2=Stop Value, 3=Start Value @(458,455)  [4 term]
+          N64   subVI      'Z Lattice Main.vi'  params: 0=Start Power (mW), 1=Z Lattice Power (mW), 2=Stop Power (mW), 3=Time const (usec), 4=Z AO Control Voltages (V), 5=Timestep (usec), 6=Voltages, 7=Psym, 8=Powers @(509,223)  [9 term]
+          N65   node3a      @(618,186)  [2 term]
+          N66   prim       'Array Size' @(573,235)  [2 term]
+          N67   prim       'Array Size' @(556,454)  [2 term]
+          N68   node3a      @(587,324)  [3 term]
+          N69   prim       'Array Max & Min' @(630,316)  [5 term]
+          N70   node3a      @(717,344)  [3 term]
+            wire: N65.0 -- N44.tunnel@(768,176).in
+            wire: N64.Powers -- N65.1
+            wire: N69.1 -- N62.New size -- N61.New size -- N44.tunnel@(666,116).in
+            wire: N70.0 -- N44.tunnel@(768,296).in
+            wire: N44.tunnel@(382,592).in -- N64.Timestep (usec) -- N63.Timestep (usec)
+            wire: N44.tunnel@(382,581).in -- N63.Stop Value
+            wire: N44.tunnel@(382,573).in -- N63.Start Value
+            wire: N44.tunnel@(529,712).in -- N64.Psym
+            wire: N44.tunnel@(382,209).in -- N64.Z AO Control Voltages (V)
+            wire: N44.tunnel@(388,116).in -- N64.Z Lattice Power (mW)
+            wire: N44.tunnel@(382,157).in -- N64.Time const (usec)
+            wire: N44.tunnel@(382,252).in -- N64.Stop Power (mW)
+            wire: N44.tunnel@(382,239).in -- N64.Start Power (mW)
+            wire: N67.0 -- N68.2
+            wire: N66.0 -- N68.1
+            wire: N68.0 -- N69.0
+            wire: N64.Voltages -- N66.1 -- N62.Array
+            wire: N63.Output Voltages -- N67.1 -- N61.Array
+            wire: N62.Array Resized -- N70.1
+            wire: N61.Array Resized -- N70.2
+        frame 2:
+          N71   subVI      'Dummy Main.vi'  params: 0=Output Voltages, 1=Timestep (usec), 2=Stop Value, 3=Start Value @(460,453)  [4 term]
+          N72   subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(684,271)  [3 term]
+          N73   subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(661,454)  [3 term]
+          N74   subVI      'Z Lattice Main.vi'  params: 0=Start Power (mW), 1=Z Lattice Power (mW), 2=Stop Power (mW), 3=Time const (usec), 4=Z AO Control Voltages (V), 5=Timestep (usec), 6=Voltages, 7=Psym, 8=Powers @(511,221)  [9 term]
+          N75   node3a      @(605,181)  [2 term]
+          N76   node3a      @(719,342)  [3 term]
+          N77   prim       'Array Max & Min' @(632,314)  [5 term]
+          N78   node3a      @(589,322)  [3 term]
+          N79   prim       'Array Size' @(558,452)  [2 term]
+          N80   prim       'Array Size' @(575,233)  [2 term]
+            wire: N75.0 -- N44.tunnel@(768,176).in
+            wire: N74.Powers -- N75.1
+            wire: N77.1 -- N72.New size -- N73.New size -- N44.tunnel@(666,116).in
+            wire: N76.0 -- N44.tunnel@(768,296).in
+            wire: N44.tunnel@(382,592).in -- N74.Timestep (usec) -- N71.Timestep (usec)
+            wire: N44.tunnel@(382,671).in -- N71.Stop Value
+            wire: N44.tunnel@(382,659).in -- N71.Start Value
+            wire: N44.tunnel@(529,712).in -- N74.Psym
+            wire: N44.tunnel@(382,404).in -- N74.Z AO Control Voltages (V)
+            wire: N44.tunnel@(382,324).in -- N74.Z Lattice Power (mW)
+            wire: N44.tunnel@(382,157).in -- N74.Time const (usec)
+            wire: N44.tunnel@(382,367).in -- N74.Stop Power (mW)
+            wire: N44.tunnel@(382,353).in -- N74.Start Power (mW)
+            wire: N73.Array Resized -- N76.2
+            wire: N72.Array Resized -- N76.1
+            wire: N71.Output Voltages -- N79.1 -- N73.Array
+            wire: N74.Voltages -- N80.1 -- N72.Array
+            wire: N78.0 -- N77.0
+            wire: N80.0 -- N78.1
+            wire: N79.0 -- N78.2
+      N45   prim       'Search 1D Array' @(490,52)  [4 term]
+      N46   const      numeric  [1 term]
+        wire: N5.tunnel@(526,11).in -- N44.tunnel@(626,116).out
+        wire: N5.tunnel@(514,11).in -- N44.tunnel@(640,116).out
+        wire: N5.tunnel@(335,298).in -- N44.tunnel@(382,298).out
+        wire: N44.tunnel@(768,176).out -- N5.tunnel@(822,599).in
+        wire: N5.tunnel@(335,147).in -- N44.tunnel@(382,150).out
+        wire: N5.tunnel@(335,138).in -- N44.tunnel@(382,146).out
+        wire: N44.tunnel@(666,116).out -- N5.tunnel@(617,11).in
+        wire: N5.tunnel@(335,670).in -- N44.tunnel@(382,671).out
+        wire: N5.tunnel@(335,659).in -- N44.tunnel@(382,659).out
+        wire: N5.tunnel@(335,404).in -- N44.tunnel@(382,404).out
+        wire: N5.tunnel@(335,324).in -- N44.tunnel@(382,324).out
+        wire: N5.tunnel@(335,592).in -- N44.tunnel@(382,592).out
+        wire: N5.tunnel@(335,367).in -- N44.tunnel@(382,367).out
+        wire: N5.tunnel@(335,355).in -- N44.tunnel@(382,353).out
+        wire: N5.tunnel@(335,582).in -- N44.tunnel@(382,581).out
+        wire: N5.tunnel@(335,573).in -- N44.tunnel@(382,573).out
+        wire: N5.tunnel@(376,11).in -- N44.tunnel@(382,209).out
+        wire: N5.tunnel@(388,11).in -- N44.tunnel@(388,116).out
+        wire: N5.tunnel@(335,247).in -- N44.tunnel@(382,252).out
+        wire: N5.tunnel@(335,239).in -- N44.tunnel@(382,239).out
+        wire: N44.tunnel@(768,296).out -- N5.tunnel@(822,296).in
+        wire: N5.tunnel@(335,492).in -- N44.tunnel@(382,489).out
+        wire: N5.tunnel@(335,482).in -- N44.tunnel@(382,482).out
+        wire: N5.tunnel@(335,157).in -- N44.tunnel@(382,157).out
+        wire: N5.tunnel@(410,11).in -- N44.tunnel@(410,116).out
+        wire: N5.tunnel@(438,11).in -- N44.tunnel@(437,116).out
+        wire: N5.tunnel@(397,757).in -- N44.tunnel@(529,712).out
+        wire: N45.0 -- N44.selector
+        wire: N46.0 -- N45.2 -- N45.1
+        wire: N5.tunnel@(494,11).in -- N45.3
+    frame 1:
+      N81   Case        @(380,113)  [26 term]
+        frame 0:
+          N85   subVI      'X Lattice Main' @(448,321)  [11 term]
+          N86   subVI      'Dummy Main.vi'  params: 0=Output Voltages, 1=Timestep (usec), 2=Stop Value, 3=Start Value @(451,433)  [4 term]
+          N87   subVI      'Dummy Main.vi'  params: 0=Output Voltages, 1=Timestep (usec), 2=Stop Value, 3=Start Value @(454,547)  [4 term]
+          N88   subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(670,233)  [3 term]
+          N89   subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(669,292)  [3 term]
+          N90   subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(669,442)  [3 term]
+          N91   subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(650,532)  [3 term]
+          N92   subVI      'Z Lattice Main.vi'  params: 0=Start Power (mW), 1=Z Lattice Power (mW), 2=Stop Power (mW), 3=Time const (usec), 4=Z AO Control Voltages (V), 5=Timestep (usec), 6=Voltages, 7=Psym, 8=Powers @(448,208)  [9 term]
+          N93   subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(683,611)  [3 term]
+          N94   subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(678,671)  [3 term]
+          N95   prim       'Array Max & Min' @(634,602)  [5 term]
+          N96   node3a      @(589,603)  [3 term]
+          N97   prim       'Array Size' @(542,615)  [2 term]
+          N98   prim       'Array Size' @(542,579)  [2 term]
+          N99   node3a      @(722,608)  [3 term]
+          N100  node3a      @(704,352)  [5 term]
+          N101  prim       'Array Max & Min' @(628,328)  [5 term]
+          N102  node3a      @(587,327)  [5 term]
+          N103  prim       'Array Size' @(515,544)  [2 term]
+          N104  prim       'Array Size' @(520,433)  [2 term]
+          N105  prim       'Array Size' @(529,315)  [2 term]
+          N106  prim       'Array Size' @(521,216)  [2 term]
+            wire: N81.tunnel@(380,379).in -- N85.5
+            wire: N99.0 -- N81.tunnel@(761,500).in
+            wire: N94.Array Resized -- N99.2
+            wire: N93.Array Resized -- N99.1
+            wire: N85.0 -- N97.1 -- N94.Array
+            wire: N92.Powers -- N98.1 -- N93.Array
+            wire: N95.1 -- N93.New size -- N94.New size
+            wire: N96.0 -- N95.0
+            wire: N97.0 -- N96.2
+            wire: N98.0 -- N96.1
+            wire: N101.1 -- N88.New size -- N89.New size -- N90.New size -- N91.New size -- N81.tunnel@(626,113).in
+            wire: N100.0 -- N81.tunnel@(761,296).in
+            wire: N91.Array Resized -- N100.4
+            wire: N90.Array Resized -- N100.3
+            wire: N89.Array Resized -- N100.2
+            wire: N88.Array Resized -- N100.1
+            wire: N87.Output Voltages -- N103.1 -- N91.Array
+            wire: N86.Output Voltages -- N104.1 -- N90.Array
+            wire: N85.2 -- N105.1 -- N89.Array
+            wire: N92.Voltages -- N85.3 -- N106.1 -- N88.Array
+            wire: N102.0 -- N101.0
+            wire: N103.0 -- N102.4
+            wire: N104.0 -- N102.3
+            wire: N105.0 -- N102.2
+            wire: N106.0 -- N102.1
+            wire: N81.tunnel@(380,592).in -- N92.Timestep (usec) -- N85.6 -- N86.Timestep (usec) -- N87.Timestep (usec)
+            wire: N81.tunnel@(380,665).in -- N87.Stop Value
+            wire: N81.tunnel@(380,659).in -- N87.Start Value
+            wire: N81.tunnel@(380,578).in -- N86.Stop Value
+            wire: N81.tunnel@(380,570).in -- N86.Start Value
+            wire: N81.tunnel@(380,355).in -- N85.10
+            wire: N81.tunnel@(380,329).in -- N85.9
+            wire: N81.tunnel@(380,157).in -- N92.Time const (usec) -- N85.7
+            wire: N81.tunnel@(496,737).in -- N92.Psym -- N85.4
+            wire: N81.tunnel@(380,420).in -- N85.1
+            wire: N81.tunnel@(380,324).in -- N85.8
+            wire: N81.tunnel@(380,216).in -- N92.Stop Power (mW)
+            wire: N81.tunnel@(380,207).in -- N92.Start Power (mW)
+            wire: N81.tunnel@(380,146).in -- N92.Z AO Control Voltages (V)
+            wire: N81.tunnel@(388,113).in -- N92.Z Lattice Power (mW)
+        frame 1:
+          N107  subVI      'X Lattice Main' @(436,316)  [11 term]
+          N108  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(638,527)  [3 term]
+          N109  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(657,437)  [3 term]
+          N110  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(657,287)  [3 term]
+          N111  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(658,228)  [3 term]
+          N112  subVI      'Dummy Main.vi'  params: 0=Output Voltages, 1=Timestep (usec), 2=Stop Value, 3=Start Value @(442,542)  [4 term]
+          N113  subVI      'Dummy Main.vi'  params: 0=Output Voltages, 1=Timestep (usec), 2=Stop Value, 3=Start Value @(439,428)  [4 term]
+          N114  subVI      'Z Lattice Main.vi'  params: 0=Start Power (mW), 1=Z Lattice Power (mW), 2=Stop Power (mW), 3=Time const (usec), 4=Z AO Control Voltages (V), 5=Timestep (usec), 6=Voltages, 7=Psym, 8=Powers @(436,203)  [9 term]
+          N115  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(659,581)  [3 term]
+          N116  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(660,637)  [3 term]
+          N117  prim       'Array Max & Min' @(611,608)  [5 term]
+          N118  node3a      @(571,616)  [3 term]
+          N119  prim       'Array Size' @(518,635)  [2 term]
+          N120  prim       'Array Size' @(522,587)  [2 term]
+          N121  node3a      @(720,625)  [3 term]
+          N122  prim       'Array Size' @(509,211)  [2 term]
+          N123  prim       'Array Size' @(517,310)  [2 term]
+          N124  prim       'Array Size' @(508,428)  [2 term]
+          N125  prim       'Array Size' @(503,539)  [2 term]
+          N126  node3a      @(575,322)  [5 term]
+          N127  prim       'Array Max & Min' @(616,323)  [5 term]
+          N128  node3a      @(692,347)  [5 term]
+            wire: N81.tunnel@(380,379).in -- N107.5
+            wire: N121.0 -- N81.tunnel@(761,500).in
+            wire: N116.Array Resized -- N121.2
+            wire: N115.Array Resized -- N121.1
+            wire: N107.0 -- N119.1 -- N116.Array
+            wire: N114.Powers -- N120.1 -- N115.Array
+            wire: N117.1 -- N115.New size -- N116.New size
+            wire: N118.0 -- N117.0
+            wire: N119.0 -- N118.2
+            wire: N120.0 -- N118.1
+            wire: N114.Voltages -- N107.3 -- N122.1 -- N111.Array
+            wire: N127.1 -- N111.New size -- N110.New size -- N109.New size -- N108.New size -- N81.tunnel@(626,113).in
+            wire: N128.0 -- N81.tunnel@(761,296).in
+            wire: N81.tunnel@(380,592).in -- N114.Timestep (usec) -- N107.6 -- N113.Timestep (usec) -- N112.Timestep (usec)
+            wire: N81.tunnel@(380,665).in -- N112.Stop Value
+            wire: N81.tunnel@(380,659).in -- N112.Start Value
+            wire: N81.tunnel@(380,492).in -- N113.Stop Value
+            wire: N81.tunnel@(380,482).in -- N113.Start Value
+            wire: N81.tunnel@(380,157).in -- N114.Time const (usec) -- N107.7
+            wire: N81.tunnel@(380,329).in -- N107.9
+            wire: N81.tunnel@(380,355).in -- N107.10
+            wire: N81.tunnel@(496,737).in -- N114.Psym -- N107.4
+            wire: N81.tunnel@(380,420).in -- N107.1
+            wire: N81.tunnel@(380,324).in -- N107.8
+            wire: N81.tunnel@(380,190).in -- N114.Stop Power (mW)
+            wire: N81.tunnel@(380,178).in -- N114.Start Power (mW)
+            wire: N81.tunnel@(410,113).in -- N114.Z AO Control Voltages (V)
+            wire: N81.tunnel@(438,113).in -- N114.Z Lattice Power (mW)
+            wire: N122.0 -- N126.1
+            wire: N123.0 -- N126.2
+            wire: N124.0 -- N126.3
+            wire: N125.0 -- N126.4
+            wire: N126.0 -- N127.0
+            wire: N107.2 -- N123.1 -- N110.Array
+            wire: N113.Output Voltages -- N124.1 -- N109.Array
+            wire: N112.Output Voltages -- N125.1 -- N108.Array
+            wire: N111.Array Resized -- N128.1
+            wire: N110.Array Resized -- N128.2
+            wire: N109.Array Resized -- N128.3
+            wire: N108.Array Resized -- N128.4
+        frame 2:
+          N129  subVI      'X Lattice Main' @(426,284)  [11 term]
+          N130  subVI      'Dummy Main.vi'  params: 0=Output Voltages, 1=Timestep (usec), 2=Stop Value, 3=Start Value @(429,396)  [4 term]
+          N131  subVI      'Dummy Main.vi'  params: 0=Output Voltages, 1=Timestep (usec), 2=Stop Value, 3=Start Value @(432,510)  [4 term]
+          N132  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(648,196)  [3 term]
+          N133  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(647,255)  [3 term]
+          N134  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(647,405)  [3 term]
+          N135  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(628,495)  [3 term]
+          N136  subVI      'Z Lattice Main.vi'  params: 0=Start Power (mW), 1=Z Lattice Power (mW), 2=Stop Power (mW), 3=Time const (usec), 4=Z AO Control Voltages (V), 5=Timestep (usec), 6=Voltages, 7=Psym, 8=Powers @(426,171)  [9 term]
+          N137  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(666,589)  [3 term]
+          N138  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(665,647)  [3 term]
+          N139  prim       'Array Max & Min' @(606,615)  [5 term]
+          N140  node3a      @(562,619)  [3 term]
+          N141  prim       'Array Size' @(511,638)  [2 term]
+          N142  prim       'Array Size' @(515,591)  [2 term]
+          N143  node3a      @(719,637)  [3 term]
+          N144  node3a      @(682,315)  [5 term]
+          N145  prim       'Array Max & Min' @(606,291)  [5 term]
+          N146  node3a      @(565,290)  [5 term]
+          N147  prim       'Array Size' @(493,507)  [2 term]
+          N148  prim       'Array Size' @(498,396)  [2 term]
+          N149  prim       'Array Size' @(507,278)  [2 term]
+          N150  prim       'Array Size' @(499,179)  [2 term]
+            wire: N81.tunnel@(380,379).in -- N129.5
+            wire: N143.0 -- N81.tunnel@(761,500).in
+            wire: N138.Array Resized -- N143.2
+            wire: N137.Array Resized -- N143.1
+            wire: N129.0 -- N141.1 -- N138.Array
+            wire: N136.Powers -- N142.1 -- N137.Array
+            wire: N139.1 -- N137.New size -- N138.New size
+            wire: N140.0 -- N139.0
+            wire: N141.0 -- N140.2
+            wire: N142.0 -- N140.1
+            wire: N145.1 -- N132.New size -- N133.New size -- N134.New size -- N135.New size -- N81.tunnel@(626,113).in
+            wire: N144.0 -- N81.tunnel@(761,296).in
+            wire: N81.tunnel@(380,592).in -- N136.Timestep (usec) -- N129.6 -- N130.Timestep (usec) -- N131.Timestep (usec)
+            wire: N81.tunnel@(380,578).in -- N131.Stop Value
+            wire: N81.tunnel@(380,570).in -- N131.Start Value
+            wire: N81.tunnel@(380,492).in -- N130.Stop Value
+            wire: N81.tunnel@(380,482).in -- N130.Start Value
+            wire: N81.tunnel@(496,737).in -- N136.Psym -- N129.4
+            wire: N81.tunnel@(380,157).in -- N136.Time const (usec) -- N129.7
+            wire: N81.tunnel@(380,216).in -- N129.9
+            wire: N81.tunnel@(380,207).in -- N129.10
+            wire: N81.tunnel@(380,146).in -- N129.1
+            wire: N81.tunnel@(388,113).in -- N129.8
+            wire: N81.tunnel@(380,190).in -- N136.Stop Power (mW)
+            wire: N81.tunnel@(380,178).in -- N136.Start Power (mW)
+            wire: N81.tunnel@(410,113).in -- N136.Z AO Control Voltages (V)
+            wire: N81.tunnel@(438,113).in -- N136.Z Lattice Power (mW)
+            wire: N135.Array Resized -- N144.4
+            wire: N134.Array Resized -- N144.3
+            wire: N133.Array Resized -- N144.2
+            wire: N132.Array Resized -- N144.1
+            wire: N131.Output Voltages -- N147.1 -- N135.Array
+            wire: N130.Output Voltages -- N148.1 -- N134.Array
+            wire: N129.2 -- N149.1 -- N133.Array
+            wire: N136.Voltages -- N129.3 -- N150.1 -- N132.Array
+            wire: N146.0 -- N145.0
+            wire: N147.0 -- N146.4
+            wire: N148.0 -- N146.3
+            wire: N149.0 -- N146.2
+            wire: N150.0 -- N146.1
+      N82   prim       'Search 1D Array' @(486,50)  [4 term]
+      N83   const      numeric  [1 term]
+      N84   const      numeric  [1 term]
+        wire: N5.tunnel@(335,28).in -- N81.tunnel@(380,379).out
+        wire: N81.tunnel@(761,500).out -- N5.tunnel@(822,599).in
+        wire: N81.tunnel@(626,113).out -- N5.tunnel@(617,11).in
+        wire: N5.tunnel@(335,492).in -- N81.tunnel@(380,492).out
+        wire: N5.tunnel@(335,482).in -- N81.tunnel@(380,482).out
+        wire: N5.tunnel@(335,147).in -- N81.tunnel@(380,190).out
+        wire: N5.tunnel@(335,138).in -- N81.tunnel@(380,178).out
+        wire: N81.tunnel@(761,296).out -- N5.tunnel@(822,296).in
+        wire: N5.tunnel@(335,670).in -- N81.tunnel@(380,665).out
+        wire: N5.tunnel@(335,659).in -- N81.tunnel@(380,659).out
+        wire: N5.tunnel@(335,582).in -- N81.tunnel@(380,578).out
+        wire: N5.tunnel@(335,573).in -- N81.tunnel@(380,570).out
+        wire: N5.tunnel@(335,355).in -- N81.tunnel@(380,355).out
+        wire: N5.tunnel@(335,367).in -- N81.tunnel@(380,329).out
+        wire: N5.tunnel@(335,404).in -- N81.tunnel@(380,420).out
+        wire: N5.tunnel@(335,324).in -- N81.tunnel@(380,324).out
+        wire: N5.tunnel@(397,757).in -- N81.tunnel@(496,737).out
+        wire: N5.tunnel@(335,247).in -- N81.tunnel@(380,216).out
+        wire: N5.tunnel@(335,239).in -- N81.tunnel@(380,207).out
+        wire: N5.tunnel@(376,11).in -- N81.tunnel@(380,146).out
+        wire: N5.tunnel@(388,11).in -- N81.tunnel@(388,113).out
+        wire: N5.tunnel@(335,157).in -- N81.tunnel@(380,157).out
+        wire: N5.tunnel@(335,592).in -- N81.tunnel@(380,592).out
+        wire: N5.tunnel@(410,11).in -- N81.tunnel@(410,113).out
+        wire: N5.tunnel@(438,11).in -- N81.tunnel@(438,113).out
+        wire: N82.0 -- N81.selector
+        wire: N84.0 -- N82.1
+        wire: N83.0 -- N82.2
+        wire: N5.tunnel@(494,11).in -- N82.3
+    frame 2:
+      # "Find longest / duration curve."
+      # "Resize all curves / to longest one."
+      N151  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(663,144)  [3 term]
+      N152  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(664,239)  [3 term]
+      N153  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(663,342)  [3 term]
+      N154  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(663,432)  [3 term]
+      N155  subVI      'Dummy Main.vi'  params: 0=Output Voltages, 1=Timestep (usec), 2=Stop Value, 3=Start Value @(430,480)  [4 term]
+      N156  subVI      'Dummy Main.vi'  params: 0=Output Voltages, 1=Timestep (usec), 2=Stop Value, 3=Start Value @(431,570)  [4 term]
+      N157  subVI      'Dummy Main.vi'  params: 0=Output Voltages, 1=Timestep (usec), 2=Stop Value, 3=Start Value @(431,658)  [4 term]
+      N158  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(664,508)  [3 term]
+      N159  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(665,584)  [3 term]
+      N160  subVI      'Z Lattice Main.vi'  params: 0=Start Power (mW), 1=Z Lattice Power (mW), 2=Stop Power (mW), 3=Time const (usec), 4=Z AO Control Voltages (V), 5=Timestep (usec), 6=Voltages, 7=Psym, 8=Powers @(430,141)  [9 term]
+      N161  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(756,642)  [3 term]
+      N162  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(754,683)  [3 term]
+      N163  subVI      'Resize Array.vi'  params: 0=Array Resized, 1=New size, 2=Array @(754,718)  [3 term]
+      N164  subVI      'X Lattice Main' @(429,240)  [11 term]
+      N165  subVI      'Y Lattice Main' @(427,351)  [12 term]
+      N166  prim       'Array Max & Min' @(713,658)  [5 term]
+      N167  node3a      @(667,664)  [4 term]
+      N168  prim       'Array Size' @(612,695)  [2 term]
+      N169  prim       'Array Size' @(613,657)  [2 term]
+      N170  prim       'Array Size' @(615,626)  [2 term]
+      N171  node3a      @(786,599)  [4 term]
+      N172  prim       'Array Size' @(473,355)  [2 term]
+      N173  prim       'Array Size' @(505,656)  [2 term]
+      N174  prim       'Array Size' @(488,591)  [2 term]
+      N175  prim       'Array Size' @(479,455)  [2 term]
+      N176  prim       'Array Size' @(479,251)  [2 term]
+      N177  prim       'Array Size' @(479,160)  [2 term]
+      N178  node3a      @(749,278)  [7 term]
+      N179  prim       'Array Max & Min' @(567,254)  [5 term]
+      N180  node3a      @(526,255)  [7 term]
+        wire: N5.tunnel@(335,502).in -- N155.Timestep (usec)
+        wire: N5.tunnel@(335,592).in -- N157.Timestep (usec) -- N156.Timestep (usec)
+        wire: N5.tunnel@(335,376).in -- N165.8
+        wire: N5.tunnel@(335,349).in -- N165.11
+        wire: N5.tunnel@(335,157).in -- N160.Time const (usec)
+        wire: N5.tunnel@(335,165).in -- N160.Timestep (usec)
+        wire: N5.tunnel@(335,268).in -- N164.6
+        wire: N5.tunnel@(335,256).in -- N164.7
+        wire: N5.tunnel@(335,28).in -- N164.5 -- N165.6
+        wire: N160.Voltages -- N177.1 -- N151.Array -- N164.3 -- N165.2
+        wire: N164.0 -- N169.1 -- N162.Array -- N165.3
+        wire: N164.2 -- N152.Array -- N176.1
+        wire: N163.Array Resized -- N171.3
+        wire: N162.Array Resized -- N171.2
+        wire: N161.Array Resized -- N171.1
+        wire: N165.0 -- N168.1 -- N163.Array
+        wire: N160.Powers -- N170.1 -- N161.Array
+        wire: N166.1 -- N161.New size -- N162.New size -- N163.New size
+        wire: N167.0 -- N166.0
+        wire: N168.0 -- N167.3
+        wire: N169.0 -- N167.2
+        wire: N170.0 -- N167.1
+        wire: N171.0 -- N5.tunnel@(822,599).in
+        wire: N5.tunnel@(335,147).in -- N160.Stop Power (mW)
+        wire: N5.tunnel@(335,138).in -- N160.Start Power (mW)
+        wire: N159.Array Resized -- N178.6
+        wire: N154.Array Resized -- N178.5
+        wire: N153.Array Resized -- N178.4
+        wire: N158.Array Resized -- N178.3
+        wire: N179.1 -- N151.New size -- N152.New size -- N153.New size -- N154.New size -- N158.New size -- N159.New size -- N5.tunnel@(617,11).in
+        wire: N157.Output Voltages -- N173.1 -- N159.Array
+        wire: N165.1 -- N172.1 -- N158.Array
+        wire: N173.0 -- N180.6
+        wire: N174.0 -- N180.5
+        wire: N175.0 -- N180.4
+        wire: N172.0 -- N180.3
+        wire: N5.tunnel@(335,404).in -- N165.4
+        wire: N5.tunnel@(335,324).in -- N165.7
+        wire: N5.tunnel@(335,367).in -- N165.9
+        wire: N5.tunnel@(335,355).in -- N165.10
+        wire: N5.tunnel@(397,757).in -- N164.4 -- N165.5 -- N160.Psym
+        wire: N5.tunnel@(388,11).in -- N164.8
+        wire: N5.tunnel@(335,670).in -- N157.Stop Value
+        wire: N5.tunnel@(335,659).in -- N157.Start Value
+        wire: N5.tunnel@(376,11).in -- N164.1
+        wire: N5.tunnel@(335,247).in -- N164.9
+        wire: N5.tunnel@(335,239).in -- N164.10
+        wire: N5.tunnel@(410,11).in -- N160.Z AO Control Voltages (V)
+        wire: N5.tunnel@(438,11).in -- N160.Z Lattice Power (mW)
+        wire: N176.0 -- N180.2
+        wire: N177.0 -- N180.1
+        wire: N156.Output Voltages -- N154.Array -- N174.1
+        wire: N155.Output Voltages -- N153.Array -- N175.1
+        wire: N178.0 -- N5.tunnel@(822,296).in
+        wire: N152.Array Resized -- N178.2
+        wire: N151.Array Resized -- N178.1
+        wire: N180.0 -- N179.0
+        wire: N5.tunnel@(335,492).in -- N155.Stop Value
+        wire: N5.tunnel@(335,582).in -- N156.Stop Value
+        wire: N5.tunnel@(335,573).in -- N156.Start Value
+        wire: N5.tunnel@(335,482).in -- N155.Start Value
+  N6    FPterm     'state of beams (on/off)'  [1 term]
+  N7    FPterm     'Number adiabatic beams'  [1 term]
+  N8    IndexArray?  @(176,359)  [3 term]
+  N9    IndexArray?  @(174,315)  [3 term]
+  N10   IndexArray?  @(140,673)  [3 term]
+  N11   IndexArray?  @(140,636)  [3 term]
+  N12   FPterm     'Channel 6: Blank'  [1 term]
+  N13   FPterm     'Channel 3: Y Lattice'  [1 term]
+  N14   FPterm     'Latttice Calibration Curves'  [1 term]
+  N15   FPterm     'Psym'  [1 term]
+  N16   FPterm     'Time const (usec)'  [1 term]
+  N17   IndexArray?  @(145,585)  [3 term]
+  N18   IndexArray?  @(145,547)  [3 term]
+  N19   IndexArray?  @(144,494)  [3 term]
+  N20   IndexArray?  @(144,456)  [3 term]
+  N21   IndexArray?  @(182,259)  [3 term]
+  N22   IndexArray?  @(182,221)  [3 term]
+  N23   IndexArray?  @(181,160)  [3 term]
+  N24   IndexArray?  @(181,122)  [3 term]
+  N25   FPterm     'Channel 5: Blank'  [1 term]
+  N26   FPterm     'Channel 4: Blank'  [1 term]
+  N27   FPterm     'Output Voltages'  [1 term]
+  N28   FPterm     'Channel 2: X Lattice'  [1 term]
+  N29   FPterm     'Channel 1: Z Lattice'  [1 term]
+  N30   FPterm     'Largest Array Size'  [1 term]
+  N31   FPterm     'Timestep interval (usec)'  [1 term]
+  N32   const      numeric  [1 term]
+  N33   const      numeric  [1 term]
+  N34   const      numeric  [1 term]
+  N35   const      numeric  [1 term]
+  N36   const      numeric  [1 term]
+  N37   const      numeric  [1 term]
+  N38   const      numeric  [1 term]
+  N39   const      numeric  [1 term]
+  N40   const      numeric  [1 term]
+  N41   const      numeric  [1 term]
+  N42   const      numeric  [1 term]
+  N43   const      numeric  [1 term]
+    wire: N1.2 -- N5.tunnel@(526,11).out
+    wire: N1.1 -- N5.tunnel@(514,11).out
+    wire: N1.7 -- N5.tunnel@(335,324).out
+    wire: N1.8 -- N5.tunnel@(335,404).out
+    wire: N1.6 -- N5.tunnel@(376,11).out
+    wire: N1.5 -- N5.tunnel@(388,11).out
+    wire: N1.4 -- N5.tunnel@(410,11).out
+    wire: N1.3 -- N5.tunnel@(438,11).out
+    wire: N2.0 -- N5.tunnel@(335,298).out
+    wire: N31.0 -- N5.tunnel@(335,592).out -- N5.tunnel@(335,268).out -- N5.tunnel@(335,165).out -- N5.tunnel@(335,376).out -- N5.tunnel@(335,502).out
+    wire: N16.0 -- N5.tunnel@(335,157).out -- N5.tunnel@(335,256).out -- N5.tunnel@(335,349).out
+    wire: N3.0 -- N5.tunnel@(335,28).out
+    wire: N5.tunnel@(822,599).out -- N4.0
+    wire: N23.1 -- N5.tunnel@(335,147).out
+    wire: N24.1 -- N5.tunnel@(335,138).out
+    wire: N6.0 -- N5.tunnel@(494,11).out
+    wire: N7.0 -- N5.selector
+    wire: N5.tunnel@(617,11).out -- N30.0
+    wire: N8.1 -- N5.tunnel@(335,367).out
+    wire: N9.1 -- N5.tunnel@(335,355).out
+    wire: N15.0 -- N5.tunnel@(397,757).out
+    wire: N10.1 -- N5.tunnel@(335,670).out
+    wire: N11.1 -- N5.tunnel@(335,659).out
+    wire: N40.0 -- N8.2
+    wire: N43.0 -- N9.2
+    wire: N13.0 -- N9.0 -- N8.0
+    wire: N41.0 -- N10.2
+    wire: N42.0 -- N11.2
+    wire: N12.0 -- N11.0 -- N10.0
+    wire: N21.1 -- N5.tunnel@(335,247).out
+    wire: N22.1 -- N5.tunnel@(335,239).out
+    wire: N14.0 -- N1.0
+    wire: N5.tunnel@(822,296).out -- N27.0
+    wire: N25.0 -- N18.0 -- N17.0
+    wire: N19.1 -- N5.tunnel@(335,492).out
+    wire: N39.0 -- N17.2
+    wire: N38.0 -- N18.2
+    wire: N17.1 -- N5.tunnel@(335,582).out
+    wire: N18.1 -- N5.tunnel@(335,573).out
+    wire: N26.0 -- N20.0 -- N19.0
+    wire: N37.0 -- N19.2
+    wire: N36.0 -- N20.2
+    wire: N20.1 -- N5.tunnel@(335,482).out
+    wire: N28.0 -- N22.0 -- N21.0
+    wire: N35.0 -- N21.2
+    wire: N34.0 -- N22.2
+    wire: N32.0 -- N23.2
+    wire: N33.0 -- N24.2
+    wire: N29.0 -- N23.0 -- N24.0

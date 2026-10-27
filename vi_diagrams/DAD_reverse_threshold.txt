@@ -1,0 +1,71 @@
+VI: DAD_reverse_threshold.vi
+  N1    FPterm     '2nd D-A-D channel on analog card for digital outputs'  [1 term]
+  N2    FPterm     '1st D-A-D channel on analog card for digital outputs'  [1 term]
+  N3    FPterm     'Array 6'  [1 term]
+  N4    FPterm     'Array 5'  [1 term]
+  N5    FPterm     'Array 4'  [1 term]
+  N6    FPterm     'Array 3'  [1 term]
+  N7    FPterm     'Array 2'  [1 term]
+  N8    FPterm     'Array'  [1 term]
+  N9    ForLoop     @(72,32)  [9 term]
+    frame 0:
+      N10   Sequence    @(107,40)  [9 term]
+        frame 0:
+          N11   prim       'Multiply' @(335,125)  [3 term]
+          N12   prim       'Subtract' @(215,96)  [3 term]
+          N13   prim       'Subtract' @(294,134)  [3 term]
+          N14   prim       'Multiply' @(170,127)  [3 term]
+          N15   nodeb9      @(176,74)  [5 term]
+          N16   const      numeric  [1 term]
+          N17   const      numeric  [1 term]
+          N18   const      numeric  [1 term]
+          N19   const      numeric  [1 term]
+            wire: N10.tunnel@(107,153).in -- N15.3
+            wire: N15.1 -- N10.seq@(349,49).in
+            wire: N11.0 -- N15.2 -- N10.tunnel@(384,132).in
+            wire: N13.0 -- N11.1
+            wire: N19.0 -- N11.2
+            wire: N12.0 -- N13.2
+            wire: N14.0 -- N12.1
+            wire: N18.0 -- N12.2
+            wire: N16.0 -- N14.1
+            wire: N17.0 -- N13.1
+            wire: N10.tunnel@(107,116).in -- N14.2
+            wire: N10.tunnel@(107,168).in -- N15.4
+            wire: N10.tunnel@(107,81).in -- N15.0
+        frame 1:
+          N20   prim       'Multiply' @(316,118)  [3 term]
+          N21   prim       'Subtract' @(271,121)  [3 term]
+          N22   prim       'Multiply' @(220,142)  [3 term]
+          N23   nodeb9      @(173,80)  [5 term]
+          N24   const      numeric  [1 term]
+          N25   const      numeric  [1 term]
+          N26   const      numeric  [1 term]
+            wire: N10.tunnel@(135,178).in -- N23.3
+            wire: N22.0 -- N21.2
+            wire: N23.1 -- N10.tunnel@(384,78).in
+            wire: N20.0 -- N23.2 -- N10.tunnel@(384,151).in
+            wire: N21.0 -- N20.1
+            wire: N26.0 -- N20.2
+            wire: N25.0 -- N21.1
+            wire: N10.tunnel@(107,140).in -- N22.2
+            wire: N24.0 -- N22.1
+            wire: N10.tunnel@(107,168).in -- N23.4
+            wire: N10.seq@(349,49).in -- N23.0
+        wire: N9.tunnel@(135,189).in -- N10.tunnel@(135,178).out
+        wire: N9.tunnel@(72,153).in -- N10.tunnel@(107,153).out
+        wire: N10.tunnel@(384,151).out -- N9.tunnel@(404,151).in
+        wire: N9.tunnel@(72,138).in -- N10.tunnel@(107,140).out
+        wire: N10.tunnel@(384,132).out -- N9.tunnel@(404,129).in
+        wire: N10.tunnel@(384,78).out -- N9.shiftreg@(397,78).in
+        wire: N9.tunnel@(72,115).in -- N10.tunnel@(107,116).out
+        wire: N9.i -- N10.tunnel@(107,168).out
+        wire: N9.shiftreg@(72,78).in -- N10.tunnel@(107,81).out
+    wire: N1.0 -- N9.tunnel@(135,189).out
+    wire: N2.0 -- N9.tunnel@(72,153).out
+    wire: N3.0 -- N9.shiftreg@(72,78).out
+    wire: N9.shiftreg@(397,78).out -- N4.0
+    wire: N9.tunnel@(404,129).out -- N5.0
+    wire: N6.0 -- N9.tunnel@(72,115).out
+    wire: N7.0 -- N9.tunnel@(72,138).out
+    wire: N9.tunnel@(404,151).out -- N8.0

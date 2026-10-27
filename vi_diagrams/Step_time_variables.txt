@@ -1,0 +1,186 @@
+VI: Step_time_variables.vi
+  N1    LocalVar   '?' @(182,24)  [1 term]
+  N2    LocalVar   '?' @(924,364)  [1 term]
+  N3    LocalVar   '?' @(79,255)  [1 term]
+  N4    LocalVar   '?' @(955,158)  [1 term]
+  N5    FPterm     'notifier error'  [1 term]
+  N6    prim       'Obtain Notifier' @(821,347)  [7 term]
+  N7    node a9     @(1035,36)  [12 term]
+  N8    node a9     @(1159,36)  [12 term]
+  N9    node a9     @(1279,36)  [12 term]
+  N10   prim       'Flatten To String' @(977,84)  [3 term]
+  N11   prim       'Flatten To String' @(1131,124)  [3 term]
+  N12   prim       'Flatten To String' @(1254,130)  [3 term]
+  N13   PropertyNode 'Edge Array' [4 props] @(359,-98)  [5 term]
+  N14   PropertyNode 'Channel Array' [4 props] @(485,-102)  [5 term]
+  N15   PropertyNode 'Variable Array' [4 props] @(607,-101)  [5 term]
+  N16   PropertyNode 'Generate Once' [4 props] @(724,-100)  [5 term]
+  N17   Sequence    @(441,316)  [2 term]
+    frame 0:
+      N32   WhileLoop   @(480,336)  [1 term]
+        frame 0:
+          N33   FPterm     'For each variable you want to change, find that variable in this array
+and enter the appropriate step size.  If you want to keep the variable
+fixed, leave the step size at zero.'  [1 term]
+          N34   prim       'Wait Until Next ms Multiple' @(536,404)  [2 term]
+          N35   FPterm     'Do it'  [1 term]
+          N36   const      numeric 'millisecond multiple'  [1 term]
+            wire: N33.0 -- N32.tunnel@(644,372).in
+            wire: N36.0 -- N34.1
+            wire: N35.0 -- N32.cond
+        wire: N32.tunnel@(644,372).out -- N17.tunnel@(673,372).in
+    frame 1:
+      N37   FPterm     'Number of steps'  [1 term]
+        wire: N37.0 -- N17.tunnel@(441,398).in
+  N18   prim       'Close LV Object Reference' @(1410,37)  [3 term]
+  N19   FPterm     'reference error'  [1 term]
+  N20   FPterm     'Generate Once'  [1 term]
+  N21   LocalVar   '?' @(271,314)  [1 term]
+  N22   ForLoop     @(165,226)  [3 term]
+    frame 0:
+      N38   node34      @(224,274)  [4 term]
+      N39   node36      @(199,248)  [3 term]
+      N40   const      numeric 'Variable Value (ms)'  [1 term]
+        wire: N38.0 -- N22.tunnel@(259,278).in
+        wire: N40.0 -- N38.3
+        wire: N39.1 -- N38.2
+        wire: N22.tunnel@(198,226).in -- N39.0
+  N23   FPterm     'vi path'  [1 term]
+  N24   prim       'Open VI Reference' @(212,-30)  [8 term]
+  N25   ForLoop     @(284,-59)  [18 term]
+    frame 0:
+      N41   Case        @(364,5)  [11 term]
+        frame 0:
+          # "Change only variable, leave edges and channels alone"
+            wire: N41.tunnel@(364,44).in -- N41.tunnel@(619,44).in
+            wire: N41.tunnel@(364,35).in -- N41.tunnel@(619,35).in
+        frame 1:
+          # "in case you want to modify something besides variables"
+          N54   node a9     @(520,35)  [12 term]
+          N55   node a9     @(396,35)  [12 term]
+            wire: N41.tunnel@(511,5).in -- N54.6
+            wire: N41.tunnel@(385,5).in -- N55.6
+            wire: N41.tunnel@(540,116).in -- N54.10
+            wire: N41.tunnel@(512,116).in -- N54.8
+            wire: N41.tunnel@(364,103).in -- N55.10
+            wire: N41.tunnel@(364,87).in -- N55.8
+            wire: N54.3 -- N41.tunnel@(619,44).in
+            wire: N55.3 -- N54.2
+            wire: N54.1 -- N41.tunnel@(619,35).in
+            wire: N55.1 -- N54.0
+            wire: N41.tunnel@(364,44).in -- N55.2
+            wire: N41.tunnel@(364,35).in -- N55.0
+      N42   Sequence    @(771,15)  [8 term]
+        frame 0:
+          N56   prim       'Select' @(825,62)  [4 term]
+          N57   prim       'Wait (ms)' @(865,61)  [2 term]
+          N58   const      numeric 'milliseconds to wait'  [1 term]
+          N59   const      numeric  [1 term]
+            wire: N42.tunnel@(790,15).in -- N56.2
+            wire: N59.0 -- N56.1
+            wire: N56.0 -- N57.1
+            wire: N58.0 -- N56.3
+        frame 1:
+          N60   node a9     @(795,35)  [12 term]
+            wire: N42.tunnel@(771,71).in -- N60.6
+            wire: N60.3 -- N42.tunnel@(911,44).in
+            wire: N60.1 -- N42.tunnel@(911,35).in
+            wire: N42.tunnel@(815,121).in -- N60.10
+            wire: N42.tunnel@(771,86).in -- N60.8
+            wire: N42.tunnel@(771,44).in -- N60.2
+            wire: N42.tunnel@(771,35).in -- N60.0
+      N43   prim       'Wait on Notification' @(897,221)  [8 term]
+      N44   prim       'Flatten To String' @(728,121)  [3 term]
+      N45   ForLoop     @(672,158)  [4 term]
+        frame 0:
+          N61   node34      @(805,189)  [4 term]
+          N62   prim       'Add' @(762,195)  [3 term]
+          N63   node36      @(708,223)  [3 term]
+          N64   node36      @(707,187)  [3 term]
+            wire: N61.0 -- N45.tunnel@(839,192).in
+            wire: N62.0 -- N61.3
+            wire: N45.tunnel@(672,192).in -- N64.0 -- N61.1
+            wire: N63.2 -- N62.1
+            wire: N64.2 -- N62.2
+            wire: N45.tunnel@(672,227).in -- N63.0
+      N46   prim       'Flatten To String' @(621,132)  [3 term]
+      N47   prim       'Flatten To String' @(492,137)  [3 term]
+      N48   prim       'Flatten To String' @(320,83)  [3 term]
+      N49   node a9     @(646,35)  [12 term]
+      N50   const      path? 'Generate Once'  [1 term]
+      N51   const      path? 'ignore previous (F)'  [1 term]
+      N52   const      path?  [1 term]
+      N53   const      path?  [1 term]
+        wire: N53.0 -- N41.selector -- N42.tunnel@(790,15).out
+        wire: N51.0 -- N43.1
+        wire: N52.0 -- N25.tunnel@(934,167).in
+        wire: N43.7 -- N25.tunnel@(934,242).in
+        wire: N25.tunnel@(897,295).in -- N43.3
+        wire: N25.tunnel@(855,295).in -- N43.0
+        wire: N25.tunnel@(750,-59).in -- N42.tunnel@(771,71).out
+        wire: N25.tunnel@(633,-59).in -- N49.6
+        wire: N25.tunnel@(511,-59).in -- N41.tunnel@(511,5).out
+        wire: N25.tunnel@(385,-59).in -- N41.tunnel@(385,5).out
+        wire: N42.tunnel@(911,44).out -- N25.tunnel@(934,44).in
+        wire: N42.tunnel@(911,35).out -- N25.tunnel@(934,35).in
+        wire: N50.0 -- N44.0
+        wire: N44.2 -- N42.tunnel@(815,121).out
+        wire: N44.1 -- N42.tunnel@(771,86).out
+        wire: N49.3 -- N42.tunnel@(771,44).out
+        wire: N49.1 -- N42.tunnel@(771,35).out
+        wire: N25.tunnel@(654,295).in -- N45.tunnel@(672,227).out
+        wire: N45.tunnel@(839,192).out -- N25.shiftreg@(927,191).in
+        wire: N25.shiftreg@(284,191).in -- N46.0 -- N45.tunnel@(672,192).out
+        wire: N46.2 -- N49.10
+        wire: N46.1 -- N49.8
+        wire: N47.2 -- N41.tunnel@(540,116).out
+        wire: N47.1 -- N41.tunnel@(512,116).out
+        wire: N25.tunnel@(284,149).in -- N47.0
+        wire: N25.tunnel@(284,91).in -- N48.0
+        wire: N48.2 -- N41.tunnel@(364,103).out
+        wire: N48.1 -- N41.tunnel@(364,87).out
+        wire: N41.tunnel@(619,44).out -- N49.2
+        wire: N41.tunnel@(619,35).out -- N49.0
+        wire: N25.tunnel@(284,-6).in -- N41.tunnel@(364,44).out
+        wire: N25.tunnel@(284,-30).in -- N41.tunnel@(364,35).out
+  N26   FPterm     'Edge Array'  [1 term]
+  N27   FPterm     'Channel Array'  [1 term]
+  N28   FPterm     'Variable Array'  [1 term]
+  N29   const      path? 'create if not found? (T)'  [1 term]
+  N30   const      string 'name (unnamed)'  [1 term]
+  N31   const      path?  [1 term]
+    wire: N22.tunnel@(259,278).out -- N21.0
+    wire: N24.0 -- N25.tunnel@(284,-6).out -- N1.0
+    wire: N6.6 -- N25.tunnel@(897,295).out -- N2.0
+    wire: N31.0 -- N3.0
+    wire: N30.0 -- N6.0
+    wire: N25.tunnel@(934,167).out -- N4.0
+    wire: N25.tunnel@(934,242).out -- N5.0
+    wire: N6.4 -- N25.tunnel@(855,295).out
+    wire: N29.0 -- N6.2 -- N6.1
+    wire: N28.0 -- N25.shiftreg@(284,191).out -- N22.tunnel@(198,226).out -- N12.0
+    wire: N15.4 -- N25.tunnel@(633,-59).out -- N9.6
+    wire: N9.3 -- N18.1
+    wire: N9.1 -- N18.2
+    wire: N25.tunnel@(934,44).out -- N7.2
+    wire: N25.tunnel@(934,35).out -- N7.0
+    wire: N7.1 -- N8.0
+    wire: N8.1 -- N9.0
+    wire: N7.3 -- N8.2
+    wire: N8.3 -- N9.2
+    wire: N10.1 -- N7.8
+    wire: N10.2 -- N7.10
+    wire: N11.1 -- N8.8
+    wire: N11.2 -- N8.10
+    wire: N12.1 -- N9.8
+    wire: N12.2 -- N9.10
+    wire: N13.4 -- N7.6 -- N25.tunnel@(385,-59).out
+    wire: N14.4 -- N8.6 -- N25.tunnel@(511,-59).out
+    wire: N16.4 -- N25.tunnel@(750,-59).out
+    wire: N17.tunnel@(441,398).out -- N25.N
+    wire: N17.tunnel@(673,372).out -- N25.tunnel@(654,295).out
+    wire: N18.0 -- N19.0
+    wire: N24.1 -- N25.tunnel@(284,-30).out
+    wire: N23.0 -- N24.6
+    wire: N27.0 -- N25.tunnel@(284,149).out -- N11.0
+    wire: N26.0 -- N25.tunnel@(284,91).out -- N10.0

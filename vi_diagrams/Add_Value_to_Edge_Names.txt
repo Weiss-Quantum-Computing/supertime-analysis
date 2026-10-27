@@ -1,0 +1,67 @@
+VI: Add_Value_to_Edge_Names.vi
+  N1    ForLoop     @(152,103)  [3 term]
+    frame 0:
+      N4    Case        @(427,123)  [6 term]
+        frame 0:
+          N9    Case        @(659,177)  [4 term]
+            frame 0:
+              N12   FormatString?  @(763,272)  [6 term]
+              N13   const      string  [1 term]
+                wire: N9.tunnel@(659,245).in -- N12.5
+                wire: N12.2 -- N9.tunnel@(832,277).in
+                wire: N13.0 -- N12.0
+            frame 1:
+              N14   FormatString?  @(763,272)  [7 term]
+              N15   const      string  [1 term]
+                wire: N9.tunnel@(659,300).in -- N14.6
+                wire: N9.tunnel@(659,245).in -- N14.5
+                wire: N14.2 -- N9.tunnel@(832,277).in
+                wire: N15.0 -- N14.0
+          N10   prim       'Not A Number/Path/Refnum?' @(582,322)  [2 term]
+          N11   IndexArray?  @(518,313)  [3 term]
+            wire: N11.1 -- N10.1 -- N9.tunnel@(659,300).out
+            wire: N10.0 -- N9.selector
+            wire: N4.tunnel@(427,248).in -- N9.tunnel@(659,245).out
+            wire: N4.tunnel@(473,456).in -- N11.2
+            wire: N9.tunnel@(832,277).out -- N4.tunnel@(847,277).in
+            wire: N4.tunnel@(427,281).in -- N11.0
+        frame 1:
+          N16   prim       'Less Than 0?' @(566,319)  [2 term]
+          N17   Case        @(691,216)  [4 term]
+            frame 0:
+              N19   FormatString?  @(761,274)  [7 term]
+              N20   const      string 'format string'  [1 term]
+                wire: N19.2 -- N17.tunnel@(817,276).in
+                wire: N17.tunnel@(691,302).in -- N19.6
+                wire: N17.tunnel@(691,263).in -- N19.5
+                wire: N20.0 -- N19.0
+            frame 1:
+              N21   FormatString?  @(761,274)  [6 term]
+              N22   const      string 'format string'  [1 term]
+                wire: N21.2 -- N17.tunnel@(817,276).in
+                wire: N17.tunnel@(691,263).in -- N21.5
+                wire: N22.0 -- N21.0
+          N18   IndexArray?  @(472,313)  [3 term]
+            wire: N17.tunnel@(817,276).out -- N4.tunnel@(847,277).in
+            wire: N18.1 -- N16.1 -- N17.tunnel@(691,302).out
+            wire: N4.tunnel@(427,248).in -- N17.tunnel@(691,263).out
+            wire: N16.0 -- N17.selector
+            wire: N4.tunnel@(427,295).in -- N18.0
+            wire: N4.tunnel@(473,456).in -- N18.2
+      N5    FPterm     'Edit/View Channel'  [1 term]
+      N6    IndexArray?  @(227,306)  [3 term]
+      N7    FPterm     'Channel Array'  [1 term]
+      N8    (Un)BundleByName?  @(287,262)  [4 term]
+        wire: N8.3 -- N4.tunnel@(427,295).out
+        wire: N8.2 -- N4.tunnel@(427,281).out
+        wire: N8.1 -- N4.selector
+        wire: N5.0 -- N6.2
+        wire: N6.1 -- N8.0
+        wire: N7.0 -- N6.0
+        wire: N1.i -- N4.tunnel@(473,456).out
+        wire: N1.tunnel@(152,248).in -- N4.tunnel@(427,248).out
+        wire: N4.tunnel@(847,277).out -- N1.tunnel@(891,277).in
+  N2    FPterm     'Edge Names'  [1 term]
+  N3    FPterm     'Item Names'  [1 term]
+    wire: N2.0 -- N1.tunnel@(152,248).out
+    wire: N1.tunnel@(891,277).out -- N3.0

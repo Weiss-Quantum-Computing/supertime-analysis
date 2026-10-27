@@ -1,0 +1,166 @@
+VI: Write_analog_data_to_analog_cards_2015.vi
+  N1    FPterm     'Analog out error'  [1 term]
+  N2    FormatString?  @(352,-88)  [6 term]
+  N3    FPterm     'Analog Clock pin'  [1 term]
+  N4    FPterm     'Allocation mode array'  [1 term]
+  N5    FPterm     'Buffer size Array'  [1 term]
+  N6    FPterm     'taskID out'  [1 term]
+  N7    FPterm     'Analog error?'  [1 term]
+  N8    FPterm     'Generate Signal 3'  [1 term]
+  N9    FPterm     'Analog (0) or digital (1)'  [1 term]
+  N10   FPterm     'Analog Voltages'  [1 term]
+  N11   ForLoop     @(-148,-48)  [9 term]
+    frame 0:
+      # "Check which channels are in use to conserve FIFO memory."
+      N13   prim       'Transpose 2D Array' @(138,59)  [2 term]
+      N14   prim       'Transpose 2D Array' @(-132,30)  [2 term]
+      N15   Case        @(191,9)  [11 term]
+        frame 0:
+        frame 1:
+          N23   subVI      'AO Parameter.vi' @(356,104)  [20 term]
+          N24   prim       'Not' @(515,183)  [2 term]
+          N25   prim       'Boolean To (0,1)' @(545,183)  [2 term]
+          N26   FPterm     'Repeat'  [1 term]
+          N27   Case        @(324,269)  [3 term]
+            frame 0:
+              N44   const      enum/ring 'allocate mode (0:no change)'  [1 term]
+                wire: N44.0 -- N27.tunnel@(605,305).in
+            frame 1:
+              N45   FormatString?  @(376,292)  [6 term]
+              N46   prim       'One Button Dialog' @(456,309)  [3 term]
+              N47   const      string 'message'  [1 term]
+              N48   const      enum/ring 'allocate mode (0:no change)'  [1 term]
+                wire: N45.2 -- N46.2
+                wire: N27.tunnel@(344,269).in -- N45.5
+                wire: N47.0 -- N45.0
+                wire: N48.0 -- N27.tunnel@(605,305).in
+          N28   IndexArray?  @(252,291)  [3 term]
+          N29   prim       'Array Size' @(211,284)  [2 term]
+          N30   prim       'Greater?' @(290,293)  [3 term]
+          N31   subVI      'AO Control.vi' @(515,104)  [12 term]
+          N32   subVI      'AO Clock Config.vi' @(452,104)  [12 term]
+          N33   subVI      'Simple Error Handler.vi' @(565,104)  [10 term]
+          N34   nodec5     'AO Write.vi' @(407,104)  [16 term]
+          N35   subVI      'AO Config.vi' @(306,104)  [16 term]
+          N36   prim       'Increment' @(220,76)  [2 term]
+          N37   node3a      @(260,111)  [2 term]
+          N38   const      numeric  [1 term]
+          N39   const      enum/ring 'control code (0: start)'  [1 term]
+          N40   const      enum/ring 'clock source (0: no change)'  [1 term]
+          N41   const      numeric 'ticks per second (-1: no change)'  [1 term]
+          N42   const      enum/ring 'parameter name'  [1 term]
+          N43   const      path? 'boolean in'  [1 term]
+            wire: N43.0 -- N23.6
+            wire: N42.0 -- N23.3
+            wire: N23.19 -- N34.11
+            wire: N35.15 -- N23.5
+            wire: N23.14 -- N34.0
+            wire: N35.4 -- N23.0
+            wire: N36.0 -- N35.0 -- N27.tunnel@(344,269).out
+            wire: N15.tunnel@(191,87).in -- N36.1
+            wire: N24.0 -- N25.1
+            wire: N25.0 -- N31.6
+            wire: N26.0 -- N24.1
+            wire: N15.tunnel@(489,9).in -- N32.1
+            wire: N15.tunnel@(191,179).in -- N37.1
+            wire: N27.tunnel@(605,305).out -- N35.12 -- N15.tunnel@(635,305).in
+            wire: N28.1 -- N30.2 -- N15.tunnel@(635,257).in -- N35.7
+            wire: N15.tunnel@(191,71).in -- N34.5 -- N29.1
+            wire: N15.tunnel@(191,350).in -- N30.1
+            wire: N30.0 -- N27.selector
+            wire: N38.0 -- N28.2
+            wire: N29.0 -- N28.0
+            wire: N33.6 -- N15.tunnel@(635,126).in
+            wire: N31.0 -- N33.9
+            wire: N41.0 -- N32.6
+            wire: N31.3 -- N15.tunnel@(635,39).in
+            wire: N39.0 -- N31.10
+            wire: N40.0 -- N32.4
+            wire: N32.0 -- N31.8
+            wire: N34.15 -- N32.8
+            wire: N32.3 -- N31.11
+            wire: N34.4 -- N32.11
+            wire: N33.0 -- N15.tunnel@(635,102).in
+            wire: N37.0 -- N35.5
+        frame 2:
+      N16   FPterm     'Num. channels in use'  [1 term]
+      N17   ForLoop     @(-67,19)  [8 term]
+        frame 0:
+          N49   IndexArray?  @(4,28)  [3 term]
+          N50   prim       'Not A Number/Path/Refnum?' @(70,24)  [2 term]
+          N51   Case        @(-41,63)  [9 term]
+            frame 0:
+              N53   node3a      @(38,109)  [3 term]
+              N54   prim       'Increment' @(41,241)  [2 term]
+              N55   prim       'Equal?' @(-27,131)  [3 term]
+              N56   Case        @(9,135)  [2 term]
+                frame 0:
+                  N59   const      string  [1 term]
+                    wire: N59.0 -- N56.tunnel@(39,181).in
+                frame 1:
+                  N60   const      string  [1 term]
+                    wire: N60.0 -- N56.tunnel@(39,181).in
+              N57   FormatString?  @(-12,208)  [6 term]
+              N58   const      cls4e  [1 term]
+                wire: N53.0 -- N51.tunnel@(91,108).in
+                wire: N51.tunnel@(-41,90).in -- N53.2
+                wire: N51.tunnel@(-41,109).in -- N53.1
+                wire: N54.0 -- N51.tunnel@(91,253).in
+                wire: N51.tunnel@(-41,253).in -- N54.1
+                wire: N56.tunnel@(39,181).out -- N57.0
+                wire: N58.0 -- N55.1
+                wire: N51.tunnel@(-41,179).in -- N57.1 -- N55.2
+                wire: N55.0 -- N56.selector
+                wire: N57.2 -- N51.tunnel@(91,179).in
+                wire: N51.tunnel@(-41,228).in -- N57.5
+            frame 1:
+                wire: N51.tunnel@(-41,109).in -- N51.tunnel@(91,108).in
+                wire: N51.tunnel@(-41,253).in -- N51.tunnel@(91,253).in
+                wire: N51.tunnel@(-41,179).in -- N51.tunnel@(91,179).in
+          N52   const      numeric 'index'  [1 term]
+            wire: N51.tunnel@(91,108).out -- N17.shiftreg@(114,107).in
+            wire: N49.1 -- N50.1
+            wire: N52.0 -- N49.2
+            wire: N17.tunnel@(-67,40).in -- N49.0 -- N51.tunnel@(-41,90).out
+            wire: N17.shiftreg@(-67,107).in -- N51.tunnel@(-41,109).out
+            wire: N50.0 -- N51.selector
+            wire: N51.tunnel@(91,253).out -- N17.shiftreg@(114,251).in
+            wire: N17.shiftreg@(-67,251).in -- N51.tunnel@(-41,253).out
+            wire: N17.i -- N51.tunnel@(-41,228).out
+            wire: N51.tunnel@(91,179).out -- N17.shiftreg@(114,177).in
+            wire: N17.shiftreg@(-67,177).in -- N51.tunnel@(-41,179).out
+      N18   prim       'Divide' @(91,355)  [3 term]
+      N19   const      numeric  [1 term]
+      N20   const      numeric 'Size of on-board FIFO in bytes (6713 has 16384 bytes)'  [1 term]
+      N21   const      cls4e  [1 term]
+      N22   const      array  [1 term]
+        wire: N11.tunnel@(489,-48).in -- N15.tunnel@(489,9).out
+        wire: N15.tunnel@(635,257).out -- N11.tunnel@(685,257).in
+        wire: N15.tunnel@(635,305).out -- N11.tunnel@(685,305).in
+        wire: N18.0 -- N15.tunnel@(191,350).out
+        wire: N11.i -- N15.tunnel@(191,87).out
+        wire: N13.0 -- N15.tunnel@(191,71).out
+        wire: N17.shiftreg@(114,107).out -- N13.1
+        wire: N22.0 -- N17.shiftreg@(-67,107).out
+        wire: N14.0 -- N17.tunnel@(-67,40).out
+        wire: N11.tunnel@(-148,42).in -- N14.1
+        wire: N11.tunnel@(170,-48).in -- N15.selector
+        wire: N17.shiftreg@(114,177).out -- N15.tunnel@(191,179).out
+        wire: N21.0 -- N17.shiftreg@(-67,177).out
+        wire: N19.0 -- N17.shiftreg@(-67,251).out
+        wire: N17.shiftreg@(114,251).out -- N16.0 -- N18.1
+        wire: N20.0 -- N18.2
+        wire: N15.tunnel@(635,39).out -- N11.tunnel@(685,39).in
+        wire: N15.tunnel@(635,126).out -- N11.tunnel@(685,126).in
+        wire: N15.tunnel@(635,102).out -- N11.tunnel@(685,102).in
+  N12   const      string 'format string'  [1 term]
+    wire: N2.2 -- N11.tunnel@(489,-48).out
+    wire: N12.0 -- N2.0
+    wire: N3.0 -- N2.5
+    wire: N11.tunnel@(685,305).out -- N4.0
+    wire: N11.tunnel@(685,102).out -- N7.0
+    wire: N10.0 -- N11.tunnel@(-148,42).out
+    wire: N11.tunnel@(685,257).out -- N5.tunnel@(9868,0).in
+    wire: N11.tunnel@(685,39).out -- N6.0
+    wire: N11.tunnel@(685,126).out -- N1.0
+    wire: N9.0 -- N11.tunnel@(170,-48).out

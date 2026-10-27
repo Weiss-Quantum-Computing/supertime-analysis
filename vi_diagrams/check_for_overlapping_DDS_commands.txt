@@ -1,0 +1,116 @@
+VI: check_for_overlapping_DDS_commands.vi
+  N1    node34      @(763,4)  [4 term]
+  N2    prim       'Multiply' @(726,-8)  [3 term]
+  N3    FPterm     'Resolution in ms'  [1 term]
+  N4    Case        @(599,339)  [1 term]
+    frame 0:
+    frame 1:
+      N18   prim       'One Button Dialog' @(763,460)  [3 term]
+      N19   const      string 'button name ("OK")'  [1 term]
+      N20   const      string 'message'  [1 term]
+        wire: N20.0 -- N18.2
+        wire: N19.0 -- N18.1
+  N5    ForLoop     @(76,19)  [5 term]
+    frame 0:
+      # "Step through channels"
+      N21   (Un)BundleByName?  @(112,94)  [2 term]
+      N22   prim       'And' @(171,149)  [3 term]
+      N23   prim       'Less?' @(165,124)  [3 term]
+      N24   prim       'Greater Than 0?' @(143,153)  [2 term]
+      N25   prim       'Quotient & Remainder' @(116,139)  [4 term]
+      N26   Case        @(204,57)  [7 term]
+        frame 0:
+            wire: N26.tunnel@(204,285).in -- N26.tunnel@(512,285).in
+        frame 1:
+          N29   ForLoop     @(275,118)  [6 term]
+            frame 0:
+              N31   Case        @(326,133)  [6 term]
+                frame 0:
+                  N33   prim       'To Word Integer' @(342,178)  [2 term]
+                  N34   node34      @(409,190)  [4 term]
+                  N35   node3a      @(420,285)  [3 term]
+                  N36   (Un)BundleByName?  @(345,252)  [2 term]
+                  N37   IndexArray?  @(349,216)  [3 term]
+                    wire: N33.0 -- N34.3
+                    wire: N34.0 -- N35.2
+                    wire: N31.tunnel@(326,285).in -- N35.1
+                    wire: N31.tunnel@(326,190).in -- N33.1
+                    wire: N36.1 -- N34.2
+                    wire: N35.0 -- N31.tunnel@(464,285).in
+                    wire: N37.1 -- N36.0
+                    wire: N31.tunnel@(326,234).in -- N37.2
+                    wire: N31.tunnel@(326,220).in -- N37.0
+                frame 1:
+                    wire: N31.tunnel@(326,285).in -- N31.tunnel@(464,285).in
+              N32   prim       'Not A Number/Path/Refnum?' @(289,139)  [2 term]
+                wire: N31.tunnel@(464,285).out -- N29.shiftreg@(478,283).in
+                wire: N29.tunnel@(275,190).in -- N31.tunnel@(326,190).out
+                wire: N29.shiftreg@(275,283).in -- N31.tunnel@(326,285).out
+                wire: N29.i -- N31.tunnel@(326,234).out
+                wire: N29.tunnel@(275,220).in -- N31.tunnel@(326,220).out
+                wire: N32.0 -- N31.selector
+                wire: N29.tunnel@(294,118).in -- N32.1
+          N30   (Un)BundleByName?  @(271,90)  [2 term]
+            wire: N29.shiftreg@(478,283).out -- N26.tunnel@(512,285).in
+            wire: N26.tunnel@(204,190).in -- N29.tunnel@(275,190).out
+            wire: N26.tunnel@(204,285).in -- N29.shiftreg@(275,283).out
+            wire: N26.tunnel@(204,220).in -- N29.tunnel@(275,220).out
+            wire: N30.1 -- N29.tunnel@(294,118).out
+            wire: N26.tunnel@(262,57).in -- N30.0
+      N27   const      numeric 'y'  [1 term]
+      N28   const      numeric 'y'  [1 term]
+        wire: N26.tunnel@(512,285).out -- N5.shiftreg@(528,283).in
+        wire: N25.0 -- N24.1 -- N26.tunnel@(204,190).out
+        wire: N5.tunnel@(76,63).in -- N21.0 -- N26.tunnel@(262,57).out
+        wire: N5.tunnel@(76,220).in -- N26.tunnel@(204,220).out
+        wire: N5.shiftreg@(76,283).in -- N26.tunnel@(204,285).out
+        wire: N22.0 -- N26.selector
+        wire: N21.1 -- N25.3 -- N26.tunnel@(204,97).out
+        wire: N27.0 -- N23.1
+        wire: N23.0 -- N22.2
+        wire: N24.0 -- N22.1
+        wire: N25.1 -- N23.2
+        wire: N28.0 -- N25.2
+  N6    prim       'Decrement' @(629,-10)  [2 term]
+  N7    prim       'Array Size' @(591,-9)  [2 term]
+  N8    prim       'Or Array Elements' @(775,91)  [2 term]
+  N9    prim       'Sort 1D Array' @(630,273)  [2 term]
+  N10   FPterm     'Array'  [1 term]
+  N11   FPterm     'overlap?'  [1 term]
+  N12   ForLoop     @(598,33)  [5 term]
+    frame 0:
+      N38   prim       'Cluster To Array' @(707,63)  [2 term]
+      N39   prim       'And Array Elements' @(723,90)  [2 term]
+      N40   IndexArray?  @(643,166)  [3 term]
+      N41   prim       'Less Or Equal?' @(679,63)  [3 term]
+      N42   prim       'Subtract' @(630,63)  [3 term]
+      N43   prim       'Increment' @(600,172)  [2 term]
+        wire: N12.tunnel@(758,51).in -- N41.1
+        wire: N38.0 -- N39.1
+        wire: N41.0 -- N38.1
+        wire: N39.0 -- N12.tunnel@(758,102).in
+        wire: N40.1 -- N42.2
+        wire: N42.0 -- N41.2
+        wire: N12.tunnel@(684,209).in -- N42.1
+        wire: N43.0 -- N40.2
+        wire: N12.i -- N43.1
+        wire: N12.tunnel@(632,209).in -- N40.0
+  N13   FPterm     'Edge Array'  [1 term]
+  N14   FPterm     'Channel Array'  [1 term]
+  N15   const      array  [1 term]
+  N16   const      numeric  [1 term]
+  N17   const      numeric  [1 term]
+    wire: N1.0 -- N12.tunnel@(758,51).out
+    wire: N2.0 -- N1.2
+    wire: N17.0 -- N1.3
+    wire: N16.0 -- N2.1
+    wire: N3.0 -- N2.2
+    wire: N14.0 -- N5.tunnel@(76,63).out
+    wire: N6.0 -- N12.N
+    wire: N7.0 -- N6.1
+    wire: N5.shiftreg@(528,283).out -- N9.1 -- N7.1 -- N10.0
+    wire: N8.0 -- N11.0 -- N4.selector
+    wire: N9.0 -- N12.tunnel@(632,209).out -- N12.tunnel@(684,209).out
+    wire: N15.0 -- N5.shiftreg@(76,283).out
+    wire: N12.tunnel@(758,102).out -- N8.1
+    wire: N13.0 -- N5.tunnel@(76,220).out

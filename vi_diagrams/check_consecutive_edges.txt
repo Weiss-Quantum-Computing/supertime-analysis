@@ -1,0 +1,44 @@
+VI: check_consecutive_edges.vi
+  N1    prim       'Multiply' @(194,31)  [3 term]
+  N2    ForLoop     @(168,85)  [6 term]
+    frame 0:
+      N8    prim       'And' @(292,142)  [3 term]
+      N9    prim       'Greater Than 0?' @(262,157)  [2 term]
+      N10   prim       'Greater Or Equal?' @(243,109)  [3 term]
+      N11   Case        @(333,116)  [4 term]
+        frame 0:
+            wire: N11.tunnel@(344,192).in -- N11.tunnel@(492,192).in
+        frame 1:
+          N15   FormatString?  @(372,147)  [6 term]
+          N16   const      string 'format string'  [1 term]
+            wire: N16.0 -- N15.0
+            wire: N15.2 -- N11.tunnel@(492,192).in
+            wire: N11.tunnel@(333,137).in -- N15.5
+            wire: N11.tunnel@(344,192).in -- N15.1
+      N12   prim       'Add' @(211,104)  [3 term]
+      N13   prim       'Increment' @(210,205)  [2 term]
+      N14   IndexArray?  @(228,168)  [3 term]
+        wire: N14.1 -- N10.1 -- N9.1 -- N11.tunnel@(333,137).out
+        wire: N2.tunnel@(168,137).in -- N12.1
+        wire: N10.0 -- N8.2
+        wire: N9.0 -- N8.1
+        wire: N8.0 -- N11.selector
+        wire: N11.tunnel@(492,192).out -- N2.shiftreg@(602,234).in
+        wire: N2.shiftreg@(168,234).in -- N11.tunnel@(344,192).out
+        wire: N12.0 -- N10.2
+        wire: N2.tunnel@(206,85).in -- N12.2
+        wire: N13.0 -- N14.2
+        wire: N2.i -- N13.1
+        wire: N2.tunnel@(168,173).in -- N14.0
+  N3    FPterm     'Array'  [1 term]
+  N4    FPterm     'Target 
+Resolution (us):'  [1 term]
+  N5    FPterm     'Edges with consecutive times'  [1 term]
+  N6    const      cls4e  [1 term]
+  N7    const      numeric 'y'  [1 term]
+    wire: N2.shiftreg@(602,234).out -- N5.0
+    wire: N7.0 -- N1.1
+    wire: N1.0 -- N2.tunnel@(206,85).out
+    wire: N6.0 -- N2.shiftreg@(168,234).out
+    wire: N3.0 -- N2.tunnel@(168,137).out -- N2.tunnel@(168,173).out
+    wire: N4.0 -- N1.2

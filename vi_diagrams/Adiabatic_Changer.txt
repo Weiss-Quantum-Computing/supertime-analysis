@@ -1,0 +1,217 @@
+VI: Adiabatic_Changer.vi
+  N1    FPterm     'confirm'  [1 term]
+  N2    Sequence    @(-421,-600)  [0 term]
+    frame 0:
+      N4    LocalVar   '?' @(127,-122)  [1 term]
+      N5    LocalVar   '?' @(112,-50)  [1 term]
+      N6    FPterm     'X AO Control Voltages (V)'  [1 term]
+      N7    FPterm     'X Lattice Power (mW)'  [1 term]
+        wire: N6.0 -- N5.0 -- N2.seq@(-416,-55).in
+        wire: N7.0 -- N4.0 -- N2.seq@(-416,-136).in
+    frame 1:
+      # "2D array ready / for AO Write"
+      # "Make timestep array / (just for plot)."
+      # "Dummy peak for reset function"
+      # "Add the last 3 channels into the / array (including ch7 as ground reference / channel); make them all 0's."
+      N8    IndexArray?  @(275,-324)  [3 term]
+      N9    prim       'Array Size' @(214,-328)  [2 term]
+      N10   FPterm     'array size'  [1 term]
+      N11   FPterm     'Numeric'  [1 term]
+      N12   IndexArray?  @(-300,-109)  [3 term]
+      N13   FPterm     'lattice AO's'  [1 term]
+      N14   FPterm     'YAG EO voltage'  [1 term]
+      N15   FPterm     'YAG beam power (mW)'  [1 term]
+      N16   PropertyNode 'Time const (usec)' [4 props] @(502,-19)  [5 term]
+      N17   PropertyNode 'Z Lattice Power (mW)' [4 props] @(502,19)  [5 term]
+      N18   PropertyNode 'Z AO Control Voltages (V)' [4 props] @(502,57)  [5 term]
+      N19   PropertyNode 'Psym' [4 props] @(502,-57)  [5 term]
+      N20   PropertyNode 'X Lattice Power (mW)' [4 props] @(502,95)  [5 term]
+      N21   PropertyNode 'X AO Control Voltages (V)' [4 props] @(502,133)  [5 term]
+      N22   PropertyNode 'Y Lattice Power (mW)' [4 props] @(505,174)  [5 term]
+      N23   PropertyNode 'Y AO Control Voltages (V)' [4 props] @(507,215)  [5 term]
+      N24   node34      @(-170,253)  [10 term]
+      N25   FPterm     'Total power into 1st AO'  [1 term]
+      N26   FPterm     'Output Powers'  [1 term]
+      N27   FPterm     'Number adiabatic beams'  [1 term]
+      N28   FPterm     'State of beams (on/off)'  [1 term]
+      N29   FPterm     'output voltages'  [1 term]
+      N30   FPterm     'time values (usec)'  [1 term]
+      N31   FPterm     'Y AO Control Voltages (V)'  [1 term]
+      N32   FPterm     'Y Lattice Power (mW)'  [1 term]
+      N33   FPterm     '
+Start             Stop (mW)'  [1 term]
+      N34   FPterm     'Start                Stop     (mW)'  [1 term]
+      N35   node3a      @(627,392)  [3 term]
+      N36   IndexArray?  @(558,475)  [3 term]
+      N37   IndexArray?  @(596,434)  [4 term]
+      N38   prim       'Array Size' @(503,467)  [2 term]
+      N39   prim       'Transpose 2D Array' @(682,385)  [2 term]
+      N40   ForLoop     @(245,319)  [4 term]
+        frame 0:
+          N71   prim       'Equal?' @(264,404)  [3 term]
+          N72   Case        @(295,327)  [4 term]
+            frame 0:
+              # "Add extra points to absorb / dummy peak"
+              N74   IndexArray?  @(368,387)  [3 term]
+              N75   node3a      @(407,390)  [3 term]
+              N76   IndexArray?  @(320,387)  [3 term]
+              N77   const      numeric  [1 term]
+              N78   const      numeric  [1 term]
+                wire: N75.0 -- N72.tunnel@(451,394).in
+                wire: N76.1 -- N74.0
+                wire: N78.0 -- N74.2
+                wire: N74.1 -- N75.1
+                wire: N72.tunnel@(295,389).in -- N76.0 -- N75.2
+                wire: N77.0 -- N76.2
+            frame 1:
+              # "Add dummy peak to trigger / ON/OFF array."
+              N79   node3a      @(334,381)  [3 term]
+                wire: N79.0 -- N72.tunnel@(451,394).in
+                wire: N72.tunnel@(337,327).in -- N79.1
+                wire: N72.tunnel@(295,389).in -- N79.2
+          N73   const      numeric 'x'  [1 term]
+            wire: N72.tunnel@(451,394).out -- N40.tunnel@(485,394).in
+            wire: N40.tunnel@(336,319).in -- N72.tunnel@(337,327).out
+            wire: N40.tunnel@(245,389).in -- N72.tunnel@(295,389).out
+            wire: N73.0 -- N71.2
+            wire: N40.i -- N71.1
+            wire: N71.0 -- N72.selector
+      N41   IndexArray?  @(256,252)  [3 term]
+      N42   node3a      @(297,263)  [3 term]
+      N43   FPterm     'Show Settings?'  [1 term]
+      N44   Case        @(419,2)  [2 term]
+        frame 0:
+          N80   const      path?  [1 term]
+            wire: N80.0 -- N44.tunnel@(467,31).in
+        frame 1:
+          N81   const      path?  [1 term]
+            wire: N81.0 -- N44.tunnel@(467,31).in
+      N45   FPterm     'Psym'  [1 term]
+      N46   FPterm     'Z Lattice Power (mW)'  [1 term]
+      N47   FPterm     'Z AO Control Voltages (V)'  [1 term]
+      N48   FPterm     'Time const (usec)'  [1 term]
+      N49   FPterm     'Time (usec)'  [1 term]
+      N50   prim       'Multiply' @(332,-153)  [3 term]
+      N51   FPterm     'Start          Stop (mW)'  [1 term]
+      N52   FPterm     'Start             Stop (mW)'  [1 term]
+      N53   FPterm     'Start                Stop    (mW)'  [1 term]
+      N54   prim       'Transpose 2D Array' @(209,376)  [2 term]
+      N55   ForLoop     @(259,73)  [4 term]
+        frame 0:
+          N82   node34      @(301,113)  [4 term]
+            wire: N82.0 -- N55.tunnel@(356,117).in
+            wire: N55.tunnel@(259,121).in -- N82.3
+            wire: N55.tunnel@(305,73).in -- N82.2
+      N56   ForLoop     @(249,-122)  [3 term]
+        frame 0:
+          N83   prim       'Multiply' @(275,-85)  [3 term]
+            wire: N83.0 -- N56.tunnel@(305,-44).in
+            wire: N56.tunnel@(279,-122).in -- N83.2
+            wire: N56.i -- N83.1
+      N57   ForLoop     @(-68,-166)  [20 term]
+        frame 0:
+          # "Count timesteps"
+          # "Make trigger / array (5.0s or 2.5s)"
+          N84   subVI      'Prepare Output Voltage Array.vi' @(4,71)  [20 term]
+          N85   node3a      @(100,326)  [3 term]
+          N86   node3a      @(105,17)  [3 term]
+          N87   prim       'Decrement' @(35,14)  [2 term]
+          N88   prim       'Transpose 2D Array' @(157,62)  [2 term]
+          N89   node3a      @(84,383)  [3 term]
+          N90   IndexArray?  @(68,8)  [3 term]
+          N91   node3a      @(121,66)  [3 term]
+          N92   const      numeric  [1 term]
+          N93   const      numeric  [1 term]
+            wire: N84.18 -- N87.1 -- N57.tunnel@(191,-80).in
+            wire: N57.tunnel@(-68,242).in -- N84.2
+            wire: N57.tunnel@(-68,-76).in -- N84.3
+            wire: N85.0 -- N57.shiftreg@(184,357).in
+            wire: N57.shiftreg@(-68,357).in -- N85.1
+            wire: N57.shiftreg@(-68,385).in -- N89.1
+            wire: N84.11 -- N85.2
+            wire: N57.tunnel@(0,415).in -- N84.6
+            wire: N57.tunnel@(45,415).in -- N84.17
+            wire: N57.tunnel@(-68,-42).in -- N84.0
+            wire: N57.tunnel@(-68,102).in -- N84.10
+            wire: N57.tunnel@(-68,1).in -- N84.1
+            wire: N88.0 -- N89.2
+            wire: N57.tunnel@(10,-166).in -- N84.13
+            wire: N57.tunnel@(-68,187).in -- N84.5
+            wire: N57.tunnel@(-68,48).in -- N84.4
+            wire: N57.tunnel@(-68,144).in -- N84.12
+            wire: N57.tunnel@(22,-166).in -- N84.14
+            wire: N86.0 -- N91.1
+            wire: N92.0 -- N86.2
+            wire: N90.1 -- N86.1
+            wire: N93.0 -- N90.0
+            wire: N87.0 -- N90.2
+            wire: N57.tunnel@(-68,336).in -- N84.19
+            wire: N84.15 -- N91.2
+            wire: N57.tunnel@(-68,209).in -- N84.7
+            wire: N89.0 -- N57.shiftreg@(184,385).in
+            wire: N91.0 -- N88.1
+      N58   FPterm     'Total duration (usec)'  [1 term]
+      N59   FPterm     'Start        Stop    (mW)'  [1 term]
+      N60   FPterm     'Timestep interval (usec)'  [1 term]
+      N61   const      numeric  [1 term]
+      N62   const      array '  '  [1 term]
+      N63   const      numeric  [1 term]
+      N64   const      numeric  [1 term]
+      N65   const      numeric  [1 term]
+      N66   const      numeric 'Index'  [1 term]
+      N67   const      numeric 'Element Data'  [1 term]
+      N68   const      numeric 'Dimension Size'  [1 term]
+      N69   const      numeric  [1 term]
+      N70   const      numeric  [1 term]
+        wire: N8.1 -- N50.1 -- N56.N -- N10.0
+        wire: N61.0 -- N8.2
+        wire: N9.0 -- N8.0
+        wire: N40.tunnel@(485,394).out -- N38.1 -- N35.1 -- N29.0 -- N55.tunnel@(259,121).out -- N9.1
+        wire: N12.1 -- N11.0
+        wire: N70.0 -- N12.2
+        wire: N33.0 -- N57.tunnel@(-68,187).out
+        wire: N51.0 -- N57.tunnel@(-68,144).out
+        wire: N52.0 -- N57.tunnel@(-68,102).out
+        wire: N34.0 -- N57.tunnel@(-68,48).out
+        wire: N53.0 -- N57.tunnel@(-68,1).out
+        wire: N59.0 -- N57.tunnel@(-68,-42).out -- N12.0
+        wire: N69.0 -- N57.N
+        wire: N13.0 -- N57.tunnel@(-68,242).out
+        wire: N14.0 -- N24.9
+        wire: N15.0 -- N24.8
+        wire: N31.0 -- N24.7
+        wire: N32.0 -- N24.6
+        wire: N24.0 -- N57.tunnel@(-68,209).out
+        wire: N2.seq@(-416,-55).in -- N24.5
+        wire: N2.seq@(-416,-136).in -- N24.4
+        wire: N47.0 -- N24.3
+        wire: N46.0 -- N24.2
+        wire: N25.0 -- N57.tunnel@(-68,-76).out
+        wire: N57.shiftreg@(184,357).out -- N26.0
+        wire: N62.0 -- N57.shiftreg@(-68,385).out -- N57.shiftreg@(-68,357).out
+        wire: N56.tunnel@(305,-44).out -- N30.0 -- N55.tunnel@(305,73).out
+        wire: N27.0 -- N57.tunnel@(0,415).out
+        wire: N28.0 -- N57.tunnel@(45,415).out
+        wire: N54.0 -- N40.tunnel@(245,389).out
+        wire: N57.shiftreg@(184,385).out -- N54.1
+        wire: N44.tunnel@(467,31).out -- N19.4 -- N21.4 -- N20.4 -- N18.4 -- N17.4 -- N16.4 -- N22.4 -- N23.4
+        wire: N45.0 -- N57.tunnel@(-68,336).out
+        wire: N37.1 -- N35.2
+        wire: N35.0 -- N39.1
+        wire: N68.0 -- N37.2
+        wire: N36.1 -- N37.3
+        wire: N66.0 -- N36.2
+        wire: N38.0 -- N36.0
+        wire: N67.0 -- N37.0
+        wire: N41.1 -- N42.1
+        wire: N64.0 -- N41.0
+        wire: N42.0 -- N40.tunnel@(336,319).out
+        wire: N63.0 -- N41.2
+        wire: N65.0 -- N42.2
+        wire: N43.0 -- N44.selector
+        wire: N48.0 -- N57.tunnel@(22,-166).out
+        wire: N60.0 -- N57.tunnel@(10,-166).out -- N56.tunnel@(279,-122).out -- N50.2
+        wire: N55.tunnel@(356,117).out -- N49.0
+        wire: N50.0 -- N58.0
+  N3    const      path?  [1 term]
+    wire: N3.0 -- N1.0

@@ -1,0 +1,19 @@
+VI: eavesdrop_on_buffer.vi
+  N1    subVI      'DIO Clear.vi' @(530,226)  [8 term]
+  N2    WhileLoop   @(262,199)  [2 term]
+    frame 0:
+      N4    prim       'Not' @(413,395)  [2 term]
+      N5    FPterm     'Boolean'  [1 term]
+      N6    prim       'Wait (ms)' @(409,348)  [2 term]
+      N7    FPterm     'update progress'  [1 term]
+      N8    subVI      'Digital Buffer Write.vi' @(345,260)  [12 term]
+      N9    const      numeric 'milliseconds to wait'  [1 term]
+        wire: N8.3 -- N2.tunnel@(485,230).in
+        wire: N4.0 -- N2.cond
+        wire: N5.0 -- N4.1
+        wire: N9.0 -- N6.1
+        wire: N8.1 -- N7.0
+        wire: N2.tunnel@(262,232).in -- N8.11
+  N3    FPterm     'taskID out'  [1 term]
+    wire: N2.tunnel@(485,230).out -- N1.4
+    wire: N3.0 -- N2.tunnel@(262,232).out

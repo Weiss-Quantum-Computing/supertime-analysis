@@ -1,0 +1,62 @@
+VI: Add_channel___remove_nulls.vi
+  N1    PropertyNode '?' [4 props] @(70,290)  [5 term]
+  N2    subVI      'Add New Channel.vi'  params: 0=Channel Array Output, 1=Input Selection, 2=Channel Array Input @(103,244)  [3 term]
+  N3    FPterm     'Channel Array'  [1 term]
+  N4    FPterm     'Array'  [1 term]
+  N5    FPterm     'reference'  [1 term]
+  N6    ForLoop     @(186,206)  [4 term]
+    frame 0:
+      # "Find indices of / Null Elements."
+      N11   node36      @(203,217)  [12 term]
+      N12   Case        @(269,278)  [4 term]
+        frame 0:
+            wire: N12.tunnel@(269,350).in -- N12.tunnel@(320,354).in
+        frame 1:
+          N15   node3a      @(282,350)  [3 term]
+            wire: N12.tunnel@(269,358).in -- N15.2
+            wire: N12.tunnel@(269,350).in -- N15.1
+            wire: N15.0 -- N12.tunnel@(320,354).in
+      N13   prim       'Equal?' @(235,273)  [3 term]
+      N14   const      string  [1 term]
+        wire: N6.i -- N12.tunnel@(269,358).out
+        wire: N6.shiftreg@(186,350).in -- N12.tunnel@(269,350).out
+        wire: N12.tunnel@(320,354).out -- N6.shiftreg@(328,350).in
+        wire: N11.1 -- N13.2
+        wire: N6.tunnel@(186,256).in -- N11.0
+        wire: N13.0 -- N12.selector
+        wire: N14.0 -- N13.1
+  N7    Case        @(396,153)  [4 term]
+    frame 0:
+      N16   ForLoop     @(421,173)  [4 term]
+        frame 0:
+          # "Move Null Elements to end of array."
+          N17   node48      @(530,244)  [4 term]
+          N18   IndexArray?  @(509,331)  [3 term]
+          N19   node3a      @(571,213)  [4 term]
+          N20   prim       'Split 1D Array' @(485,210)  [4 term]
+          N21   const      numeric  [1 term]
+            wire: N19.0 -- N16.tunnel@(652,217).in
+            wire: N17.1 -- N19.2
+            wire: N21.0 -- N17.2
+            wire: N20.0 -- N17.0
+            wire: N18.1 -- N19.3
+            wire: N16.tunnel@(421,300).in -- N20.2 -- N18.2
+            wire: N16.tunnel@(451,173).in -- N20.3 -- N18.0
+            wire: N20.1 -- N19.1
+        wire: N7.tunnel@(451,153).in -- N16.tunnel@(451,173).out
+        wire: N16.tunnel@(652,217).out -- N7.tunnel@(678,217).in
+        wire: N7.tunnel@(396,300).in -- N16.tunnel@(421,300).out
+    frame 1:
+        wire: N7.tunnel@(451,153).in -- N7.tunnel@(678,217).in
+  N8    prim       'Equal?' @(362,370)  [3 term]
+  N9    const      array '  '  [1 term]
+  N10   const      array 'y'  [1 term]
+    wire: N1.4 -- N2.Input Selection
+    wire: N5.0 -- N1.0
+    wire: N3.0 -- N2.Channel Array Input
+    wire: N2.Channel Array Output -- N7.tunnel@(451,153).out -- N6.tunnel@(186,256).out
+    wire: N8.0 -- N7.selector
+    wire: N6.shiftreg@(328,350).out -- N7.tunnel@(396,300).out -- N8.2
+    wire: N10.0 -- N8.1
+    wire: N7.tunnel@(678,217).out -- N4.0
+    wire: N9.0 -- N6.shiftreg@(186,350).out

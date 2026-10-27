@@ -1,0 +1,103 @@
+VI: load_channel_vars.vi
+  N1    prim       'Unflatten From String' @(235,21)  [4 term]
+  N2    node a9     @(145,-52)  [10 term]
+  N3    FPterm     'error out'  [1 term]
+  N4    prim       'Close LV Object Reference' @(243,-63)  [3 term]
+  N5    prim       'Not' @(111,101)  [2 term]
+  N6    prim       'And' @(244,83)  [3 term]
+  N7    prim       'File Dialog' @(63,-50)  [9 term]
+  N8    prim       'Open VI Reference' @(105,-52)  [8 term]
+  N9    prim       'Greater Than 0?' @(206,82)  [2 term]
+  N10   prim       'Array Size' @(167,82)  [2 term]
+  N11   Case        @(284,-155)  [4 term]
+    frame 0:
+        wire: N11.tunnel@(284,140).in -- N11.tunnel@(925,205).in
+    frame 1:
+      N20   ForLoop     @(438,-118)  [3 term]
+        frame 0:
+          N23   (Un)BundleByName?  @(470,-94)  [2 term]
+            wire: N23.1 -- N20.tunnel@(571,-91).in
+            wire: N20.tunnel@(438,-91).in -- N23.0
+      N21   FPterm     'Edge Array'  [1 term]
+      N22   ForLoop     @(308,-35)  [5 term]
+        frame 0:
+          N24   ForLoop     @(344,-4)  [5 term]
+            frame 0:
+              N25   ForLoop     @(396,36)  [6 term]
+                frame 0:
+                  N26   prim       'Search 1D Array' @(603,53)  [4 term]
+                  N27   Case        @(548,107)  [8 term]
+                    frame 0:
+                        wire: N27.tunnel@(548,205).in -- N27.tunnel@(803,205).in
+                    frame 1:
+                      N31   nodeb9      @(597,132)  [4 term]
+                      N32   nodeb9      @(597,169)  [4 term]
+                      N33   (Un)BundleByName?  @(683,152)  [4 term]
+                        wire: N32.1 -- N33.3
+                        wire: N31.1 -- N33.2
+                        wire: N27.tunnel@(639,107).in -- N31.3 -- N32.3
+                        wire: N27.tunnel@(564,107).in -- N32.2
+                        wire: N27.tunnel@(587,107).in -- N31.2
+                        wire: N27.tunnel@(548,170).in -- N32.0
+                        wire: N27.tunnel@(548,155).in -- N31.0
+                        wire: N33.0 -- N27.tunnel@(803,205).in
+                        wire: N27.tunnel@(548,205).in -- N33.1
+                  N28   prim       'Equal?' @(473,107)  [3 term]
+                  N29   (Un)BundleByName?  @(442,48)  [5 term]
+                  N30   (Un)BundleByName?  @(410,137)  [4 term]
+                    wire: N25.tunnel@(396,60).in -- N29.0
+                    wire: N25.i -- N25.tunnel@(820,284).in
+                    wire: N29.2 -- N27.tunnel@(587,107).out
+                    wire: N30.3 -- N27.tunnel@(548,170).out
+                    wire: N30.2 -- N27.tunnel@(548,155).out
+                    wire: N27.tunnel@(803,205).out -- N25.tunnel@(820,205).in
+                    wire: N25.tunnel@(396,140).in -- N30.0 -- N27.tunnel@(548,205).out
+                    wire: N29.3 -- N27.tunnel@(564,107).out
+                    wire: N29.4 -- N28.2
+                    wire: N26.0 -- N27.tunnel@(639,107).out
+                    wire: N29.1 -- N26.2
+                    wire: N25.tunnel@(607,36).in -- N26.3
+                    wire: N28.0 -- N27.selector
+                    wire: N30.1 -- N28.1
+                wire: N24.tunnel@(344,60).in -- N25.tunnel@(396,60).out
+                wire: N25.tunnel@(820,205).out -- N24.tunnel@(872,205).in
+                wire: N24.tunnel@(344,140).in -- N25.tunnel@(396,140).out
+                wire: N24.tunnel@(607,-4).in -- N25.tunnel@(607,36).out
+            wire: N22.tunnel@(308,60).in -- N24.tunnel@(344,60).out
+            wire: N24.tunnel@(872,205).out -- N22.tunnel@(897,205).in
+            wire: N22.tunnel@(607,-35).in -- N24.tunnel@(607,-4).out
+            wire: N22.tunnel@(308,140).in -- N24.tunnel@(344,140).out
+        wire: N11.tunnel@(284,60).in -- N22.tunnel@(308,60).out
+        wire: N22.tunnel@(897,205).out -- N11.tunnel@(925,205).in
+        wire: N11.tunnel@(284,140).in -- N22.tunnel@(308,140).out
+        wire: N20.tunnel@(571,-91).out -- N22.tunnel@(607,-35).out
+        wire: N21.0 -- N20.tunnel@(438,-91).out
+  N12   FPterm     'Channel Array'  [1 term]
+  N13   FPterm     'Channel Array'  [1 term]
+  N14   const      enum/ring 'select mode (2)'  [1 term]
+  N15   const      string 'default name'  [1 term]
+  N16   const      string 'prompt'  [1 term]
+  N17   const      string 'default name'  [1 term]
+  N18   const      string 'Control Name'  [1 term]
+  N19   const      array 'Channel variables'  [1 term]
+    wire: N1.0 -- N11.tunnel@(284,60).out -- N10.1
+    wire: N19.0 -- N1.2
+    wire: N2.5 -- N1.3
+    wire: N18.0 -- N2.6
+    wire: N2.3 -- N4.1
+    wire: N2.1 -- N4.2
+    wire: N8.0 -- N2.2
+    wire: N8.1 -- N2.0
+    wire: N4.0 -- N3.0
+    wire: N17.0 -- N7.3
+    wire: N5.0 -- N6.1
+    wire: N7.8 -- N5.1
+    wire: N6.0 -- N11.selector
+    wire: N9.0 -- N6.2
+    wire: N7.6 -- N8.6
+    wire: N16.0 -- N7.1
+    wire: N15.0 -- N7.5
+    wire: N14.0 -- N7.2
+    wire: N11.tunnel@(925,205).out -- N12.0
+    wire: N13.0 -- N11.tunnel@(284,140).out
+    wire: N10.0 -- N9.1

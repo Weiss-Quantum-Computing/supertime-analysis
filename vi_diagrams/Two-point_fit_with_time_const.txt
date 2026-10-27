@@ -1,0 +1,233 @@
+VI: Two-point_fit_with_time_const.vi
+  N1    Sequence    @(41,35)  [2 term]
+    frame 0:
+      N33   Case        @(54,51)  [1 term]
+        frame 0:
+        frame 1:
+          N34   LocalVar   '?' @(88,91)  [1 term]
+          N35   const      cluster 'Function type'  [1 term]
+            wire: N35.0 -- N34.0
+        wire: N1.tunnel@(41,85).in -- N33.selector
+    frame 1:
+      N36   LocalVar   '?' @(74,76)  [1 term]
+        wire: N36.0 -- N1.tunnel@(115,128).in
+  N2    prim       'Equal?' @(-3,73)  [3 term]
+  N3    IndexArray?  @(-71,60)  [3 term]
+  N4    IndexArray?  @(-70,97)  [3 term]
+  N5    Case        @(-70,217)  [7 term]
+    frame 0:
+      N37   prim       'Multiply' @(27,350)  [3 term]
+      N38   prim       'Sign' @(-16,347)  [2 term]
+      N39   prim       'Subtract' @(69,316)  [3 term]
+      N40   node3a      @(116,327)  [5 term]
+        wire: N5.tunnel@(-37,217).in -- N39.2
+        wire: N5.tunnel@(140,217).in -- N40.3 -- N39.1
+        wire: N38.0 -- N37.1
+        wire: N37.0 -- N40.4
+        wire: N39.0 -- N40.1 -- N38.1
+        wire: N5.tunnel@(-70,360).in -- N40.2
+        wire: N40.0 -- N5.tunnel@(170,298).in
+        wire: N5.tunnel@(10,393).in -- N37.2
+    frame 1:
+      N41   prim       'Multiply' @(27,350)  [3 term]
+      N42   prim       'Sign' @(-16,347)  [2 term]
+      N43   prim       'Subtract' @(69,316)  [3 term]
+      N44   node3a      @(116,327)  [5 term]
+        wire: N5.tunnel@(-37,217).in -- N43.2
+        wire: N5.tunnel@(140,217).in -- N44.3 -- N43.1
+        wire: N42.0 -- N41.1
+        wire: N41.0 -- N44.4
+        wire: N43.0 -- N44.1 -- N42.1
+        wire: N5.tunnel@(-70,360).in -- N44.2
+        wire: N44.0 -- N5.tunnel@(170,298).in
+        wire: N5.tunnel@(10,393).in -- N41.2
+    frame 2:
+      N45   prim       'Subtract' @(-54,339)  [3 term]
+      N46   prim       'Greater?' @(-52,310)  [3 term]
+      N47   Case        @(-5,307)  [9 term]
+        frame 0:
+            wire: N47.tunnel@(82,320).in -- N47.tunnel@(82,331).in
+            wire: N47.tunnel@(-5,360).in -- N47.tunnel@(82,342).in
+            wire: N47.tunnel@(10,373).in -- N47.tunnel@(82,363).in
+        frame 1:
+          N49   prim       'Negate' @(33,343)  [2 term]
+            wire: N47.tunnel@(76,307).in -- N47.tunnel@(82,331).in
+            wire: N47.tunnel@(-5,342).in -- N47.tunnel@(82,342).in
+            wire: N49.0 -- N47.tunnel@(82,363).in
+            wire: N47.tunnel@(10,373).in -- N49.1
+      N48   node3a      @(116,327)  [4 term]
+        wire: N5.tunnel@(140,217).in -- N47.tunnel@(76,307).out -- N46.2
+        wire: N5.tunnel@(-37,217).in -- N46.1 -- N47.tunnel@(82,320).out
+        wire: N47.tunnel@(82,331).out -- N48.1
+        wire: N5.tunnel@(-70,342).in -- N47.tunnel@(-5,342).out -- N45.2
+        wire: N5.tunnel@(-70,360).in -- N47.tunnel@(-5,360).out -- N45.1
+        wire: N47.tunnel@(82,363).out -- N48.3
+        wire: N47.tunnel@(82,342).out -- N48.2
+        wire: N5.tunnel@(10,393).in -- N47.tunnel@(10,373).out
+        wire: N46.0 -- N47.selector
+        wire: N48.0 -- N5.tunnel@(170,298).in
+    frame 3:
+      N50   prim       'Subtract' @(78,283)  [3 term]
+      N51   node3a      @(116,327)  [4 term]
+        wire: N5.tunnel@(140,217).in -- N51.2 -- N50.1
+        wire: N5.tunnel@(-37,217).in -- N50.2
+        wire: N5.tunnel@(10,393).in -- N51.3
+        wire: N50.0 -- N51.1
+        wire: N51.0 -- N5.tunnel@(170,298).in
+    frame 4:
+      N52   prim       'Subtract' @(80,356)  [3 term]
+      N53   prim       'Multiply' @(25,350)  [3 term]
+      N54   node3a      @(125,298)  [3 term]
+      N55   prim       'Divide' @(49,305)  [3 term]
+      N56   prim       'Subtract' @(1,256)  [3 term]
+      N57   prim       'Subtract' @(6,318)  [3 term]
+        wire: N52.0 -- N54.2
+        wire: N5.tunnel@(140,217).in -- N56.2 -- N52.2
+        wire: N53.0 -- N52.1
+        wire: N55.0 -- N54.1 -- N53.2
+        wire: N5.tunnel@(-70,342).in -- N57.2 -- N53.1
+        wire: N5.tunnel@(-70,360).in -- N57.1
+        wire: N54.0 -- N5.tunnel@(170,298).in
+        wire: N57.0 -- N55.1
+        wire: N56.0 -- N55.2
+        wire: N5.tunnel@(-37,217).in -- N56.1
+    frame 5:
+      N58   prim       'Divide' @(33,286)  [3 term]
+      N59   prim       'Subtract' @(-45,337)  [3 term]
+      N60   prim       'Subtract' @(35,250)  [3 term]
+      N61   prim       'Divide' @(-41,245)  [3 term]
+      N62   prim       'Square Root' @(-5,260)  [2 term]
+      N63   node3a      @(120,295)  [4 term]
+      N64   const      numeric  [1 term]
+        wire: N5.tunnel@(-70,360).in -- N59.1 -- N63.3
+        wire: N58.0 -- N63.2
+        wire: N60.0 -- N58.2
+        wire: N59.0 -- N58.1
+        wire: N5.tunnel@(-70,342).in -- N59.2
+        wire: N62.0 -- N60.1
+        wire: N64.0 -- N60.2
+        wire: N61.0 -- N62.1
+        wire: N5.tunnel@(-37,217).in -- N63.1 -- N61.1
+        wire: N5.tunnel@(140,217).in -- N61.2
+        wire: N63.0 -- N5.tunnel@(170,298).in
+    frame 6:
+      N65   prim       'Subtract' @(117,258)  [3 term]
+      N66   prim       'Divide' @(53,298)  [3 term]
+      N67   prim       'Absolute Value' @(11,299)  [2 term]
+      N68   prim       'Subtract' @(-18,299)  [3 term]
+      N69   prim       'Greater?' @(-44,268)  [3 term]
+      N70   prim       'Select' @(-1,339)  [4 term]
+      N71   prim       'Max & Min' @(42,245)  [4 term]
+      N72   node3a      @(116,327)  [5 term]
+      N73   const      numeric 'y'  [1 term]
+        wire: N65.0 -- N72.1
+        wire: N71.0 -- N72.3 -- N65.1
+        wire: N71.1 -- N65.2
+        wire: N5.tunnel@(140,217).in -- N71.3 -- N69.2
+        wire: N5.tunnel@(-37,217).in -- N71.2 -- N69.1
+        wire: N5.tunnel@(-70,360).in -- N70.1 -- N68.1
+        wire: N5.tunnel@(-70,342).in -- N70.3 -- N68.2
+        wire: N66.0 -- N72.4
+        wire: N73.0 -- N66.1
+        wire: N67.0 -- N66.2
+        wire: N68.0 -- N67.1
+        wire: N70.0 -- N72.2
+        wire: N69.0 -- N70.2
+        wire: N72.0 -- N5.tunnel@(170,298).in
+    frame 7:
+      N74   Case        @(-15,312)  [5 term]
+        frame 0:
+          N80   prim       'Subtract' @(23,346)  [3 term]
+            wire: N74.tunnel@(-15,360).in -- N74.tunnel@(63,341).in -- N80.2
+            wire: N74.tunnel@(-15,341).in -- N80.1
+            wire: N80.0 -- N74.tunnel@(63,360).in
+        frame 1:
+          N81   prim       'Subtract' @(2,345)  [3 term]
+            wire: N74.tunnel@(-15,341).in -- N74.tunnel@(63,341).in -- N81.2
+            wire: N81.0 -- N74.tunnel@(63,360).in
+            wire: N74.tunnel@(-15,360).in -- N81.1
+      N75   prim       'Subtract' @(117,258)  [3 term]
+      N76   prim       'Greater?' @(-44,268)  [3 term]
+      N77   prim       'Max & Min' @(42,245)  [4 term]
+      N78   node3a      @(116,327)  [5 term]
+      N79   const      numeric 'element'  [1 term]
+        wire: N74.tunnel@(63,360).out -- N78.3
+        wire: N5.tunnel@(-70,360).in -- N74.tunnel@(-15,360).out
+        wire: N74.tunnel@(63,341).out -- N78.2
+        wire: N5.tunnel@(-70,342).in -- N74.tunnel@(-15,341).out
+        wire: N76.0 -- N74.selector
+        wire: N79.0 -- N78.4
+        wire: N75.0 -- N78.1
+        wire: N77.0 -- N75.1
+        wire: N77.1 -- N75.2
+        wire: N5.tunnel@(140,217).in -- N77.3 -- N76.2
+        wire: N5.tunnel@(-37,217).in -- N77.2 -- N76.1
+        wire: N78.0 -- N5.tunnel@(170,298).in
+  N6    prim       'Subtract' @(304,159)  [3 term]
+  N7    IndexArray?  @(259,151)  [3 term]
+  N8    IndexArray?  @(410,518)  [3 term]
+  N9    node3a      @(471,526)  [3 term]
+  N10   node3a      @(469,457)  [3 term]
+  N11   FPterm     'Y outputs'  [1 term]
+  N12   FPterm     'X outputs'  [1 term]
+  N13   FPterm     'resolution (output points per input unit)'  [1 term]
+  N14   FPterm     'time constant'  [1 term]
+  N15   subVI      'Local copy Nonlinear Lev-Mar Fit.vi'  params: 0=error, 1=mse, 2=Best Fit, 3=Best Fit Coefficients, 4=Covariance, 5=derivative, 6=Standard Deviation, 7=max iteration, 8=Initial Guess Coefficients, 9=Y, 10=X @(346,282)  [11 term]
+  N16   FPterm     'Best Fit'  [1 term]
+  N17   FPterm     'Initial Guess Coefficients'  [1 term]
+  N18   FPterm     'error'  [1 term]
+  N19   FPterm     'Y'  [1 term]
+  N20   FPterm     'X'  [1 term]
+  N21   IndexArray?  @(259,185)  [3 term]
+  N22   prim       'Multiply' @(345,185)  [3 term]
+  N23   FPterm     'Best Fit Coefficients'  [1 term]
+  N24   node34      @(590,500)  [4 term]
+  N25   FPterm     'XY Graph'  [1 term]
+  N26   ForLoop     @(424,193)  [6 term]
+    frame 0:
+      N82   prim       'Add' @(480,318)  [3 term]
+      N83   subVI      'Functions and derivatives for fit.vi'  params: 0=Derivatives, 1=Y, 2=X, 3=Coefficients, 4=Flag @(486,277)  [5 term]
+      N84   prim       'Divide' @(449,319)  [3 term]
+      N85   const      enum/ring 'Flag'  [1 term]
+        wire: N26.tunnel@(424,315).in -- N82.2
+        wire: N82.0 -- N26.tunnel@(575,264).in -- N83.X
+        wire: N84.0 -- N82.1
+        wire: N26.tunnel@(424,282).in -- N83.Coefficients
+        wire: N83.Y -- N26.tunnel@(575,282).in
+        wire: N85.0 -- N83.Flag
+        wire: N26.i -- N84.2
+        wire: N26.tunnel@(424,223).in -- N84.1
+  N27   const      numeric 'index'  [1 term]
+  N28   const      enum/ring 'derivative'  [1 term]
+  N29   const      numeric 'index'  [1 term]
+  N30   const      numeric 'index'  [1 term]
+  N31   const      numeric 'index'  [1 term]
+  N32   const      numeric 'index'  [1 term]
+    wire: N1.tunnel@(115,128).out -- N5.selector
+    wire: N4.1 -- N5.tunnel@(140,217).out -- N2.1
+    wire: N3.1 -- N5.tunnel@(-37,217).out -- N2.2
+    wire: N2.0 -- N1.tunnel@(41,85).out
+    wire: N32.0 -- N3.2
+    wire: N31.0 -- N4.2
+    wire: N21.1 -- N6.2 -- N10.2 -- N5.tunnel@(-70,342).out
+    wire: N5.tunnel@(170,298).out -- N15.Initial Guess Coefficients -- N17.0
+    wire: N7.1 -- N6.1 -- N26.tunnel@(424,315).out -- N5.tunnel@(-70,360).out
+    wire: N14.0 -- N5.tunnel@(10,393).out
+    wire: N6.0 -- N22.2
+    wire: N30.0 -- N7.2
+    wire: N20.0 -- N15.X -- N21.0 -- N7.0
+    wire: N9.0 -- N24.3 -- N11.0
+    wire: N10.0 -- N24.2 -- N12.0
+    wire: N8.1 -- N9.2
+    wire: N26.tunnel@(575,282).out -- N9.1
+    wire: N26.tunnel@(575,264).out -- N10.1
+    wire: N29.0 -- N8.2
+    wire: N15.Best Fit -- N16.0 -- N8.0
+    wire: N15.Best Fit Coefficients -- N26.tunnel@(424,282).out -- N23.0
+    wire: N22.0 -- N26.N
+    wire: N19.0 -- N15.Y -- N3.0 -- N4.0
+    wire: N15.error -- N18.0
+    wire: N28.0 -- N15.derivative
+    wire: N27.0 -- N21.2
+    wire: N13.0 -- N26.tunnel@(424,223).out -- N22.1
+    wire: N24.0 -- N25.0

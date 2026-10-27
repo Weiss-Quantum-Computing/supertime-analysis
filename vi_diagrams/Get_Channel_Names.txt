@@ -1,0 +1,10 @@
+VI: Get_Channel_Names.vi
+  N1    ForLoop     @(220,61)  [3 term]
+    frame 0:
+      N4    (Un)BundleByName?  @(272,132)  [2 term]
+        wire: N4.1 -- N1.tunnel@(388,135).in
+        wire: N1.tunnel@(220,135).in -- N4.0
+  N2    FPterm     'Channel Array'  [1 term]
+  N3    FPterm     'Channel Names'  [1 term]
+    wire: N2.0 -- N1.tunnel@(220,135).out
+    wire: N1.tunnel@(388,135).out -- N3.0

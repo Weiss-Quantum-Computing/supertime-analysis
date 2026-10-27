@@ -1,0 +1,134 @@
+VI: Put_ramp_and_new_edges_in_arrays.vi
+  N1    FPterm     'Step size array out'  [1 term]
+  N2    FPterm     'Step size array'  [1 term]
+  N3    prim       'Reciprocal' @(117,91)  [2 term]
+  N4    FPterm     'Function type out'  [1 term]
+  N5    FPterm     'Function type in'  [1 term]
+  N6    FPterm     'Total number added'  [1 term]
+  N7    prim       'Subtract' @(771,333)  [3 term]
+  N8    prim       'Array Size' @(718,310)  [2 term]
+  N9    prim       'Array Size' @(227,309)  [2 term]
+  N10   FPterm     'Edge Value (Dig) out'  [1 term]
+  N11   FPterm     'Edge Value (Dig)'  [1 term]
+  N12   FPterm     'step size (ms)'  [1 term]
+  N13   ForLoop     @(296,-130)  [19 term]
+    frame 0:
+      N22   nodebb      @(660,133)  [4 term]
+      N23   nodebd      @(610,131)  [5 term]
+      N24   prim       'In Range and Coerce' @(523,179)  [5 term]
+      N25   nodebb      @(627,89)  [4 term]
+      N26   nodebd      @(592,66)  [5 term]
+      N27   prim       'To Word Integer' @(473,179)  [2 term]
+      N28   nodebd      @(588,12)  [5 term]
+      N29   nodebb      @(627,32)  [4 term]
+      N30   nodebb      @(642,250)  [4 term]
+      N31   nodebb      @(629,-22)  [4 term]
+      N32   nodebb      @(629,-90)  [4 term]
+      N33   prim       'Add' @(586,158)  [3 term]
+      N34   nodebd      @(610,205)  [5 term]
+      N35   nodebd      @(589,-42)  [5 term]
+      N36   nodebd      @(589,-111)  [5 term]
+      N37   prim       'Multiply' @(446,174)  [3 term]
+      N38   prim       'Subtract' @(408,177)  [3 term]
+      N39   (Un)BundleByName?  @(424,234)  [2 term]
+      N40   IndexArray?  @(386,230)  [3 term]
+      N41   prim       'Increment' @(346,197)  [2 term]
+      N42   (Un)BundleByName?  @(435,268)  [2 term]
+      N43   prim       'Add' @(319,174)  [3 term]
+      N44   IndexArray?  @(328,232)  [3 term]
+      N45   ForLoop     @(351,-96)  [10 term]
+        frame 0:
+          N48   prim       'Add' @(428,-7)  [3 term]
+          N49   prim       'Multiply' @(383,-10)  [3 term]
+          N50   (Un)BundleByName?  @(408,34)  [3 term]
+          N51   FPterm     'Time constant'  [1 term]
+          N52   FPterm     'Best fit coefficients'  [1 term]
+          N53   subVI      'Functions and derivatives for fit.vi'  params: 0=Derivatives, 1=Y, 2=X, 3=Coefficients, 4=Flag @(475,-64)  [5 term]
+          N54   const      enum/ring 'Flag'  [1 term]
+          N55   const      numeric  [1 term]
+          N56   const      cluster 'Function type in'  [1 term]
+            wire: N45.tunnel@(351,32).in -- N49.1 -- N45.tunnel@(500,98).in
+            wire: N56.0 -- N45.tunnel@(536,98).in
+            wire: N49.0 -- N48.2
+            wire: N45.tunnel@(399,98).in -- N48.1
+            wire: N48.0 -- N53.X -- N50.2
+            wire: N45.i -- N49.2
+            wire: N50.0 -- N45.tunnel@(453,98).in
+            wire: N45.tunnel@(430,98).in -- N50.1
+            wire: N55.0 -- N45.tunnel@(553,56).in
+            wire: N51.0 -- N45.tunnel@(553,2).in
+            wire: N53.Y -- N45.tunnel@(553,-54).in
+            wire: N54.0 -- N53.Flag
+            wire: N52.0 -- N53.Coefficients
+      N46   const      numeric 'lower limit'  [1 term]
+      N47   const      numeric 'upper limit'  [1 term]
+        wire: N13.shiftreg@(296,142).in -- N23.1
+        wire: N45.tunnel@(500,98).out -- N22.3
+        wire: N22.1 -- N13.shiftreg@(686,142).in
+        wire: N23.3 -- N22.0
+        wire: N13.shiftreg@(296,168).in -- N29.2 -- N31.2 -- N32.2 -- N30.2 -- N34.4 -- N35.4 -- N36.4 -- N33.2 -- N28.4 -- N26.4 -- N25.2 -- N23.4 -- N22.2
+        wire: N47.0 -- N24.4
+        wire: N46.0 -- N24.2
+        wire: N24.1 -- N45.N -- N33.1
+        wire: N27.0 -- N24.3
+        wire: N45.tunnel@(536,98).out -- N25.3
+        wire: N25.1 -- N13.shiftreg@(686,113).in
+        wire: N26.3 -- N25.0
+        wire: N13.shiftreg@(296,113).in -- N26.1
+        wire: N38.0 -- N37.1
+        wire: N13.tunnel@(296,129).in -- N37.2
+        wire: N37.0 -- N27.1
+        wire: N13.shiftreg@(296,63).in -- N28.1
+        wire: N29.1 -- N13.shiftreg@(686,63).in
+        wire: N45.tunnel@(553,56).out -- N29.3
+        wire: N28.3 -- N29.0
+        wire: N33.0 -- N13.shiftreg@(686,168).in
+        wire: N30.1 -- N13.shiftreg@(686,285).in
+        wire: N13.shiftreg@(296,-20).in -- N35.1
+        wire: N13.shiftreg@(296,-88).in -- N36.1
+        wire: N32.1 -- N13.shiftreg@(686,-88).in
+        wire: N31.1 -- N13.shiftreg@(686,-20).in
+        wire: N34.3 -- N30.0
+        wire: N13.shiftreg@(296,285).in -- N34.1
+        wire: N13.tunnel@(296,223).in -- N44.0 -- N40.0
+        wire: N43.0 -- N44.2 -- N41.1
+        wire: N35.3 -- N31.0
+        wire: N36.3 -- N32.0
+        wire: N13.tunnel@(296,32).in -- N45.tunnel@(351,32).out
+        wire: N45.tunnel@(453,98).out -- N30.3
+        wire: N44.1 -- N42.0 -- N45.tunnel@(430,98).out
+        wire: N45.tunnel@(553,-54).out -- N32.3
+        wire: N45.tunnel@(553,2).out -- N31.3
+        wire: N39.1 -- N38.2
+        wire: N42.1 -- N45.tunnel@(399,98).out -- N38.1
+        wire: N13.tunnel@(296,183).in -- N43.2
+        wire: N40.1 -- N39.0
+        wire: N41.0 -- N40.2
+        wire: N13.i -- N43.1
+  N14   FPterm     'Edge Input Array'  [1 term]
+  N15   FPterm     'EdgeOutput Array'  [1 term]
+  N16   FPterm     'Edge Value (Anlg)'  [1 term]
+  N17   FPterm     'Time constant array'  [1 term]
+  N18   FPterm     'index of start of ramp in analog array'  [1 term]
+  N19   FPterm     'Edge Value (Anlg) out'  [1 term]
+  N20   FPterm     'Time constant out'  [1 term]
+  N21   FPterm     'Number of edges in between'  [1 term]
+    wire: N2.0 -- N13.shiftreg@(296,142).out
+    wire: N13.shiftreg@(686,142).out -- N1.0
+    wire: N3.0 -- N13.tunnel@(296,129).out
+    wire: N12.0 -- N13.tunnel@(296,32).out -- N3.1
+    wire: N5.0 -- N13.shiftreg@(296,113).out
+    wire: N13.shiftreg@(686,113).out -- N4.0
+    wire: N7.0 -- N6.0
+    wire: N8.0 -- N7.2
+    wire: N9.0 -- N7.1
+    wire: N13.shiftreg@(686,285).out -- N15.0 -- N8.1
+    wire: N13.shiftreg@(686,63).out -- N10.0
+    wire: N11.0 -- N13.shiftreg@(296,63).out
+    wire: N13.shiftreg@(686,-88).out -- N19.0
+    wire: N13.shiftreg@(686,-20).out -- N20.0
+    wire: N17.0 -- N13.shiftreg@(296,-20).out
+    wire: N16.0 -- N13.shiftreg@(296,-88).out
+    wire: N14.0 -- N13.tunnel@(296,223).out -- N13.shiftreg@(296,285).out -- N9.1
+    wire: N18.0 -- N13.tunnel@(296,183).out -- N13.shiftreg@(296,168).out
+    wire: N21.0 -- N13.N

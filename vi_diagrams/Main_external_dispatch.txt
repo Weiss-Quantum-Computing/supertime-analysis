@@ -1,0 +1,108 @@
+VI: Main_external_dispatch.vi
+  N1    Case        @(213,92)  [5 term]
+    frame 0:
+    frame 1:
+      N13   subVI      'control GPIB instruments.vi'  params: 0=Sets To Run Array, 1=(sequence) or edge number (hold), 2=Current data set, 3=Output Cluster @(226,122)  [4 term]
+        wire: N1.tunnel@(224,161).in -- N13.Current data set
+        wire: N1.tunnel@(262,126).in -- N13.(sequence) or edge number (hold)
+        wire: N1.tunnel@(240,161).in -- N13.Sets To Run Array
+        wire: N1.tunnel@(213,126).in -- N13.Output Cluster
+  N2    FPterm     'Output Cluster'  [1 term]
+  N3    node6c      @(371,200)  [4 term]
+  N4    prim       'Greater Than 0?' @(336,210)  [2 term]
+  N5    FPterm     'Auto data?'  [1 term]
+  N6    prim       'Equal To 0?' @(355,157)  [2 term]
+  N7    Case        @(405,83)  [3 term]
+    frame 0:
+    frame 1:
+      N14   prim       'Greater?' @(514,230)  [3 term]
+      N15   Case        @(626,226)  [8 term]
+        frame 0:
+            wire: N15.tunnel@(626,249).in -- N15.tunnel@(752,321).in
+            wire: N15.tunnel@(626,240).in -- N15.tunnel@(768,321).in
+        frame 1:
+          N35   node a9     @(642,240)  [12 term]
+            wire: N15.tunnel@(626,249).in -- N35.2
+            wire: N15.tunnel@(626,240).in -- N35.0
+            wire: N35.3 -- N15.tunnel@(752,321).in
+            wire: N35.1 -- N15.tunnel@(768,321).in
+            wire: N15.tunnel@(626,306).in -- N35.10
+            wire: N15.tunnel@(626,291).in -- N35.8
+            wire: N15.tunnel@(626,276).in -- N35.6
+      N16   prim       'Flatten To String' @(735,415)  [3 term]
+      N17   node a9     @(774,366)  [12 term]
+      N18   Case        @(688,99)  [5 term]
+        frame 0:
+            wire: N18.tunnel@(688,142).in -- N18.tunnel@(823,142).in
+            wire: N18.tunnel@(688,132).in -- N18.tunnel@(823,132).in
+        frame 1:
+          N36   node a9     @(724,131)  [10 term]
+          N37   const      path? 'Wait until done'  [1 term]
+            wire: N37.0 -- N36.6 -- N36.8
+            wire: N36.3 -- N18.tunnel@(823,142).in
+            wire: N36.1 -- N18.tunnel@(823,132).in
+            wire: N18.tunnel@(688,142).in -- N36.2
+            wire: N18.tunnel@(688,132).in -- N36.0
+      N19   prim       'Less?' @(600,147)  [3 term]
+      N20   PropertyNode '?' [4 props] @(526,133)  [5 term]
+      N21   prim       'Close LV Object Reference' @(926,362)  [3 term]
+      N22   FPterm     'error out'  [1 term]
+      N23   prim       'Flatten To String' @(479,421)  [3 term]
+      N24   prim       'To Unsigned Word Integer' @(423,292)  [2 term]
+      N25   prim       'Flatten To String' @(457,286)  [3 term]
+      N26   node a9     @(630,366)  [12 term]
+      N27   prim       'Open VI Reference' @(476,171)  [8 term]
+      N28   FPterm     'vi path'  [1 term]
+      N29   const      string 'Control Name'  [1 term]
+      N30   const      string 'Control Name'  [1 term]
+      N31   const      path?  [1 term]
+      N32   const      enum/ring 'Execution:State'  [1 term]
+      N33   const      string 'Control Name'  [1 term]
+      N34   const      numeric 'y'  [1 term]
+        wire: N34.0 -- N14.1
+        wire: N7.tunnel@(405,237).in -- N24.1 -- N14.2
+        wire: N14.0 -- N15.selector
+        wire: N29.0 -- N15.tunnel@(626,276).out
+        wire: N7.tunnel@(739,459).in -- N16.0
+        wire: N16.2 -- N17.10
+        wire: N16.1 -- N17.8
+        wire: N33.0 -- N17.6
+        wire: N17.3 -- N21.1
+        wire: N17.1 -- N21.2
+        wire: N26.3 -- N17.2
+        wire: N26.1 -- N17.0
+        wire: N18.tunnel@(823,142).out -- N15.tunnel@(626,249).out
+        wire: N18.tunnel@(823,132).out -- N15.tunnel@(626,240).out
+        wire: N20.3 -- N18.tunnel@(688,142).out
+        wire: N20.1 -- N18.tunnel@(688,132).out
+        wire: N19.0 -- N18.selector
+        wire: N32.0 -- N19.1
+        wire: N20.4 -- N19.2
+        wire: N27.0 -- N20.2
+        wire: N21.0 -- N22.0
+        wire: N23.2 -- N26.10
+        wire: N23.1 -- N26.8
+        wire: N31.0 -- N23.0
+        wire: N30.0 -- N26.6
+        wire: N24.0 -- N25.0
+        wire: N15.tunnel@(752,321).out -- N26.2
+        wire: N15.tunnel@(768,321).out -- N26.0
+        wire: N25.2 -- N15.tunnel@(626,306).out
+        wire: N25.1 -- N15.tunnel@(626,291).out
+        wire: N27.1 -- N20.0
+        wire: N28.0 -- N27.6
+  N8    FPterm     'Position in run array'  [1 term]
+  N9    prim       'Array Size' @(266,226)  [2 term]
+  N10   FPterm     'Current data set'  [1 term]
+  N11   FPterm     'Sets To Run Array'  [1 term]
+  N12   const      path?  [1 term]
+    wire: N12.0 -- N1.selector
+    wire: N10.0 -- N1.tunnel@(224,161).out
+    wire: N8.0 -- N6.1 -- N1.tunnel@(262,126).out
+    wire: N11.0 -- N9.1 -- N1.tunnel@(240,161).out
+    wire: N2.0 -- N7.tunnel@(739,459).out -- N1.tunnel@(213,126).out
+    wire: N4.0 -- N3.3
+    wire: N9.0 -- N7.tunnel@(405,237).out -- N4.1
+    wire: N5.0 -- N3.2
+    wire: N6.0 -- N3.1
+    wire: N3.0 -- N7.selector

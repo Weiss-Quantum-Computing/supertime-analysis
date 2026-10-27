@@ -1,0 +1,642 @@
+VI: add_constants_and_ramps.vi
+  # "Set to True to make plots for debugging purposes.  Set to false to save time in normal use"
+  N1    FPterm     'Array of ramp pair arrays'  [1 term]
+  N2    Case        @(904,-3)  [3 term]
+    frame 0:
+    frame 1:
+      N12   FPterm     'XY Graph'  [1 term]
+      N13   ForLoop     @(961,41)  [3 term]
+        frame 0:
+          N15   (Un)BundleByName?  @(978,69)  [2 term]
+            wire: N15.1 -- N13.tunnel@(1099,97).in
+            wire: N13.tunnel@(961,88).in -- N15.0
+      N14   ForLoop     @(928,158)  [4 term]
+        frame 0:
+          N16   (Un)BundleByName?  @(968,281)  [2 term]
+          N17   Case        @(950,174)  [4 term]
+            frame 0:
+              N18   (Un)BundleByName?  @(969,213)  [2 term]
+              N19   node34      @(1085,213)  [4 term]
+                wire: N17.tunnel@(950,182).in -- N18.0
+                wire: N19.0 -- N17.tunnel@(1131,206).in
+                wire: N17.tunnel@(1090,174).in -- N19.2
+                wire: N18.1 -- N19.3
+            frame 1:
+              N20   (Un)BundleByName?  @(966,213)  [2 term]
+              N21   node34      @(1085,213)  [4 term]
+                wire: N17.tunnel@(950,182).in -- N20.0
+                wire: N21.0 -- N17.tunnel@(1131,206).in
+                wire: N17.tunnel@(1090,174).in -- N21.2
+                wire: N20.1 -- N21.3
+            wire: N16.1 -- N17.selector
+            wire: N14.tunnel@(928,182).in -- N17.tunnel@(950,182).out -- N16.0
+            wire: N17.tunnel@(1131,206).out -- N14.tunnel@(1144,206).in
+            wire: N14.tunnel@(1090,158).in -- N17.tunnel@(1090,174).out
+        wire: N14.tunnel@(1144,206).out -- N12.0
+        wire: N13.tunnel@(1099,97).out -- N14.tunnel@(1090,158).out
+        wire: N2.tunnel@(904,182).in -- N14.tunnel@(928,182).out
+        wire: N2.tunnel@(904,88).in -- N13.tunnel@(961,88).out
+  N3    LocalVar   '?' @(-190,332)  [1 term]
+  N4    FPterm     'Number of unterminated ramps'  [1 term]
+  N5    Sequence    @(-25,-34)  [5 term]
+    frame 0:
+      N22   ForLoop     @(-2,-11)  [7 term]
+        frame 0:
+          # "Indexing input sets value for N but cannot be used in loop because we change other elements."
+          N23   IndexArray?  @(29,273)  [3 term]
+          N24   Sequence    @(65,1)  [9 term]
+            frame 0:
+              # "First check for DDS channel changes and put them in a ramp format so the next / frames can be used for both DDS and ramps"
+              N25   (Un)BundleByName?  @(81,142)  [9 term]
+              N26   ForLoop     @(169,34)  [3 term]
+                frame 0:
+                  N34   node36      @(198,49)  [7 term]
+                    wire: N34.1 -- N26.tunnel@(250,49).in
+                    wire: N26.tunnel@(169,94).in -- N34.0
+              N27   Case        @(268,59)  [9 term]
+                frame 0:
+                    wire: N27.tunnel@(268,114).in -- N27.tunnel@(703,114).in
+                    wire: N27.tunnel@(268,384).in -- N27.tunnel@(703,384).in
+                frame 1:
+                  N35   ForLoop     @(294,75)  [10 term]
+                    frame 0:
+                      N36   Case        @(335,87)  [11 term]
+                        frame 0:
+                          # "Our ramp needs 12 points so the end is 24 usec later.  Only add if not already there."
+                          N38   nodeb9      @(631,541)  [4 term]
+                          N39   nodeb9      @(595,454)  [4 term]
+                          N40   ForLoop     @(408,385)  [3 term]
+                            frame 0:
+                              N56   node36      @(436,392)  [7 term]
+                                wire: N56.1 -- N40.tunnel@(485,392).in
+                                wire: N40.tunnel@(485,385).in -- N56.0
+                          N41   prim       'Search 1D Array' @(502,392)  [4 term]
+                          N42   (Un)BundleByName?  @(368,505)  [5 term]
+                          N43   nodeb9      @(625,500)  [4 term]
+                          N44   IndexArray?  @(359,473)  [3 term]
+                          N45   (Un)BundleByName?  @(496,500)  [6 term]
+                          N46   nodeb9      @(546,462)  [4 term]
+                          N47   nodeb9      @(426,450)  [4 term]
+                          N48   prim       'Greater Or Equal To 0?' @(467,117)  [2 term]
+                          N49   Case        @(383,166)  [8 term]
+                            frame 0:
+                              N57   subVI      'put new edge in channel.vi' @(508,207)  [5 term]
+                              N58   subVI      'Sort Edge Array.vi'  params: 0=Channel Array Input, 1=Number of edges with duplicate, negative, or consecutive times, 2=Edge Output Array, 3=Target 
+Resolution (us):, 4=Channel Array Input, 5=Edge Input Array @(539,276)  [6 term]
+                              N59   IndexArray?  @(515,324)  [3 term]
+                              N60   node3a      @(501,276)  [3 term]
+                              N61   node34      @(451,260)  [8 term]
+                              N62   FormatString?  @(418,206)  [7 term]
+                              N63   const      string 'format string'  [1 term]
+                              N64   const      numeric  [1 term]
+                              N65   const      array 'Var Names:         Time (ms)'  [1 term]
+                              N66   const      numeric  [1 term]
+                                wire: N58.Edge Output Array -- N49.tunnel@(607,202).in -- N57.3
+                                wire: N57.1 -- N49.tunnel@(607,365).in
+                                wire: N49.tunnel@(383,365).in -- N57.2
+                                wire: N49.tunnel@(383,235).in -- N62.6
+                                wire: N62.2 -- N61.3 -- N57.4
+                                wire: N60.0 -- N58.Edge Input Array
+                                wire: N49.tunnel@(383,355).in -- N59.0 -- N60.1
+                                wire: N61.0 -- N60.2
+                                wire: N59.1 -- N61.1
+                                wire: N49.tunnel@(383,226).in -- N62.5 -- N61.4 -- N59.2
+                                wire: N49.tunnel@(418,166).in -- N61.2
+                                wire: N66.0 -- N61.7
+                                wire: N65.0 -- N61.6
+                                wire: N64.0 -- N61.5
+                                wire: N63.0 -- N62.0
+                            frame 1:
+                                wire: N49.tunnel@(383,355).in -- N49.tunnel@(607,202).in
+                                wire: N49.tunnel@(383,365).in -- N49.tunnel@(607,365).in
+                          N50   prim       'Search 1D Array' @(426,113)  [4 term]
+                          N51   prim       'Add' @(392,112)  [3 term]
+                          N52   const      numeric 'y'  [1 term]
+                          N53   const      numeric 'new element/subarray'  [1 term]
+                          N54   const      numeric 'new element/subarray'  [1 term]
+                          N55   const      cluster 'Function type'  [1 term]
+                            wire: N36.tunnel@(335,145).in -- N50.1 -- N49.tunnel@(383,226).out -- N47.3 -- N39.3 -- N38.3
+                            wire: N36.tunnel@(398,584).in -- N44.2 -- N43.3
+                            wire: N38.1 -- N45.5
+                            wire: N42.4 -- N38.0
+                            wire: N55.0 -- N38.2
+                            wire: N39.1 -- N45.4
+                            wire: N54.0 -- N39.2
+                            wire: N42.3 -- N39.0
+                            wire: N40.tunnel@(485,392).out -- N41.3
+                            wire: N49.tunnel@(607,202).out -- N36.tunnel@(665,114).in -- N40.tunnel@(485,385).out
+                            wire: N41.0 -- N46.3
+                            wire: N51.0 -- N50.2 -- N49.tunnel@(418,166).out -- N41.2
+                            wire: N50.0 -- N48.1
+                            wire: N53.0 -- N47.2
+                            wire: N36.tunnel@(335,191).in -- N49.tunnel@(383,235).out -- N46.2
+                            wire: N42.2 -- N47.0
+                            wire: N42.1 -- N46.0
+                            wire: N47.1 -- N45.3
+                            wire: N46.1 -- N45.2
+                            wire: N44.1 -- N45.1 -- N42.0
+                            wire: N43.1 -- N36.tunnel@(665,384).in
+                            wire: N49.tunnel@(607,365).out -- N44.0 -- N43.0
+                            wire: N45.0 -- N43.2
+                            wire: N36.tunnel@(335,384).in -- N49.tunnel@(383,365).out
+                            wire: N36.tunnel@(335,114).in -- N49.tunnel@(383,355).out
+                            wire: N48.0 -- N49.selector
+                            wire: N36.tunnel@(396,87).in -- N50.3
+                            wire: N52.0 -- N51.1
+                            wire: N36.tunnel@(376,87).in -- N51.2
+                        frame 1:
+                            wire: N36.tunnel@(335,384).in -- N36.tunnel@(665,384).in
+                            wire: N36.tunnel@(335,114).in -- N36.tunnel@(665,114).in
+                      N37   prim       'Not A Number/Path/Refnum?' @(297,211)  [2 term]
+                        wire: N35.tunnel@(398,598).in -- N36.tunnel@(398,584).out
+                        wire: N36.tunnel@(665,384).out -- N35.shiftreg@(679,382).in
+                        wire: N35.i -- N36.tunnel@(335,145).out
+                        wire: N35.shiftreg@(294,382).in -- N36.tunnel@(335,384).out
+                        wire: N36.tunnel@(665,114).out -- N35.shiftreg@(679,112).in
+                        wire: N35.shiftreg@(294,112).in -- N36.tunnel@(335,114).out
+                        wire: N35.tunnel@(396,75).in -- N36.tunnel@(396,87).out
+                        wire: N35.tunnel@(376,75).in -- N36.tunnel@(376,87).out
+                        wire: N35.tunnel@(294,306).in -- N36.tunnel@(335,306).out
+                        wire: N37.0 -- N36.selector
+                        wire: N35.tunnel@(294,191).in -- N37.1 -- N36.tunnel@(335,191).out
+                    wire: N35.shiftreg@(679,382).out -- N27.tunnel@(703,384).in
+                    wire: N27.tunnel@(398,609).in -- N35.tunnel@(398,598).out
+                    wire: N35.shiftreg@(679,112).out -- N27.tunnel@(703,114).in
+                    wire: N27.tunnel@(268,384).in -- N35.shiftreg@(294,382).out
+                    wire: N27.tunnel@(268,114).in -- N35.shiftreg@(294,112).out
+                    wire: N27.tunnel@(376,59).in -- N35.tunnel@(376,75).out -- N35.tunnel@(396,75).out
+                    wire: N27.tunnel@(268,306).in -- N35.tunnel@(294,306).out
+                    wire: N27.tunnel@(268,191).in -- N35.tunnel@(294,191).out
+              N28   prim       'And' @(227,342)  [3 term]
+              N29   prim       'Less?' @(221,317)  [3 term]
+              N30   prim       'Greater Than 0?' @(199,346)  [2 term]
+              N31   prim       'Quotient & Remainder' @(172,332)  [4 term]
+              N32   const      numeric 'y'  [1 term]
+              N33   const      numeric 'y'  [1 term]
+                wire: N24.tunnel@(65,291).in -- N25.0
+                wire: N25.1 -- N31.3
+                wire: N25.7 -- N27.tunnel@(268,306).out
+                wire: N25.4 -- N27.tunnel@(268,191).out
+                wire: N24.tunnel@(398,623).in -- N27.tunnel@(398,609).out
+                wire: N27.tunnel@(703,114).out -- N24.seq@(720,112).in
+                wire: N27.tunnel@(703,384).out -- N24.seq@(720,347).in
+                wire: N24.tunnel@(65,469).in -- N27.tunnel@(268,384).out
+                wire: N24.tunnel@(65,94).in -- N26.tunnel@(169,94).out -- N27.tunnel@(268,114).out
+                wire: N26.tunnel@(250,49).out -- N27.tunnel@(376,59).out
+                wire: N28.0 -- N27.selector
+                wire: N33.0 -- N29.1
+                wire: N29.0 -- N28.2
+                wire: N30.0 -- N28.1
+                wire: N31.1 -- N29.2
+                wire: N31.0 -- N30.1
+                wire: N32.0 -- N31.2
+            frame 1:
+              # "Find ramp start and end for later replacement."
+              N67   IndexArray?  @(493,487)  [3 term]
+              N68   (Un)BundleByName?  @(91,143)  [9 term]
+              N69   ForLoop     @(235,107)  [7 term]
+                frame 0:
+                  # "A time constant starts an ramp.  Otherwise, value should be 0.  Check for NaN too."
+                  # "Also, make sure a function type is chosen before starting the ramp."
+                  N71   prim       'Or' @(283,235)  [3 term]
+                  N72   prim       'Equal?' @(249,246)  [3 term]
+                  N73   prim       'Or' @(288,183)  [3 term]
+                  N74   prim       'Not Equal To 0?' @(267,199)  [2 term]
+                  N75   prim       'Or' @(281,144)  [3 term]
+                  N76   prim       'Not A Number/Path/Refnum?' @(253,131)  [2 term]
+                  N77   Case        @(324,132)  [5 term]
+                    frame 0:
+                      # "Create array of ramp start/end pairs for changing in later frame."
+                      # "Consistency check: is there a defined value to be the end of this ramp?"
+                      N80   prim       'Decrement' @(389,260)  [2 term]
+                      N81   prim       'Array Size' @(397,285)  [2 term]
+                      N82   prim       'Greater?' @(403,244)  [3 term]
+                      N83   Case        @(438,216)  [1 term]
+                        frame 0:
+                        frame 1:
+                          N88   LocalVar   '?' @(456,256)  [1 term]
+                          N89   prim       'Increment' @(626,251)  [2 term]
+                          N90   LocalVar   '?' @(488,232)  [1 term]
+                            wire: N89.0 -- N90.0
+                            wire: N88.0 -- N89.1
+                      N84   WhileLoop   @(379,152)  [3 term]
+                        frame 0:
+                          N91   prim       'Not A Number/Path/Refnum?' @(473,166)  [2 term]
+                          N92   prim       'Add' @(405,175)  [3 term]
+                          N93   IndexArray?  @(438,168)  [3 term]
+                            wire: N92.0 -- N93.2 -- N84.tunnel@(423,203).in
+                            wire: N91.0 -- N84.cond
+                            wire: N93.1 -- N91.1
+                            wire: N84.tunnel@(401,203).in -- N92.1
+                            wire: N84.i -- N92.2
+                            wire: N84.tunnel@(379,167).in -- N93.0
+                      N85   prim       'Increment' @(350,301)  [2 term]
+                      N86   node3a      @(520,350)  [3 term]
+                      N87   node3a      @(458,348)  [3 term]
+                        wire: N77.tunnel@(324,317).in -- N87.1 -- N85.1
+                        wire: N80.0 -- N82.1
+                        wire: N81.0 -- N80.1
+                        wire: N84.tunnel@(423,203).out -- N87.2 -- N82.2
+                        wire: N82.0 -- N83.selector
+                        wire: N85.0 -- N84.tunnel@(401,203).out
+                        wire: N87.0 -- N86.2
+                        wire: N77.tunnel@(324,232).in -- N84.tunnel@(379,167).out -- N81.1
+                        wire: N77.tunnel@(324,330).in -- N86.1
+                        wire: N86.0 -- N77.tunnel@(669,330).in
+                    frame 1:
+                        wire: N77.tunnel@(324,330).in -- N77.tunnel@(669,330).in
+                  N78   prim       'Equal To 0?' @(253,160)  [2 term]
+                  N79   const      cluster 'Function type'  [1 term]
+                    wire: N71.0 -- N77.selector
+                    wire: N73.0 -- N71.2
+                    wire: N72.0 -- N71.1
+                    wire: N79.0 -- N72.1
+                    wire: N69.tunnel@(235,253).in -- N72.2
+                    wire: N69.tunnel@(235,161).in -- N74.1
+                    wire: N74.0 -- N73.1
+                    wire: N75.0 -- N73.2
+                    wire: N69.tunnel@(235,232).in -- N77.tunnel@(324,232).out
+                    wire: N69.tunnel@(235,206).in -- N78.1 -- N76.1
+                    wire: N78.0 -- N75.1
+                    wire: N76.0 -- N75.2
+                    wire: N77.tunnel@(669,330).out -- N69.shiftreg@(684,328).in
+                    wire: N69.shiftreg@(235,328).in -- N77.tunnel@(324,330).out
+                    wire: N69.i -- N77.tunnel@(324,317).out
+              N70   const      array  [1 term]
+                wire: N67.1 -- N68.0 -- N24.seq@(70,267).in
+                wire: N24.tunnel@(398,623).in -- N67.2
+                wire: N24.seq@(720,347).in -- N67.0
+                wire: N68.8 -- N69.tunnel@(235,253).out
+                wire: N68.3 -- N69.tunnel@(235,161).out
+                wire: N68.6 -- N69.tunnel@(235,206).out
+                wire: N68.4 -- N69.tunnel@(235,232).out
+                wire: N69.shiftreg@(684,328).out -- N24.seq@(183,10).in -- N24.tunnel@(185,1).in
+                wire: N70.0 -- N69.shiftreg@(235,328).out
+            frame 2:
+              # "Insert ramp into Edge Value array for this channel and insert appropriate edges in Edge array."
+              N94   (Un)BundleByName?  @(75,143)  [9 term]
+              N95   nodeb9      @(632,414)  [4 term]
+              N96   (Un)BundleByName?  @(588,314)  [7 term]
+              N97   ForLoop     @(209,73)  [17 term]
+                frame 0:
+                  # "Length of ramp"
+                  # "The function used here is set in the global variable below."
+                  # "Does the actual insertion"
+                  # "Figure out what to insert"
+                  # "Keep track of previous insertions in this loop."
+                  N99   Case        @(307,452)  [4 term]
+                    frame 0:
+                        wire: N99.tunnel@(331,452).in -- N99.tunnel@(436,452).in
+                    frame 1:
+                      N126  IndexArray?  @(385,487)  [3 term]
+                      N127  const      numeric 'index'  [1 term]
+                        wire: N127.0 -- N126.2
+                        wire: N126.1 -- N99.tunnel@(436,452).in
+                        wire: N99.tunnel@(459,492).in -- N126.0
+                  N100  subVI      'Put ramp and new edges in arrays.vi' @(361,314)  [20 term]
+                  N101  prim       'Greater Than 0?' @(496,90)  [2 term]
+                  N102  prim       'Select' @(524,93)  [4 term]
+                  N103  IndexArray?  @(461,85)  [3 term]
+                  N104  LocalVar   '?' @(301,408)  [1 term]
+                  N105  IndexArray?  @(252,397)  [3 term]
+                  N106  prim       'Add' @(283,158)  [3 term]
+                  N107  prim       'Add' @(283,105)  [3 term]
+                  N108  prim       'Add' @(484,376)  [3 term]
+                  N109  prim       'Subtract' @(297,255)  [3 term]
+                  N110  subVI      'Two-point fit with time const.vi'  params: 0=X outputs, 1=Y outputs, 2=, 3=Best Fit Coefficients, 4=resolution (output points per input unit), 5=X, 6=Y, 7=time constant @(454,233)  [8 term]
+                  N111  node3a      @(505,184)  [3 term]
+                  N112  (Un)BundleByName?  @(381,158)  [2 term]
+                  N113  (Un)BundleByName?  @(435,137)  [2 term]
+                  N114  IndexArray?  @(420,106)  [3 term]
+                  N115  IndexArray?  @(382,105)  [3 term]
+                  N116  node3a      @(383,231)  [3 term]
+                  N117  IndexArray?  @(305,222)  [3 term]
+                  N118  IndexArray?  @(249,230)  [3 term]
+                  N119  IndexArray?  @(250,194)  [3 term]
+                  N120  IndexArray?  @(248,107)  [3 term]
+                  N121  IndexArray?  @(247,154)  [3 term]
+                  N122  const      numeric 'index'  [1 term]
+                  N123  const      numeric 'index'  [1 term]
+                  N124  const      numeric 'resolution (output points per input unit)'  [1 term]
+                  N125  const      numeric 'f'  [1 term]
+                    wire: N110.Best Fit Coefficients -- N100.6 -- N99.tunnel@(459,492).out
+                    wire: N118.1 -- N110.time constant -- N99.tunnel@(331,452).out
+                    wire: N99.tunnel@(436,452).out -- N100.4
+                    wire: N105.1 -- N104.0 -- N99.selector
+                    wire: N97.shiftreg@(209,260).in -- N100.2 -- N103.0
+                    wire: N102.0 -- N100.12
+                    wire: N100.16 -- N97.shiftreg@(547,260).in
+                    wire: N107.0 -- N118.2 -- N109.1 -- N100.0 -- N119.2 -- N105.2 -- N103.2
+                    wire: N120.1 -- N107.1 -- N115.2
+                    wire: N101.0 -- N102.2
+                    wire: N103.1 -- N102.3 -- N101.1
+                    wire: N125.0 -- N102.1
+                    wire: N97.shiftreg@(209,399).in -- N105.0 -- N100.7
+                    wire: N100.10 -- N97.shiftreg@(547,399).in
+                    wire: N100.19 -- N97.shiftreg@(547,232).in
+                    wire: N100.17 -- N97.shiftreg@(547,344).in
+                    wire: N100.18 -- N97.shiftreg@(547,204).in
+                    wire: N97.shiftreg@(209,232).in -- N100.5 -- N118.0
+                    wire: N97.shiftreg@(209,204).in -- N117.0 -- N100.1 -- N119.0
+                    wire: N97.shiftreg@(209,344).in -- N100.3
+                    wire: N121.1 -- N106.1 -- N114.2
+                    wire: N106.0 -- N109.2 -- N117.2
+                    wire: N97.shiftreg@(209,375).in -- N108.1 -- N107.2 -- N106.2
+                    wire: N108.0 -- N97.shiftreg@(547,375).in
+                    wire: N100.11 -- N108.2
+                    wire: N109.0 -- N100.15
+                    wire: N124.0 -- N110.resolution (output points per input unit)
+                    wire: N114.1 -- N113.0
+                    wire: N100.14 -- N97.shiftreg@(547,312).in
+                    wire: N97.shiftreg@(209,312).in -- N100.13
+                    wire: N111.0 -- N110.X
+                    wire: N113.1 -- N111.2
+                    wire: N112.1 -- N111.1
+                    wire: N115.1 -- N112.0
+                    wire: N97.tunnel@(209,95).in -- N115.0 -- N114.0
+                    wire: N117.1 -- N116.2
+                    wire: N119.1 -- N116.1
+                    wire: N116.0 -- N110.Y
+                    wire: N123.0 -- N121.2
+                    wire: N97.tunnel@(209,112).in -- N120.0 -- N121.0
+                    wire: N122.0 -- N120.2
+              N98   const      numeric  [1 term]
+                wire: N24.seq@(70,267).in -- N94.0
+                wire: N94.8 -- N97.shiftreg@(209,399).out
+                wire: N94.6 -- N97.shiftreg@(209,232).out
+                wire: N94.5 -- N97.shiftreg@(209,344).out
+                wire: N94.4 -- N97.shiftreg@(209,204).out
+                wire: N94.2 -- N97.shiftreg@(209,260).out
+                wire: N24.seq@(720,112).in -- N97.shiftreg@(209,312).out -- N97.tunnel@(209,95).out
+                wire: N24.seq@(720,347).in -- N95.0
+                wire: N97.shiftreg@(547,260).out -- N96.2
+                wire: N97.shiftreg@(547,399).out -- N96.6
+                wire: N97.shiftreg@(547,344).out -- N96.5
+                wire: N97.shiftreg@(547,232).out -- N96.4
+                wire: N97.shiftreg@(547,204).out -- N96.3
+                wire: N24.seq@(183,10).in -- N97.tunnel@(209,112).out
+                wire: N98.0 -- N97.shiftreg@(209,375).out
+                wire: N95.1 -- N24.seq@(720,330).in
+                wire: N96.0 -- N95.2
+                wire: N24.tunnel@(729,228).in -- N95.3
+                wire: N24.tunnel@(623,623).in -- N96.1
+                wire: N97.shiftreg@(547,312).out -- N24.tunnel@(729,94).in
+            frame 3:
+              # "Insert correct number of new edges in between existing edges for channels which did not have the ramp inserted in the previous frame."
+              N128  (Un)BundleByName?  @(73,144)  [9 term]
+              N129  ForLoop     @(190,66)  [7 term]
+                frame 0:
+                  N130  prim       'Equal?' @(214,241)  [3 term]
+                  N131  Case        @(250,78)  [6 term]
+                    frame 0:
+                      N133  ForLoop     @(279,106)  [8 term]
+                        frame 0:
+                          # "Keep track of previous insertions in this loop."
+                          N135  prim       'Greater Than 0?' @(562,116)  [2 term]
+                          N136  prim       'Select' @(596,126)  [4 term]
+                          N137  IndexArray?  @(516,122)  [3 term]
+                          N138  prim       'Add' @(287,229)  [3 term]
+                          N139  (Un)BundleByName?  @(518,492)  [7 term]
+                          N140  prim       'Subtract' @(426,105)  [3 term]
+                          N141  IndexArray?  @(391,122)  [3 term]
+                          N142  IndexArray?  @(333,111)  [3 term]
+                          N143  ForLoop     @(318,172)  [18 term]
+                            frame 0:
+                              # "The amount to insert"
+                              N148  prim       'In Range and Coerce' @(335,296)  [5 term]
+                              N149  nodebb      @(538,423)  [4 term]
+                              N150  IndexArray?  @(398,423)  [3 term]
+                              N151  prim       'Divide' @(333,256)  [3 term]
+                              N152  IndexArray?  @(481,396)  [3 term]
+                              N153  nodebb      @(536,385)  [4 term]
+                              N154  prim       'Add' @(437,242)  [3 term]
+                              N155  prim       'To Word Integer' @(358,256)  [2 term]
+                              N156  prim       'Add' @(332,207)  [3 term]
+                              N157  prim       'Increment' @(380,192)  [2 term]
+                              N158  nodebb      @(536,348)  [4 term]
+                              N159  IndexArray?  @(453,305)  [3 term]
+                              N160  IndexArray?  @(348,184)  [3 term]
+                              N161  IndexArray?  @(413,194)  [3 term]
+                              N162  (Un)BundleByName?  @(448,193)  [2 term]
+                              N163  (Un)BundleByName?  @(447,214)  [2 term]
+                              N164  prim       'Subtract' @(559,196)  [3 term]
+                              N165  IndexArray?  @(429,337)  [3 term]
+                              N166  IndexArray?  @(386,297)  [3 term]
+                              N167  prim       'Decrement' @(385,256)  [2 term]
+                              N168  prim       'Add' @(543,237)  [3 term]
+                              N169  prim       'Increment' @(472,235)  [2 term]
+                              N170  nodebb      @(536,311)  [4 term]
+                              N171  nodebb      @(535,272)  [4 term]
+                              N172  const      numeric 'element'  [1 term]
+                              N173  const      numeric 'element'  [1 term]
+                              N174  const      cluster 'Function type'  [1 term]
+                              N175  const      numeric 'element'  [1 term]
+                              N176  const      numeric 'element'  [1 term]
+                              N177  const      numeric 'lower limit'  [1 term]
+                              N178  const      numeric 'upper limit'  [1 term]
+                                wire: N148.1 -- N159.2 -- N166.2 -- N165.2 -- N152.2 -- N150.2 -- N154.1 -- N168.1
+                                wire: N167.0 -- N148.3
+                                wire: N178.0 -- N148.4
+                                wire: N177.0 -- N148.2
+                                wire: N176.0 -- N150.0
+                                wire: N169.0 -- N171.2 -- N170.2 -- N168.2 -- N158.2 -- N153.2 -- N149.2
+                                wire: N150.1 -- N149.3
+                                wire: N143.shiftreg@(318,448).in -- N149.0
+                                wire: N149.1 -- N143.shiftreg@(575,448).in
+                                wire: N175.0 -- N165.0
+                                wire: N172.0 -- N166.0
+                                wire: N174.0 -- N152.0
+                                wire: N152.1 -- N153.3
+                                wire: N143.shiftreg@(318,387).in -- N153.0
+                                wire: N153.1 -- N143.shiftreg@(575,387).in
+                                wire: N154.0 -- N143.shiftreg@(575,261).in
+                                wire: N143.shiftreg@(318,261).in -- N154.2
+                                wire: N155.0 -- N167.1
+                                wire: N156.0 -- N160.2 -- N157.1
+                                wire: N143.i -- N156.2
+                                wire: N143.tunnel@(318,226).in -- N156.1
+                                wire: N143.shiftreg@(318,240).in -- N169.1
+                                wire: N159.1 -- N158.3
+                                wire: N173.0 -- N159.0
+                                wire: N143.shiftreg@(318,372).in -- N158.0
+                                wire: N158.1 -- N143.shiftreg@(575,372).in
+                                wire: N163.1 -- N164.1
+                                wire: N143.shiftreg@(318,352).in -- N170.0
+                                wire: N143.shiftreg@(318,337).in -- N171.0
+                                wire: N170.1 -- N143.shiftreg@(575,352).in
+                                wire: N171.1 -- N143.shiftreg@(575,337).in
+                                wire: N143.tunnel@(318,279).in -- N151.1
+                                wire: N164.0 -- N151.2
+                                wire: N162.1 -- N164.2
+                                wire: N160.1 -- N163.0
+                                wire: N161.1 -- N162.0
+                                wire: N143.tunnel@(487,172).in -- N160.0 -- N161.0
+                                wire: N157.0 -- N161.2
+                                wire: N165.1 -- N170.3
+                                wire: N166.1 -- N171.3
+                                wire: N151.0 -- N155.1
+                                wire: N168.0 -- N143.shiftreg@(575,240).in
+                          N144  (Un)BundleByName?  @(284,492)  [6 term]
+                          N145  const      numeric 'index'  [1 term]
+                          N146  const      numeric 'index'  [1 term]
+                          N147  const      numeric 'f'  [1 term]
+                            wire: N143.shiftreg@(575,448).out -- N139.6
+                            wire: N144.5 -- N143.shiftreg@(318,448).out
+                            wire: N137.1 -- N135.1 -- N136.3
+                            wire: N147.0 -- N136.1
+                            wire: N135.0 -- N136.2
+                            wire: N136.0 -- N143.tunnel@(318,279).out
+                            wire: N141.1 -- N140.1 -- N143.tunnel@(318,226).out -- N138.2 -- N137.2
+                            wire: N133.tunnel@(520,106).in -- N137.0
+                            wire: N143.shiftreg@(575,261).out -- N133.shiftreg@(642,175).in
+                            wire: N143.shiftreg@(575,387).out -- N139.5
+                            wire: N144.4 -- N143.shiftreg@(318,387).out
+                            wire: N133.shiftreg@(279,175).in -- N138.1 -- N143.shiftreg@(318,261).out
+                            wire: N138.0 -- N143.shiftreg@(318,240).out
+                            wire: N143.shiftreg@(575,372).out -- N139.4
+                            wire: N144.3 -- N143.shiftreg@(318,372).out
+                            wire: N143.shiftreg@(575,352).out -- N139.3
+                            wire: N143.shiftreg@(575,337).out -- N139.2
+                            wire: N139.0 -- N133.shiftreg@(642,362).in
+                            wire: N133.shiftreg@(279,362).in -- N144.0 -- N139.1
+                            wire: N144.2 -- N143.shiftreg@(318,352).out
+                            wire: N144.1 -- N143.shiftreg@(318,337).out
+                            wire: N133.tunnel@(487,106).in -- N143.tunnel@(487,172).out
+                            wire: N133.tunnel@(279,155).in -- N142.0 -- N141.0
+                            wire: N142.1 -- N140.2
+                            wire: N140.0 -- N143.N
+                            wire: N146.0 -- N141.2
+                            wire: N145.0 -- N142.2
+                      N134  const      numeric  [1 term]
+                        wire: N131.tunnel@(520,78).in -- N133.tunnel@(520,106).out
+                        wire: N134.0 -- N133.shiftreg@(279,175).out
+                        wire: N131.tunnel@(250,94).in -- N133.tunnel@(487,106).out
+                        wire: N133.shiftreg@(642,362).out -- N131.tunnel@(665,298).in
+                        wire: N131.tunnel@(250,298).in -- N133.shiftreg@(279,362).out
+                        wire: N131.tunnel@(250,114).in -- N133.tunnel@(279,155).out
+                    frame 1:
+                        wire: N131.tunnel@(250,298).in -- N131.tunnel@(665,298).in
+                  N132  (Un)BundleByName?  @(201,278)  [2 term]
+                    wire: N129.tunnel@(219,66).in -- N131.tunnel@(250,94).out
+                    wire: N129.tunnel@(520,66).in -- N131.tunnel@(520,78).out
+                    wire: N130.0 -- N131.selector
+                    wire: N129.tunnel@(190,221).in -- N130.2
+                    wire: N132.1 -- N130.1
+                    wire: N129.tunnel@(190,298).in -- N131.tunnel@(250,298).out -- N132.0
+                    wire: N129.tunnel@(190,114).in -- N131.tunnel@(250,114).out
+                    wire: N131.tunnel@(665,298).out -- N129.tunnel@(685,298).in
+                wire: N24.seq@(70,267).in -- N128.0
+                wire: N128.7 -- N129.tunnel@(190,221).out
+                wire: N128.2 -- N129.tunnel@(520,66).out
+                wire: N24.seq@(720,112).in -- N129.tunnel@(219,66).out
+                wire: N129.tunnel@(685,298).out -- N24.tunnel@(729,298).in
+                wire: N24.seq@(720,330).in -- N129.tunnel@(190,298).out
+                wire: N24.seq@(183,10).in -- N129.tunnel@(190,114).out
+            wire: N23.1 -- N24.tunnel@(623,623).out -- N24.tunnel@(65,291).out
+            wire: N22.i -- N24.tunnel@(729,228).out -- N23.2 -- N24.tunnel@(398,623).out
+            wire: N22.shiftreg@(-2,294).in -- N23.0 -- N24.tunnel@(65,469).out
+            wire: N24.tunnel@(185,1).out -- N22.tunnel@(185,-11).in
+            wire: N24.tunnel@(729,94).out -- N22.shiftreg@(755,92).in
+            wire: N24.tunnel@(729,298).out -- N22.shiftreg@(755,294).in
+            wire: N22.shiftreg@(-2,92).in -- N24.tunnel@(65,94).out
+        wire: N22.shiftreg@(755,92).out -- N5.tunnel@(784,94).in
+        wire: N22.tunnel@(185,-11).out -- N5.tunnel@(185,-34).in
+        wire: N5.tunnel@(-25,94).in -- N22.shiftreg@(-2,92).out
+        wire: N5.tunnel@(-25,281).in -- N22.shiftreg@(-2,294).out -- N22.tunnel@(-2,281).out
+        wire: N22.shiftreg@(755,294).out -- N5.seq@(775,327).in
+    frame 1:
+      N179  ForLoop     @(23,-3)  [4 term]
+        frame 0:
+          # "Indexing input sets N but cannot be used in loop."
+          N180  Case        @(221,18)  [6 term]
+            frame 0:
+              N191  Case        @(240,41)  [5 term]
+                frame 0:
+                  N192  ForLoop     @(300,191)  [5 term]
+                    frame 0:
+                      # "Replace -1s with appropriate constant in digital array."
+                      N194  Case        @(351,249)  [4 term]
+                        frame 0:
+                            wire: N194.tunnel@(351,308).in -- N194.tunnel@(448,274).in
+                        frame 1:
+                            wire: N194.tunnel@(351,274).in -- N194.tunnel@(448,274).in
+                      N195  prim       'Less Than 0?' @(315,328)  [2 term]
+                        wire: N194.tunnel@(448,274).out -- N192.shiftreg@(499,272).in -- N192.tunnel@(506,308).in
+                        wire: N192.shiftreg@(300,272).in -- N194.tunnel@(351,274).out
+                        wire: N192.tunnel@(300,311).in -- N194.tunnel@(351,308).out -- N195.1
+                        wire: N195.0 -- N194.selector
+                  N193  const      numeric 'Value'  [1 term]
+                    wire: N193.0 -- N192.shiftreg@(300,272).out
+                    wire: N191.tunnel@(240,177).in -- N191.tunnel@(542,139).in
+                    wire: N191.tunnel@(240,192).in -- N192.tunnel@(300,311).out
+                    wire: N192.tunnel@(506,308).out -- N191.tunnel@(542,308).in
+                frame 1:
+                  N196  ForLoop     @(300,61)  [5 term]
+                    frame 0:
+                      # "Replace NaNs with appropriate constant in Analog array."
+                      N198  prim       'Not A Number/Path/Refnum?' @(348,155)  [2 term]
+                      N199  Case        @(382,101)  [4 term]
+                        frame 0:
+                            wire: N199.tunnel@(382,147).in -- N199.tunnel@(458,138).in
+                        frame 1:
+                            wire: N199.tunnel@(382,117).in -- N199.tunnel@(458,138).in
+                        wire: N198.0 -- N199.selector
+                        wire: N199.tunnel@(458,138).out -- N196.shiftreg@(499,115).in -- N196.tunnel@(506,139).in
+                        wire: N196.tunnel@(300,176).in -- N199.tunnel@(382,147).out -- N198.1
+                        wire: N196.shiftreg@(300,115).in -- N199.tunnel@(382,117).out
+                  N197  const      numeric  [1 term]
+                    wire: N191.tunnel@(240,177).in -- N196.tunnel@(300,176).out
+                    wire: N191.tunnel@(240,192).in -- N191.tunnel@(542,308).in
+                    wire: N196.tunnel@(506,139).out -- N191.tunnel@(542,139).in
+                    wire: N197.0 -- N196.shiftreg@(300,115).out
+                wire: N180.tunnel@(221,177).in -- N191.tunnel@(240,177).out
+                wire: N180.tunnel@(221,224).in -- N191.selector
+                wire: N180.tunnel@(221,192).in -- N191.tunnel@(240,192).out
+                wire: N191.tunnel@(542,139).out -- N180.tunnel@(561,139).in
+                wire: N191.tunnel@(542,308).out -- N180.tunnel@(561,308).in
+            frame 1:
+                wire: N180.tunnel@(221,192).in -- N180.tunnel@(561,308).in
+                wire: N180.tunnel@(221,177).in -- N180.tunnel@(561,139).in
+          N181  prim       'And' @(168,108)  [3 term]
+          N182  prim       'Less?' @(162,83)  [3 term]
+          N183  prim       'Greater Than 0?' @(140,112)  [2 term]
+          N184  prim       'Quotient & Remainder' @(113,98)  [4 term]
+          N185  IndexArray?  @(74,239)  [3 term]
+          N186  (Un)BundleByName?  @(592,131)  [4 term]
+          N187  nodeb9      @(620,184)  [4 term]
+          N188  (Un)BundleByName?  @(86,159)  [5 term]
+          N189  const      numeric 'y'  [1 term]
+          N190  const      numeric 'y'  [1 term]
+            wire: N181.0 -- N180.selector
+            wire: N188.1 -- N184.3
+            wire: N190.0 -- N182.1
+            wire: N182.0 -- N181.2
+            wire: N183.0 -- N181.1
+            wire: N184.1 -- N182.2
+            wire: N184.0 -- N183.1
+            wire: N189.0 -- N184.2
+            wire: N188.2 -- N180.tunnel@(221,177).out
+            wire: N188.4 -- N180.tunnel@(221,224).out
+            wire: N188.3 -- N180.tunnel@(221,192).out
+            wire: N185.1 -- N186.1 -- N188.0
+            wire: N179.shiftreg@(23,294).in -- N187.0 -- N185.0
+            wire: N180.tunnel@(561,139).out -- N186.2
+            wire: N180.tunnel@(561,308).out -- N186.3
+            wire: N186.0 -- N187.2
+            wire: N179.i -- N187.3 -- N185.2
+            wire: N187.1 -- N179.shiftreg@(722,294).in
+        wire: N5.seq@(775,327).in -- N179.tunnel@(23,282).out -- N179.shiftreg@(23,294).out
+        wire: N179.shiftreg@(722,294).out -- N5.tunnel@(784,296).in
+  N6    FPterm     'Edge out'  [1 term]
+  N7    FPterm     'Edge Input Array'  [1 term]
+  N8    FPterm     'Channel array'  [1 term]
+  N9    FPterm     'Channel out'  [1 term]
+  N10   const      numeric 'Number of unterminated ramps'  [1 term]
+  N11   const      path?  [1 term]
+    wire: N5.tunnel@(185,-34).out -- N1.0
+    wire: N11.0 -- N2.selector
+    wire: N10.0 -- N3.0
+    wire: N5.tunnel@(784,296).out -- N9.0 -- N2.tunnel@(904,182).out
+    wire: N5.tunnel@(784,94).out -- N6.0 -- N2.tunnel@(904,88).out
+    wire: N7.0 -- N5.tunnel@(-25,94).out
+    wire: N8.0 -- N5.tunnel@(-25,281).out

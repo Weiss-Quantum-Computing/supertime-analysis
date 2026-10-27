@@ -1,0 +1,148 @@
+VI: step_picomotor.vi
+  # "For loop is to decide if initialization is necessary"
+  N1    ForLoop     @(-27,108)  [3 term]
+    frame 0:
+      # "Bit 2 set: Load Acc"
+      # "Bit 3 set: / Stop smoothly"
+      # "Bit 0 cleared: / Turn amp. off"
+      # "Bits 0,1: / speed factor / Bit 2: Must set / (Reserved)"
+      # "Bit 1 set: Load Speed"
+      # "Bit 0 set: Load Pos"
+      N3    FPterm     'Shutdown'  [1 term]
+      N4    Case        @(698,508)  [4 term]
+        frame 0:
+          N41   const      numeric  [1 term]
+            wire: N41.0 -- N4.tunnel@(773,535).in
+            wire: N4.tunnel@(698,557).in -- N4.tunnel@(764,571).in
+        frame 1:
+          N42   subVI      'LdcnShutdown.vi' @(719,533)  [12 term]
+          N43   const      numeric  [1 term]
+            wire: N43.0 -- N4.tunnel@(773,535).in
+            wire: N4.tunnel@(698,557).in -- N42.8
+            wire: N42.0 -- N4.tunnel@(764,571).in
+      N5    Case        @(-8,169)  [2 term]
+        frame 0:
+          N44   FPterm     'COM Port'  [1 term]
+          N45   subVI      'LdcnInit.vi' @(48,202)  [12 term]
+          N46   const      numeric 'Baudrate'  [1 term]
+            wire: N45.0 -- N5.tunnel@(91,226).in
+            wire: N46.0 -- N45.10
+            wire: N44.0 -- N45.11
+        frame 1:
+      N6    subVI      'StepStopMotor.vi' @(159,202)  [12 term]
+      N7    subVI      'StepResetPos.vi' @(649,533)  [12 term]
+      N8    FPterm     'Motor (A,B,orC)'  [1 term]
+      N9    subVI      'StepStopMotor.vi' @(600,533)  [12 term]
+      N10   WhileLoop   @(237,430)  [3 term]
+        frame 0:
+          N47   Sequence    @(266,444)  [4 term]
+            frame 0:
+              N48   prim       'Wait (ms)' @(346,529)  [2 term]
+              N49   const      numeric 'millisecond timer value'  [1 term]
+                wire: N49.0 -- N48.1
+            frame 1:
+              # "Define Status Items  / Control Byte"
+              # "Trigger to read back current position"
+              # "Bit 0 Set: / Read Pos"
+              N50   subVI      'LdcnReadStatus.vi' @(342,531)  [12 term]
+              N51   LocalVar   '?' @(384,548)  [1 term]
+              N52   const      numeric 'statusitems'  [1 term]
+                wire: N47.tunnel@(266,555).in -- N50.8
+                wire: N47.tunnel@(266,531).in -- N50.11
+                wire: N50.0 -- N51.0
+                wire: N52.0 -- N50.10
+            frame 2:
+              # "Check if bit 0 is cleared / (motor stopped moving)"
+              # "Status Byte"
+              # "Monitor status byte to see when  / motor stops moving."
+              N53   subVI      'LdcnGetStat.vi' @(343,531)  [12 term]
+              N54   LocalVar   '?' @(292,583)  [1 term]
+              N55   node6c      @(401,531)  [3 term]
+              N56   prim       'Equal?' @(447,518)  [3 term]
+              N57   prim       'Not' @(476,517)  [2 term]
+              N58   const      numeric 'pos'  [1 term]
+              N59   const      numeric 'pos'  [1 term]
+                wire: N47.tunnel@(266,531).in -- N53.11
+                wire: N57.0 -- N47.tunnel@(511,529).in
+                wire: N54.0 -- N53.8
+                wire: N59.0 -- N55.2
+                wire: N53.3 -- N55.1
+                wire: N55.0 -- N56.1
+                wire: N58.0 -- N56.2
+                wire: N56.0 -- N57.1
+                wire: N53.0 -- N47.tunnel@(511,555).in
+            wire: N10.tunnel@(237,555).in -- N47.tunnel@(266,555).out
+            wire: N10.tunnel@(237,531).in -- N47.tunnel@(266,531).out
+            wire: N47.tunnel@(511,529).out -- N10.cond
+            wire: N47.tunnel@(511,555).out -- N10.tunnel@(546,555).in
+      N11   FPterm     'Error Out'  [1 term]
+      N12   subVI      'ServoStartMotion.vi' @(547,202)  [12 term]
+      N13   subVI      'StepStopMotor.vi' @(504,202)  [12 term]
+      N14   prim       'Multiply' @(395,241)  [3 term]
+      N15   FPterm     'Step size'  [1 term]
+      N16   prim       'Or' @(510,299)  [3 term]
+      N17   prim       'Greater Or Equal To 0?' @(459,276)  [2 term]
+      N18   prim       'Select' @(492,276)  [4 term]
+      N19   prim       'Logical Shift' @(267,263)  [3 term]
+      N20   prim       'Or' @(294,282)  [3 term]
+      N21   subVI      'StepSetOutputs.vi' @(312,202)  [12 term]
+      N22   subVI      'StepLoadTraj.vi' @(426,202)  [12 term]
+      N23   subVI      'StepSetParam.vi' @(226,202)  [12 term]
+      N24   const      numeric 'pos'  [1 term]
+      N25   const      numeric 'Type (Std)'  [1 term]
+      N26   const      numeric 'unsigned 8bit integer'  [1 term]
+      N27   const      numeric 'pos'  [1 term]
+      N28   const      numeric 'Therm limit'  [1 term]
+      N29   const      numeric  [1 term]
+      N30   const      numeric 'Min speed'  [1 term]
+      N31   const      numeric 'Step time'  [1 term]
+      N32   const      numeric 'unsigned 8bit integer'  [1 term]
+      N33   const      numeric 'y'  [1 term]
+      N34   const      numeric 'Therm limit'  [1 term]
+      N35   const      numeric 'Acc'  [1 term]
+      N36   const      numeric 't'  [1 term]
+      N37   const      numeric 'x'  [1 term]
+      N38   const      numeric 'Speed'  [1 term]
+      N39   const      numeric 'pos'  [1 term]
+      N40   const      numeric 'Min speed'  [1 term]
+        wire: N1.shiftreg@(-27,178).in -- N5.selector
+        wire: N4.tunnel@(773,535).out -- N1.shiftreg@(797,178).in
+        wire: N3.0 -- N4.selector
+        wire: N40.0 -- N23.9
+        wire: N30.0 -- N23.4 -- N23.6
+        wire: N27.0 -- N6.10
+        wire: N6.0 -- N23.8
+        wire: N5.tunnel@(91,226).out -- N6.8
+        wire: N34.0 -- N23.11 -- N21.11 -- N22.11 -- N13.11 -- N12.11 -- N10.tunnel@(237,531).out -- N9.11 -- N7.11 -- N6.11
+        wire: N7.0 -- N4.tunnel@(698,557).out
+        wire: N9.0 -- N7.8
+        wire: N4.tunnel@(764,571).out -- N11.0
+        wire: N39.0 -- N9.10
+        wire: N10.tunnel@(546,555).out -- N9.8
+        wire: N12.0 -- N10.tunnel@(237,555).out
+        wire: N13.0 -- N12.8
+        wire: N24.0 -- N13.10
+        wire: N22.0 -- N13.8
+        wire: N38.0 -- N22.7
+        wire: N35.0 -- N22.6
+        wire: N31.0 -- N22.4
+        wire: N37.0 -- N14.2
+        wire: N14.0 -- N22.9
+        wire: N15.0 -- N14.1 -- N17.1
+        wire: N16.0 -- N22.10
+        wire: N26.0 -- N16.1
+        wire: N18.0 -- N16.2
+        wire: N36.0 -- N18.3
+        wire: N32.0 -- N18.1
+        wire: N17.0 -- N18.2
+        wire: N21.0 -- N22.8
+        wire: N23.0 -- N21.8
+        wire: N20.0 -- N21.10
+        wire: N19.0 -- N20.2
+        wire: N25.0 -- N19.1
+        wire: N33.0 -- N19.2
+        wire: N8.0 -- N20.1
+        wire: N28.0 -- N23.5 -- N23.7
+        wire: N29.0 -- N23.10
+  N2    const      numeric  [1 term]
+    wire: N2.0 -- N1.N

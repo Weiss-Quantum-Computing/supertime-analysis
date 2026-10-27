@@ -1,0 +1,199 @@
+VI: timing_test.vi
+  N1    Sequence    @(-46,45)  [0 term]
+    frame 0:
+      N2    Sequence    @(248,228)  [2 term]
+        frame 0:
+          N5    subVI      'Write to Digital Line.vi' @(397,320)  [9 term]
+          N6    const      numeric 'device'  [1 term]
+          N7    const      numeric 'line'  [1 term]
+          N8    const      path? 'line state'  [1 term]
+          N9    const      refnum? 'digital channel'  [1 term]
+            wire: N8.0 -- N5.4
+            wire: N7.0 -- N5.3
+            wire: N9.0 -- N5.2
+            wire: N6.0 -- N5.0
+        frame 1:
+          # "Start high"
+          # "zeroes the counters"
+          N10   subVI      'Write to Digital Line.vi' @(362,326)  [9 term]
+          N11   prim       'Wait (ms)' @(531,261)  [2 term]
+          N12   const      numeric  [1 term]
+          N13   const      numeric 'iteration (0:initialize)'  [1 term]
+          N14   const      refnum? 'digital channel'  [1 term]
+          N15   const      path? 'line state'  [1 term]
+            wire: N2.tunnel@(583,308).in -- N10.0
+            wire: N15.0 -- N10.4
+            wire: N14.0 -- N10.2
+            wire: N2.tunnel@(248,380).in -- N10.3
+            wire: N13.0 -- N10.8
+            wire: N12.0 -- N11.1
+        frame 2:
+          # "Put DIO device  low to make the pulse which zeroes the counters (reset line is reset on low) / "
+          N16   subVI      'Write to Digital Line.vi' @(372,314)  [9 term]
+          N17   prim       'Wait (ms)' @(527,298)  [2 term]
+          N18   const      numeric  [1 term]
+          N19   const      numeric 'iteration (0:initialize)'  [1 term]
+          N20   const      refnum? 'digital channel'  [1 term]
+          N21   const      path? 'line state'  [1 term]
+            wire: N21.0 -- N16.4
+            wire: N20.0 -- N16.2
+            wire: N2.tunnel@(583,308).in -- N16.0
+            wire: N2.tunnel@(248,380).in -- N16.3
+            wire: N19.0 -- N16.8
+            wire: N18.0 -- N17.1
+        frame 3:
+          # "reset line high to complete the pulse / which zeroes the counters"
+          N22   subVI      'Write to Digital Line.vi' @(315,358)  [9 term]
+          N23   const      numeric 'iteration (0:initialize)'  [1 term]
+          N24   const      path? 'line state'  [1 term]
+          N25   const      refnum? 'digital channel'  [1 term]
+            wire: N25.0 -- N22.2
+            wire: N2.tunnel@(583,308).in -- N22.0
+            wire: N2.tunnel@(248,380).in -- N22.3
+            wire: N24.0 -- N22.4
+            wire: N23.0 -- N22.8
+      N3    const      numeric 'Numeric'  [1 term]
+      N4    const      numeric 'Numeric'  [1 term]
+        wire: N4.0 -- N2.tunnel@(248,380).out
+        wire: N3.0 -- N2.tunnel@(583,308).out
+    frame 1:
+      # "0=continuous"
+      # "FIXME: change to trigger on / when ready to sync to line"
+      # "If you use 0 here instead of setting "Pattern generation Loop enable," I believe the data will be resent over the bus each time."
+      N26   FPterm     'update progress'  [1 term]
+      N27   subVI      'Digital Buffer Write.vi' @(709,292)  [12 term]
+      N28   subVI      'Digital Mode Config.vi' @(304,289)  [12 term]
+      N29   Case        @(310,448)  [5 term]
+        frame 0:
+          N64   subVI      'DIO Wait.vi' @(414,511)  [16 term]
+          N65   const      enum/ring 'direction'  [1 term]
+            wire: N64.4 -- N29.tunnel@(492,485).in
+            wire: N64.15 -- N29.tunnel@(492,547).in
+            wire: N29.tunnel@(328,448).in -- N64.11
+            wire: N29.tunnel@(362,448).in -- N64.0
+            wire: N65.0 -- N64.5
+        frame 1:
+            wire: N29.tunnel@(362,448).in -- N29.tunnel@(492,485).in
+            wire: N29.tunnel@(328,448).in -- N29.tunnel@(492,547).in
+      N30   Case        @(75,453)  [2 term]
+        frame 0:
+          # "Set loop enable to On to loop without sending the data over the bus each time."
+          N66   const      enum/ring 'value in'  [1 term]
+            wire: N66.0 -- N30.tunnel@(110,453).in
+        frame 1:
+          # "Set loop enable to Off to loop in software."
+          N67   const      enum/ring 'value in'  [1 term]
+            wire: N67.0 -- N30.tunnel@(110,453).in
+      N31   FPterm     'Buffer'  [1 term]
+      N32   Case        @(58,63)  [1 term]
+        frame 0:
+        frame 1:
+          N68   prim       'One Button Dialog' @(331,85)  [3 term]
+          N69   const      string 'error source (" ")'  [1 term]
+            wire: N69.0 -- N68.2
+      N33   prim       'Not Equal To 0?' @(21,91)  [2 term]
+      N34   prim       'Quotient & Remainder' @(164,161)  [4 term]
+      N35   subVI      'DIO Parameter.vi' @(226,288)  [20 term]
+      N36   FPterm     'taskID out'  [1 term]
+      N37   FPterm     'timing error?'  [1 term]
+      N38   subVI      'Simple Error Handler.vi' @(533,524)  [10 term]
+      N39   FPterm     'timing error'  [1 term]
+      N40   FPterm     'Target 
+Resolution (us):'  [1 term]
+      N41   FPterm     'Times Out'  [1 term]
+      N42   FPterm     'Scans'  [1 term]
+      N43   FPterm     'Device number for timing card'  [1 term]
+      N44   prim       'Multiply' @(339,383)  [3 term]
+      N45   prim       'Reciprocal' @(411,380)  [2 term]
+      N46   subVI      'DIO Write.vi' @(373,289)  [16 term]
+      N47   subVI      'DIO Config.vi' @(148,288)  [16 term]
+      N48   FPterm     'actual clock freq.'  [1 term]
+      N49   prim       'Array Size' @(110,161)  [2 term]
+      N50   subVI      'Digital Trigger Config.vi' @(458,289)  [12 term]
+      N51   subVI      'DIO Start11.vi' @(584,289)  [16 term]
+      N52   const      enum/ring 'handshake source'  [1 term]
+      N53   const      enum/ring 'mode (0: no change)'  [1 term]
+      N54   const      enum/ring 'trigger type (0: no change)'  [1 term]
+      N55   const      enum/ring 'operation'  [1 term]
+      N56   const      enum/ring 'parameter name'  [1 term]
+      N57   const      numeric  [1 term]
+      N58   const      enum/ring  [1 term]
+      N59   const      array 'Array Constant'  [1 term]
+      N60   const      numeric  [1 term]
+      N61   const      numeric 'number of scans/updates to acquire or generate'  [1 term]
+      N62   const      enum/ring 'signal mode'  [1 term]
+      N63   const      enum/ring 'request polarity'  [1 term]
+        wire: N27.1 -- N26.0
+        wire: N51.4 -- N29.tunnel@(362,448).out -- N27.11
+        wire: N51.15 -- N29.tunnel@(328,448).out
+        wire: N63.0 -- N28.1
+        wire: N62.0 -- N28.10
+        wire: N28.0 -- N46.11
+        wire: N35.19 -- N28.8
+        wire: N28.3 -- N46.0
+        wire: N35.14 -- N28.11
+        wire: N29.tunnel@(492,485).out -- N36.0 -- N1.seq@(787,465).in
+        wire: N29.tunnel@(492,547).out -- N38.9
+        wire: N31.0 -- N30.selector -- N29.selector
+        wire: N30.tunnel@(110,453).out -- N35.8
+        wire: N34.0 -- N47.1 -- N42.0 -- N51.5
+        wire: N33.0 -- N32.selector
+        wire: N34.1 -- N33.1
+        wire: N56.0 -- N35.3
+        wire: N55.0 -- N35.2
+        wire: N38.0 -- N37.10
+        wire: N38.6 -- N39.0
+        wire: N59.0 -- N47.7
+        wire: N58.0 -- N47.9
+        wire: N40.0 -- N44.2
+        wire: N60.0 -- N44.1
+        wire: N44.0 -- N45.1
+        wire: N49.0 -- N34.3
+        wire: N57.0 -- N34.2
+        wire: N46.4 -- N50.11
+        wire: N46.15 -- N50.8
+        wire: N41.0 -- N46.5 -- N49.1
+        wire: N47.4 -- N35.0
+        wire: N47.15 -- N35.5
+        wire: N50.0 -- N51.11
+        wire: N50.3 -- N51.0
+        wire: N45.0 -- N51.9
+        wire: N51.12 -- N48.0
+        wire: N53.0 -- N50.9
+        wire: N54.0 -- N50.10
+        wire: N43.0 -- N47.0
+        wire: N52.0 -- N51.7
+    frame 2:
+      N70   ForLoop     @(189,202)  [1 term]
+        frame 0:
+          N72   Sequence    @(226,285)  [1 term]
+            frame 0:
+              N73   subVI      'Write to Digital Line.vi' @(338,334)  [9 term]
+              N74   const      numeric 'device'  [1 term]
+              N75   const      refnum? 'digital channel'  [1 term]
+              N76   const      numeric 'line'  [1 term]
+              N77   const      path? 'line state'  [1 term]
+                wire: N77.0 -- N73.4
+                wire: N76.0 -- N73.3
+                wire: N75.0 -- N73.2
+                wire: N74.0 -- N73.0
+                wire: N72.tunnel@(358,419).in -- N73.8
+            frame 1:
+              N78   subVI      'Write to Digital Line.vi' @(338,334)  [9 term]
+              N79   const      numeric 'line'  [1 term]
+              N80   const      refnum? 'digital channel'  [1 term]
+              N81   const      numeric 'device'  [1 term]
+              N82   const      path? 'line state'  [1 term]
+              N83   const      numeric 'iteration (0:initialize)'  [1 term]
+                wire: N83.0 -- N78.8
+                wire: N82.0 -- N78.4
+                wire: N79.0 -- N78.3
+                wire: N80.0 -- N78.2
+                wire: N81.0 -- N78.0
+            wire: N70.i -- N72.tunnel@(358,419).out
+      N71   const      numeric  [1 term]
+        wire: N71.0 -- N70.N
+    frame 3:
+      N84   subVI      'DIO Clear.vi' @(417,382)  [8 term]
+      N85   const      numeric 'taskID out'  [1 term]
+        wire: N1.seq@(787,465).in -- N84.4

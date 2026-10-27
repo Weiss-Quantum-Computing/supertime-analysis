@@ -1,0 +1,97 @@
+VI: visualize_fields.vi
+  N1    WhileLoop   @(83,88)  [0 term]
+    frame 0:
+      N2    FPterm     '(Constrain Y and Z to keep B in previously-determined direction, since the calibration is not yet correct.)'  [1 term]
+      N3    Case        @(193,579)  [2 term]
+        frame 0:
+        frame 1:
+          N34   LocalVar   '?' @(542,618)  [1 term]
+          N35   LocalVar   '?' @(542,589)  [1 term]
+          N36   node4a      @(301,587)  [6 term]
+            wire: N36.2 -- N34.0
+            wire: N36.1 -- N35.0
+            wire: N3.tunnel@(193,612).in -- N36.0
+      N4    FPterm     'Helmholtz_Z'  [1 term]
+      N5    FPterm     '(B_x)'  [1 term]
+      N6    FPterm     '(B_y)'  [1 term]
+      N7    node4a      @(467,363)  [6 term]
+      N8    LocalVar   '?' @(590,420)  [1 term]
+      N9    LocalVar   '?' @(593,450)  [1 term]
+      N10   LocalVar   '?' @(588,382)  [1 term]
+      N11   FPterm     'zero-field V Y'  [1 term]
+      N12   FPterm     'mA per mG Y'  [1 term]
+      N13   FPterm     'zero-field V Z'  [1 term]
+      N14   FPterm     'mA per mG Z'  [1 term]
+      N15   FPterm     'zero-field V X'  [1 term]
+      N16   FPterm     'mA per mG X'  [1 term]
+      N17   node4a      @(210,449)  [6 term]
+      N18   node4a      @(195,294)  [6 term]
+      N19   node4a      @(202,144)  [6 term]
+      N20   LocalVar   '?' @(337,322)  [1 term]
+      N21   LocalVar   '?' @(378,482)  [1 term]
+      N22   LocalVar   '?' @(337,171)  [1 term]
+      N23   Case        @(469,127)  [1 term]
+        frame 0:
+          N37   PropertyNode '|B| (mG)' [4 props] @(683,285)  [5 term]
+          N38   PropertyNode 'Phi (deg.)' [4 props] @(669,244)  [5 term]
+          N39   PropertyNode 'Theta (deg.)' [4 props] @(658,201)  [5 term]
+          N40   PropertyNode 'Helmholtz_Z' [4 props] @(626,159)  [5 term]
+          N41   PropertyNode 'Helmholtz_Y' [4 props] @(555,156)  [5 term]
+          N42   PropertyNode 'Helmholtz_X' [4 props] @(481,154)  [5 term]
+          N43   const      path?  [1 term]
+          N44   const      path?  [1 term]
+            wire: N44.0 -- N40.4 -- N41.4 -- N42.4
+            wire: N43.0 -- N37.4 -- N38.4 -- N39.4
+        frame 1:
+          N45   PropertyNode 'Helmholtz_Z' [4 props] @(678,309)  [5 term]
+          N46   PropertyNode 'Helmholtz_Y' [4 props] @(678,265)  [5 term]
+          N47   PropertyNode 'Helmholtz_X' [4 props] @(680,219)  [5 term]
+          N48   PropertyNode 'Phi (deg.)' [4 props] @(627,155)  [5 term]
+          N49   PropertyNode 'Theta (deg.)' [4 props] @(558,155)  [5 term]
+          N50   PropertyNode '|B| (mG)' [4 props] @(505,153)  [5 term]
+          N51   node4a      @(495,228)  [6 term]
+          N52   FPterm     'Theta (deg.)'  [1 term]
+          N53   FPterm     'Phi (deg.)'  [1 term]
+          N54   FPterm     '|B| (mG)'  [1 term]
+          N55   const      path? 'Visible'  [1 term]
+          N56   const      path?  [1 term]
+            wire: N56.0 -- N47.4 -- N46.4 -- N45.4
+            wire: N55.0 -- N50.4 -- N49.4 -- N48.4
+            wire: N54.0 -- N51.0
+            wire: N53.0 -- N51.1
+            wire: N52.0 -- N51.2
+      N24   FPterm     'Mode'  [1 term]
+      N25   FPterm     'Y'  [1 term]
+      N26   FPterm     'Z'  [1 term]
+      N27   FPterm     'X'  [1 term]
+      N28   prim       'Wait (ms)' @(646,483)  [2 term]
+      N29   FPterm     'Stop'  [1 term]
+      N30   const      numeric 'milliseconds to wait'  [1 term]
+      N31   const      numeric 'A/V for computer interface'  [1 term]
+      N32   const      numeric 'A/V for computer interface'  [1 term]
+      N33   const      numeric 'A/V for computer interface'  [1 term]
+        wire: N2.0 -- N3.selector
+        wire: N6.0 -- N7.0
+        wire: N5.0 -- N7.2
+        wire: N4.0 -- N7.1
+        wire: N7.5 -- N9.0
+        wire: N7.4 -- N8.0
+        wire: N7.3 -- N10.0
+        wire: N17.0 -- N21.0
+        wire: N25.0 -- N17.1
+        wire: N11.0 -- N17.3
+        wire: N12.0 -- N17.2
+        wire: N31.0 -- N17.5
+        wire: N19.0 -- N22.0
+        wire: N18.0 -- N20.0
+        wire: N26.0 -- N18.1
+        wire: N13.0 -- N18.3
+        wire: N14.0 -- N18.2
+        wire: N32.0 -- N18.5
+        wire: N27.0 -- N19.1 -- N3.tunnel@(193,612).out
+        wire: N15.0 -- N19.3
+        wire: N16.0 -- N19.2
+        wire: N33.0 -- N19.5
+        wire: N24.0 -- N23.selector
+        wire: N30.0 -- N28.1
+        wire: N29.0 -- N1.cond

@@ -1,0 +1,143 @@
+VI: Lattice_Power_Calculator_rev3.vi
+  N1    FPterm     'Start less than Stop?'  [1 term]
+  N2    FPterm     'Slop (mW)'  [1 term]
+  N3    FPterm     'Timestep interval (usec)'  [1 term]
+  N4    prim       'Less?' @(-153,-9)  [3 term]
+  N5    Case        @(-117,-141)  [9 term]
+    frame 0:
+      # "Turning OFF lattice."
+      # "Calculate time offset"
+      N15   WhileLoop   @(105,-87)  [9 term]
+        frame 0:
+          # "Calculate appropriate section / of the curve with given offset."
+          N21   prim       'Less?' @(214,76)  [3 term]
+          N22   Case        @(262,36)  [7 term]
+            frame 0:
+              # "Haven't exceeded stop value. / Continue unless we're close / enough to stop value."
+              N26   prim       'In Range and Coerce' @(296,112)  [5 term]
+              N27   prim       'Not' @(359,112)  [2 term]
+                wire: N22.tunnel@(340,143).in -- N26.4
+                wire: N22.tunnel@(303,143).in -- N26.2
+                wire: N22.tunnel@(262,63).in -- N26.3 -- N22.tunnel@(432,63).in
+                wire: N27.0 -- N22.tunnel@(402,143).in
+                wire: N26.0 -- N27.1
+            frame 1:
+              # "Exceeded stop value.  Use / stop value and end loop."
+              N28   const      path?  [1 term]
+                wire: N22.tunnel@(262,104).in -- N22.tunnel@(432,63).in
+                wire: N28.0 -- N22.tunnel@(402,143).in
+          N23   prim       'Add' @(141,119)  [3 term]
+          N24   prim       'Multiply' @(124,145)  [3 term]
+          N25   node4a      @(148,-50)  [4 term]
+            wire: N24.0 -- N15.tunnel@(450,157).in -- N23.1
+            wire: N23.0 -- N25.1
+            wire: N22.tunnel@(402,143).out -- N15.cond
+            wire: N15.tunnel@(303,201).in -- N22.tunnel@(303,143).out
+            wire: N15.tunnel@(340,201).in -- N22.tunnel@(340,143).out
+            wire: N15.tunnel@(105,-16).in -- N21.1 -- N22.tunnel@(262,104).out
+            wire: N21.0 -- N22.selector
+            wire: N22.tunnel@(432,63).out -- N15.tunnel@(450,63).in
+            wire: N25.3 -- N21.2 -- N22.tunnel@(262,63).out
+            wire: N15.tunnel@(105,126).in -- N23.2
+            wire: N15.tunnel@(105,152).in -- N24.2
+            wire: N15.tunnel@(105,-73).in -- N25.0
+            wire: N15.tunnel@(105,108).in -- N25.2
+            wire: N15.i -- N24.1
+      N16   prim       'Multiply' @(213,241)  [3 term]
+      N17   prim       'Add' @(272,236)  [3 term]
+      N18   prim       'Add' @(317,254)  [3 term]
+      N19   node4a      @(-77,180)  [4 term]
+      N20   const      numeric  [1 term]
+        wire: N15.tunnel@(450,63).out -- N5.tunnel@(508,63).in
+        wire: N5.tunnel@(-117,37).in -- N18.2 -- N15.tunnel@(105,-16).out -- N17.2
+        wire: N5.tunnel@(-117,-16).in -- N19.2
+        wire: N17.0 -- N15.tunnel@(303,201).out
+        wire: N18.0 -- N15.tunnel@(340,201).out
+        wire: N5.tunnel@(150,309).in -- N18.1 -- N16.1
+        wire: N20.0 -- N16.2
+        wire: N16.0 -- N17.1
+        wire: N19.3 -- N15.tunnel@(105,126).out
+        wire: N15.tunnel@(450,157).out -- N5.tunnel@(508,157).in
+        wire: N5.tunnel@(-117,152).in -- N15.tunnel@(105,152).out
+        wire: N5.tunnel@(-117,108).in -- N15.tunnel@(105,108).out -- N19.1
+        wire: N5.tunnel@(-117,-73).in -- N15.tunnel@(105,-73).out -- N19.0
+    frame 1:
+      # "Turning ON lattice"
+      # "Calculate time offset"
+      N29   prim       'Reverse 1D Array' @(469,51)  [2 term]
+      N30   WhileLoop   @(110,-87)  [9 term]
+        frame 0:
+          # "Calculate appropriate section / of the curve with given offset."
+          N37   prim       'Less?' @(225,75)  [3 term]
+          N38   Case        @(263,34)  [7 term]
+            frame 0:
+              # "Haven't exceeded stop value. / Continue unless we're close / enough to stop value."
+              N42   prim       'In Range and Coerce' @(297,110)  [5 term]
+              N43   prim       'Not' @(360,110)  [2 term]
+                wire: N38.tunnel@(263,63).in -- N38.tunnel@(433,63).in -- N42.3
+                wire: N43.0 -- N38.tunnel@(403,141).in
+                wire: N42.0 -- N43.1
+                wire: N38.tunnel@(341,141).in -- N42.4
+                wire: N38.tunnel@(304,141).in -- N42.2
+            frame 1:
+              # "Exceeded stop value.  Use / stop value and end loop."
+              N44   const      path?  [1 term]
+                wire: N38.tunnel@(263,104).in -- N38.tunnel@(433,63).in
+                wire: N44.0 -- N38.tunnel@(403,141).in
+          N39   prim       'Add' @(147,119)  [3 term]
+          N40   prim       'Multiply' @(127,145)  [3 term]
+          N41   node4a      @(162,-51)  [4 term]
+            wire: N40.0 -- N30.tunnel@(454,157).in -- N39.1
+            wire: N39.0 -- N41.1
+            wire: N38.tunnel@(403,141).out -- N30.cond
+            wire: N30.tunnel@(342,202).in -- N38.tunnel@(341,141).out
+            wire: N30.tunnel@(305,202).in -- N38.tunnel@(304,141).out
+            wire: N30.tunnel@(110,37).in -- N37.1 -- N38.tunnel@(263,104).out
+            wire: N37.0 -- N38.selector
+            wire: N41.3 -- N37.2 -- N38.tunnel@(263,63).out
+            wire: N38.tunnel@(433,63).out -- N30.tunnel@(454,63).in
+            wire: N30.tunnel@(110,126).in -- N39.2
+            wire: N30.i -- N40.1
+            wire: N30.tunnel@(110,-73).in -- N41.0
+            wire: N30.tunnel@(110,108).in -- N41.2
+            wire: N30.tunnel@(110,152).in -- N40.2
+      N31   prim       'Multiply' @(213,262)  [3 term]
+      N32   prim       'Add' @(272,257)  [3 term]
+      N33   prim       'Add' @(317,275)  [3 term]
+      N34   node4a      @(-76,181)  [4 term]
+      N35   const      numeric  [1 term]
+      N36   const      numeric 'Start Power (mW)'  [1 term]
+        wire: N30.tunnel@(454,63).out -- N29.1
+        wire: N29.0 -- N5.tunnel@(508,63).in
+        wire: N5.tunnel@(-117,-16).in -- N33.2 -- N30.tunnel@(110,37).out -- N32.2
+        wire: N5.tunnel@(-117,37).in -- N34.2
+        wire: N5.tunnel@(150,309).in -- N33.1 -- N31.1
+        wire: N33.0 -- N30.tunnel@(342,202).out
+        wire: N32.0 -- N30.tunnel@(305,202).out
+        wire: N35.0 -- N31.2
+        wire: N31.0 -- N32.1
+        wire: N34.3 -- N30.tunnel@(110,126).out
+        wire: N5.tunnel@(-117,152).in -- N30.tunnel@(110,152).out
+        wire: N5.tunnel@(-117,-73).in -- N30.tunnel@(110,-73).out -- N34.0
+        wire: N5.tunnel@(-117,108).in -- N30.tunnel@(110,108).out -- N34.1
+        wire: N30.tunnel@(454,157).out -- N5.tunnel@(508,157).in
+  N6    FPterm     'Stop Power (mW)'  [1 term]
+  N7    FPterm     'Start Power (mW)'  [1 term]
+  N8    FPterm     'Psymmetric'  [1 term]
+  N9    node3a      @(624,95)  [2 term]
+  N10   node34      @(578,90)  [4 term]
+  N11   FPterm     'Time (usec)'  [1 term]
+  N12   FPterm     'Time values'  [1 term]
+  N13   FPterm     'Power Array'  [1 term]
+  N14   FPterm     'Time constant (usec)'  [1 term]
+    wire: N4.0 -- N1.0 -- N5.selector
+    wire: N2.0 -- N5.tunnel@(150,309).out
+    wire: N3.0 -- N5.tunnel@(-117,152).out
+    wire: N7.0 -- N4.2 -- N5.tunnel@(-117,-16).out
+    wire: N8.0 -- N5.tunnel@(-117,-73).out
+    wire: N14.0 -- N5.tunnel@(-117,108).out
+    wire: N6.0 -- N4.1 -- N5.tunnel@(-117,37).out
+    wire: N9.0 -- N11.0
+    wire: N10.0 -- N9.1
+    wire: N5.tunnel@(508,157).out -- N12.0 -- N10.2
+    wire: N5.tunnel@(508,63).out -- N13.0 -- N10.3

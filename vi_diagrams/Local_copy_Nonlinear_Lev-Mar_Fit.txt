@@ -1,0 +1,183 @@
+VI: Local_copy_Nonlinear_Lev-Mar_Fit.vi
+  N1    WhileLoop   @(170,83)  [22 term]
+    frame 0:
+      N24   subVI      'Local copy Lev-Mar xx.vi'  params: 0=X, 1=Y, 2=Coefficients, 3=error, 4=Standard Deviation, 5=chiSqr @(265,144)  [6 term]
+      N25   subVI      'get new coefficients.vi' @(201,139)  [6 term]
+      N26   prim       'Greater?' @(294,138)  [3 term]
+      N27   prim       'Less?' @(189,311)  [3 term]
+      N28   prim       'Select' @(228,317)  [4 term]
+      N29   prim       'Not' @(294,320)  [2 term]
+      N30   prim       'Or' @(315,152)  [3 term]
+      N31   prim       'And' @(511,337)  [3 term]
+      N32   prim       'Equal To 0?' @(265,320)  [2 term]
+      N33   prim       'Select' @(333,99)  [4 term]
+      N34   Case        @(345,126)  [20 term]
+        frame 0:
+          N36   subVI      'Local copy Lev-Mar abx.vi'  params: 0=X, 1=Y, 2=Coefficients, 3=Standard Deviation, 4=derivative, 5=Alpha, 6=Beta, 7=chiSqr @(377,196)  [8 term]
+          N37   LocalVar   '?' @(375,156)  [1 term]
+          N38   prim       'Increment' @(398,291)  [2 term]
+          N39   prim       'Not' @(480,303)  [2 term]
+          N40   prim       'Equal?' @(456,303)  [3 term]
+          N41   prim       'Increment' @(457,247)  [2 term]
+          N42   prim       'Select' @(479,273)  [4 term]
+          N43   prim       'Less?' @(427,249)  [3 term]
+          N44   prim       'Subtract' @(402,245)  [3 term]
+          N45   prim       'Multiply' @(476,166)  [3 term]
+          N46   const      numeric  [1 term]
+          N47   const      numeric  [1 term]
+            wire: N34.tunnel@(345,207).in -- N36.Y
+            wire: N34.tunnel@(345,134).in -- N36.X
+            wire: N38.0 -- N34.tunnel@(520,305).in
+            wire: N37.0 -- N36.derivative
+            wire: N34.tunnel@(345,240).in -- N36.Standard Deviation
+            wire: N34.tunnel@(345,217).in -- N34.tunnel@(520,230).in -- N36.Coefficients
+            wire: N34.tunnel@(345,309).in -- N38.1
+            wire: N34.tunnel@(382,330).in -- N43.1
+            wire: N39.0 -- N34.tunnel@(506,330).in
+            wire: N40.0 -- N39.1
+            wire: N47.0 -- N40.1
+            wire: N34.tunnel@(345,289).in -- N41.1 -- N42.1 -- N40.2
+            wire: N42.0 -- N34.tunnel@(520,287).in
+            wire: N41.0 -- N42.3
+            wire: N43.0 -- N42.2
+            wire: N44.0 -- N43.2
+            wire: N34.tunnel@(345,252).in -- N44.2
+            wire: N36.chiSqr -- N34.tunnel@(520,246).in -- N44.1
+            wire: N36.Beta -- N34.tunnel@(520,209).in
+            wire: N36.Alpha -- N34.tunnel@(520,194).in
+            wire: N45.0 -- N34.tunnel@(520,178).in
+            wire: N34.tunnel@(345,180).in -- N45.1
+            wire: N46.0 -- N45.2
+        frame 1:
+          N48   prim       'Increment' @(372,296)  [2 term]
+          N49   prim       'Multiply' @(401,166)  [3 term]
+          N50   const      numeric  [1 term]
+          N51   const      path?  [1 term]
+            wire: N34.tunnel@(345,309).in -- N48.1
+            wire: N48.0 -- N34.tunnel@(520,305).in
+            wire: N34.tunnel@(345,217).in -- N34.tunnel@(520,230).in
+            wire: N34.tunnel@(345,230).in -- N34.tunnel@(520,209).in
+            wire: N51.0 -- N34.tunnel@(506,330).in
+            wire: N34.tunnel@(345,289).in -- N34.tunnel@(520,287).in
+            wire: N34.tunnel@(345,252).in -- N34.tunnel@(520,246).in
+            wire: N34.tunnel@(345,194).in -- N34.tunnel@(520,194).in
+            wire: N49.0 -- N34.tunnel@(520,178).in
+            wire: N34.tunnel@(345,180).in -- N49.1
+            wire: N50.0 -- N49.2
+      N35   const      numeric  [1 term]
+        wire: N1.tunnel@(170,111).in -- N34.tunnel@(345,134).out -- N24.X
+        wire: N1.shiftreg@(170,129).in -- N25.5 -- N33.3
+        wire: N1.tunnel@(170,207).in -- N24.Y -- N34.tunnel@(345,207).out
+        wire: N28.0 -- N32.1 -- N1.tunnel@(256,367).in
+        wire: N1.tunnel@(170,238).in -- N34.tunnel@(345,240).out -- N24.Standard Deviation
+        wire: N1.tunnel@(170,346).in -- N27.1
+        wire: N25.0 -- N28.3 -- N24.error
+        wire: N35.0 -- N28.1
+        wire: N27.0 -- N28.2
+        wire: N1.shiftreg@(170,307).in -- N34.tunnel@(345,309).out -- N27.2
+        wire: N34.tunnel@(520,305).out -- N1.shiftreg@(562,307).in
+        wire: N29.0 -- N30.1
+        wire: N26.0 -- N33.2 -- N30.2
+        wire: N30.0 -- N34.selector
+        wire: N1.tunnel@(382,367).in -- N34.tunnel@(382,330).out
+        wire: N32.0 -- N31.1 -- N1.tunnel@(569,359).in -- N29.1
+        wire: N34.tunnel@(506,330).out -- N31.2
+        wire: N31.0 -- N1.cond
+        wire: N34.tunnel@(520,230).out -- N1.tunnel@(569,230).in
+        wire: N1.shiftreg@(170,176).in -- N34.tunnel@(345,180).out -- N25.2
+        wire: N25.1 -- N33.1 -- N34.tunnel@(345,217).out -- N24.Coefficients
+        wire: N1.shiftreg@(170,159).in -- N25.3 -- N34.tunnel@(345,230).out
+        wire: N34.tunnel@(520,287).out -- N1.shiftreg@(562,288).in
+        wire: N1.shiftreg@(170,288).in -- N34.tunnel@(345,289).out
+        wire: N1.shiftreg@(170,252).in -- N26.1 -- N34.tunnel@(345,252).out
+        wire: N34.tunnel@(520,246).out -- N1.shiftreg@(562,252).in
+        wire: N34.tunnel@(520,209).out -- N1.shiftreg@(562,159).in
+        wire: N1.shiftreg@(170,144).in -- N25.4 -- N34.tunnel@(345,194).out
+        wire: N34.tunnel@(520,194).out -- N1.shiftreg@(562,144).in
+        wire: N33.0 -- N1.shiftreg@(562,129).in
+        wire: N34.tunnel@(520,178).out -- N1.shiftreg@(562,176).in
+        wire: N24.chiSqr -- N26.2
+  N2    subVI      'Local copy Lev-Mar abx.vi'  params: 0=X, 1=Y, 2=Coefficients, 3=Standard Deviation, 4=derivative, 5=Alpha, 6=Beta, 7=chiSqr @(91,147)  [8 term]
+  N3    node3a      @(86,285)  [3 term]
+  N4    prim       'Subtract' @(27,270)  [3 term]
+  N5    FPterm     'Covariance'  [1 term]
+  N6    IndexArray?  @(38,228)  [3 term]
+  N7    prim       'Array Size' @(-10,241)  [2 term]
+  N8    prim       'Array Size' @(-12,268)  [2 term]
+  N9    FPterm     'Standard Deviation'  [1 term]
+  N10   FPterm     'derivative'  [1 term]
+  N11   FPterm     'error'  [1 term]
+  N12   FPterm     'max iteration'  [1 term]
+  N13   FPterm     'Best Fit'  [1 term]
+  N14   FPterm     'Best Fit Coefficients'  [1 term]
+  N15   FPterm     'mse'  [1 term]
+  N16   Case        @(592,77)  [10 term]
+    frame 0:
+      N52   IndexArray?  @(657,104)  [4 term]
+      N53   IndexArray?  @(653,211)  [3 term]
+      N54   const      numeric  [1 term]
+      N55   const      numeric  [1 term]
+      N56   const      numeric  [1 term]
+        wire: N16.tunnel@(611,376).in -- N16.tunnel@(716,140).in
+        wire: N52.1 -- N16.tunnel@(716,119).in
+        wire: N56.0 -- N52.0 -- N52.2 -- N52.3
+        wire: N53.1 -- N16.tunnel@(716,215).in -- N16.tunnel@(716,290).in
+        wire: N55.0 -- N16.tunnel@(716,311).in
+        wire: N54.0 -- N53.0 -- N53.2
+    frame 1:
+      N57   LocalVar   '?' @(621,308)  [1 term]
+      N58   subVI      'Inverse Matrix.vi' @(634,115)  [4 term]
+      N59   ForLoop     @(620,160)  [4 term]
+        frame 0:
+          N62   subVI      'Functions and derivatives for fit.vi'  params: 0=Derivatives, 1=Y, 2=X, 3=Coefficients, 4=Flag @(641,201)  [5 term]
+          N63   const      enum/ring  [1 term]
+            wire: N63.0 -- N62.Flag
+            wire: N62.Y -- N59.tunnel@(691,215).in
+            wire: N59.tunnel@(620,213).in -- N62.Coefficients
+            wire: N59.tunnel@(644,250).in -- N62.X
+      N60   prim       'Divide' @(681,301)  [3 term]
+      N61   prim       'Array Size' @(643,303)  [2 term]
+        wire: N16.tunnel@(592,146).in -- N58.3
+        wire: N58.0 -- N16.tunnel@(716,140).in
+        wire: N58.1 -- N16.tunnel@(716,119).in
+        wire: N16.tunnel@(592,250).in -- N60.2
+        wire: N16.tunnel@(592,229).in -- N59.tunnel@(620,213).out -- N16.tunnel@(716,290).in
+        wire: N59.tunnel@(691,215).out -- N16.tunnel@(716,215).in
+        wire: N61.0 -- N60.1
+        wire: N57.0 -- N61.1 -- N59.tunnel@(644,250).out
+        wire: N60.0 -- N16.tunnel@(716,311).in
+  N17   FPterm     'X'  [1 term]
+  N18   FPterm     'Initial Guess Coefficients'  [1 term]
+  N19   FPterm     'Y'  [1 term]
+  N20   const      numeric  [1 term]
+  N21   const      numeric 'lamda'  [1 term]
+  N22   const      numeric  [1 term]
+  N23   const      numeric  [1 term]
+    wire: N19.0 -- N2.Y -- N7.1 -- N1.tunnel@(170,207).out
+    wire: N3.0 -- N2.Standard Deviation -- N1.tunnel@(170,238).out
+    wire: N9.0 -- N8.1 -- N3.1
+    wire: N6.1 -- N3.2
+    wire: N4.0 -- N6.2
+    wire: N8.0 -- N4.1
+    wire: N7.0 -- N4.2
+    wire: N1.shiftreg@(562,144).out -- N16.tunnel@(592,146).out
+    wire: N1.tunnel@(256,367).out -- N16.tunnel@(611,376).out
+    wire: N16.tunnel@(716,140).out -- N11.0
+    wire: N16.tunnel@(716,119).out -- N5.0
+    wire: N16.tunnel@(716,215).out -- N13.0
+    wire: N20.0 -- N6.0
+    wire: N10.0 -- N2.derivative
+    wire: N12.0 -- N1.tunnel@(170,346).out
+    wire: N18.0 -- N1.shiftreg@(170,129).out -- N2.Coefficients
+    wire: N22.0 -- N1.shiftreg@(170,288).out -- N1.shiftreg@(170,307).out
+    wire: N23.0 -- N1.tunnel@(382,367).out
+    wire: N1.tunnel@(569,359).out -- N16.selector
+    wire: N16.tunnel@(716,311).out -- N15.0
+    wire: N16.tunnel@(716,290).out -- N14.0
+    wire: N1.tunnel@(569,230).out -- N16.tunnel@(592,229).out
+    wire: N1.shiftreg@(562,252).out -- N16.tunnel@(592,250).out
+    wire: N2.chiSqr -- N1.shiftreg@(170,252).out
+    wire: N2.Beta -- N1.shiftreg@(170,159).out
+    wire: N21.0 -- N1.shiftreg@(170,176).out
+    wire: N2.Alpha -- N1.shiftreg@(170,144).out
+    wire: N17.0 -- N2.X -- N1.tunnel@(170,111).out

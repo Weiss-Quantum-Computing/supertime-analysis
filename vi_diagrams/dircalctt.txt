@@ -1,0 +1,40 @@
+VI: dircalctt.vi
+  N1    WhileLoop   @(-25,189)  [0 term]
+    frame 0:
+      N2    (Un)BundleByName?  @(76,318)  [2 term]
+      N3    IndexArray?  @(58,386)  [3 term]
+      N4    PropertyNode 'Array' [4 props] @(16,294)  [5 term]
+      N5    FPterm     'Array'  [1 term]
+      N6    prim       'Wait Until Next ms Multiple' @(393,482)  [2 term]
+      N7    FPterm     'stop'  [1 term]
+      N8    prim       'Multiply' @(169,338)  [3 term]
+      N9    FPterm     (fp@0xca0)  [1 term]
+      N10   FPterm     (fp@0xa34)  [1 term]
+      N11   FPterm     (fp@0x7f0)  [1 term]
+      N12   IndexArray?  @(42,343)  [3 term]
+      N13   IndexArray?  @(132,337)  [7 term]
+      N14   FPterm     'Factor'  [1 term]
+      N15   node4a      @(221,321)  [5 term]
+      N16   const      numeric 'index'  [1 term]
+      N17   const      numeric 'disabled index (col)'  [1 term]
+      N18   const      numeric 'disabled index (col)'  [1 term]
+      N19   const      numeric 'disabled index (col)'  [1 term]
+      N20   const      numeric 'millisecond multiple'  [1 term]
+        wire: N19.0 -- N13.6
+        wire: N18.0 -- N13.4
+        wire: N17.0 -- N13.2
+        wire: N2.1 -- N13.0
+        wire: N3.1 -- N2.0
+        wire: N5.0 -- N3.0
+        wire: N12.1 -- N3.2
+        wire: N4.4 -- N12.0
+        wire: N20.0 -- N6.1
+        wire: N7.0 -- N1.cond
+        wire: N14.0 -- N8.2
+        wire: N8.0 -- N9.0 -- N15.0
+        wire: N13.1 -- N8.1
+        wire: N15.1 -- N10.0
+        wire: N15.2 -- N11.0
+        wire: N13.5 -- N15.4
+        wire: N13.3 -- N15.3
+        wire: N16.0 -- N12.2

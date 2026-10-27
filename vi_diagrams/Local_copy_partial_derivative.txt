@@ -1,0 +1,34 @@
+VI: Local_copy_partial_derivative.vi
+  N1    subVI      'Functions and derivatives for fit.vi'  params: 0=Derivatives, 1=Y, 2=X, 3=Coefficients, 4=Flag @(220,30)  [5 term]
+  N2    FPterm     'Coefficients'  [1 term]
+  N3    ForLoop     @(78,72)  [8 term]
+    frame 0:
+      N8    subVI      'Functions and derivatives for fit.vi'  params: 0=Derivatives, 1=Y, 2=X, 3=Coefficients, 4=Flag @(220,109)  [5 term]
+      N9    nodeb9      @(150,109)  [4 term]
+      N10   prim       'Multiply' @(284,111)  [3 term]
+      N11   prim       'Add' @(107,110)  [3 term]
+      N12   prim       'Subtract' @(259,106)  [3 term]
+      N13   const      numeric  [1 term]
+        wire: N3.tunnel@(78,127).in -- N11.1
+        wire: N3.tunnel@(252,72).in -- N12.1
+        wire: N3.tunnel@(210,72).in -- N8.Flag
+        wire: N9.1 -- N8.Coefficients
+        wire: N8.Y -- N12.2
+        wire: N3.tunnel@(98,72).in -- N11.2
+        wire: N3.tunnel@(184,72).in -- N8.X
+        wire: N3.i -- N9.3
+        wire: N11.0 -- N9.2
+        wire: N3.tunnel@(133,72).in -- N9.0
+        wire: N10.0 -- N3.tunnel@(330,123).in
+        wire: N12.0 -- N10.2
+        wire: N13.0 -- N10.1
+  N4    FPterm     'Partial Derivative'  [1 term]
+  N5    FPterm     'x'  [1 term]
+  N6    const      numeric  [1 term]
+  N7    const      enum/ring  [1 term]
+    wire: N6.0 -- N3.tunnel@(78,127).out
+    wire: N1.Y -- N3.tunnel@(252,72).out
+    wire: N5.0 -- N3.tunnel@(184,72).out -- N1.X
+    wire: N7.0 -- N1.Flag -- N3.tunnel@(210,72).out
+    wire: N2.0 -- N3.tunnel@(98,72).out -- N3.tunnel@(133,72).out -- N1.Coefficients
+    wire: N3.tunnel@(330,123).out -- N4.0

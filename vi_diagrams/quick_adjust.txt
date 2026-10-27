@@ -1,0 +1,62 @@
+VI: quick_adjust.vi
+  N1    WhileLoop   @(149,148)  [9 term]
+    frame 0:
+      N2    Case        @(496,277)  [4 term]
+        frame 0:
+        frame 1:
+          N23   nodec5     'AO Update Channel.vi' @(507,295)  [3 term]
+            wire: N2.tunnel@(519,329).in -- N23.0
+            wire: N2.tunnel@(496,307).in -- N23.1
+            wire: N2.tunnel@(496,296).in -- N23.2
+      N3    Case        @(291,355)  [4 term]
+        frame 0:
+        frame 1:
+          N24   nodec5     'AO Update Channel.vi' @(308,379)  [3 term]
+            wire: N3.tunnel@(320,413).in -- N24.0
+            wire: N3.tunnel@(291,380).in -- N24.2
+            wire: N3.tunnel@(291,391).in -- N24.1
+      N4    Case        @(297,165)  [4 term]
+        frame 0:
+        frame 1:
+          N25   nodec5     'AO Update Channel.vi' @(317,185)  [3 term]
+            wire: N4.tunnel@(323,219).in -- N25.0
+            wire: N4.tunnel@(297,201).in -- N25.1
+            wire: N4.tunnel@(297,190).in -- N25.2
+      N5    prim       'Not Equal?' @(170,398)  [3 term]
+      N6    prim       'Not Equal?' @(172,310)  [3 term]
+      N7    prim       'Not Equal?' @(170,236)  [3 term]
+      N8    prim       'Wait (ms)' @(416,461)  [2 term]
+      N9    FPterm     'Numeric 3'  [1 term]
+      N10   FPterm     (fp@0x29d4)  [1 term]
+      N11   FPterm     'device'  [1 term]
+      N12   FPterm     'Helmholtz_Z'  [1 term]
+      N13   FPterm     'Helmholtz_Y'  [1 term]
+      N14   FPterm     'device'  [1 term]
+      N15   FPterm     (fp@0x1d1c)  [1 term]
+      N16   FPterm     'Numeric 2'  [1 term]
+      N17   FPterm     'Numeric'  [1 term]
+      N18   FPterm     (fp@0x13e4)  [1 term]
+      N19   FPterm     'device'  [1 term]
+      N20   FPterm     'Stop'  [1 term]
+      N21   FPterm     'Helmholtz_X'  [1 term]
+      N22   const      numeric 'milliseconds to wait'  [1 term]
+        wire: N5.0 -- N3.selector
+        wire: N6.0 -- N2.selector
+        wire: N7.0 -- N4.selector
+        wire: N1.shiftreg@(149,415).in -- N5.1
+        wire: N1.shiftreg@(149,403).in -- N5.2
+        wire: N1.shiftreg@(149,327).in -- N6.1
+        wire: N1.shiftreg@(149,315).in -- N6.2
+        wire: N1.shiftreg@(149,253).in -- N7.1
+        wire: N1.shiftreg@(149,241).in -- N7.2
+        wire: N13.0 -- N16.0 -- N1.shiftreg@(556,403).in -- N3.tunnel@(320,413).out
+        wire: N12.0 -- N9.0 -- N1.shiftreg@(556,315).in -- N2.tunnel@(519,329).out
+        wire: N21.0 -- N17.0 -- N1.shiftreg@(556,241).in -- N4.tunnel@(323,219).out
+        wire: N22.0 -- N8.1
+        wire: N10.0 -- N2.tunnel@(496,307).out
+        wire: N11.0 -- N2.tunnel@(496,296).out
+        wire: N14.0 -- N3.tunnel@(291,380).out
+        wire: N15.0 -- N3.tunnel@(291,391).out
+        wire: N18.0 -- N4.tunnel@(297,201).out
+        wire: N19.0 -- N4.tunnel@(297,190).out
+        wire: N20.0 -- N1.cond

@@ -1,0 +1,110 @@
+VI: remove_edge_from_channel.vi
+  N1    FPterm     'Channel Array Input'  [1 term]
+  N2    FPterm     'Numeric'  [1 term]
+  N3    FPterm     'Channel Array Output'  [1 term]
+  N4    ForLoop     @(54,32)  [4 term]
+    frame 0:
+      N5    Sequence    @(74,42)  [3 term]
+        frame 0:
+          N6    prim       'Array Size' @(166,141)  [2 term]
+          N7    prim       'Subtract' @(197,248)  [3 term]
+          N8    prim       'Increment' @(118,211)  [2 term]
+          N9    node48      @(228,205)  [4 term]
+          N10   (Un)BundleByName?  @(318,150)  [3 term]
+          N11   node3a      @(279,149)  [3 term]
+          N12   node48      @(219,96)  [4 term]
+          N13   (Un)BundleByName?  @(102,53)  [2 term]
+          N14   const      numeric  [1 term]
+            wire: N14.0 -- N12.2
+            wire: N10.0 -- N5.seq@(364,311).in
+            wire: N7.0 -- N9.3
+            wire: N8.0 -- N9.2 -- N7.1
+            wire: N6.0 -- N7.2
+            wire: N13.1 -- N12.0 -- N9.0 -- N6.1
+            wire: N5.tunnel@(74,121).in -- N8.1 -- N12.3
+            wire: N9.1 -- N11.2
+            wire: N11.0 -- N10.2
+            wire: N5.tunnel@(74,153).in -- N10.1 -- N13.0
+            wire: N12.1 -- N11.1
+        frame 1:
+          N15   prim       'Array Size' @(166,141)  [2 term]
+          N16   prim       'Subtract' @(197,248)  [3 term]
+          N17   prim       'Increment' @(118,211)  [2 term]
+          N18   node48      @(228,205)  [4 term]
+          N19   (Un)BundleByName?  @(320,150)  [3 term]
+          N20   node3a      @(279,149)  [3 term]
+          N21   node48      @(219,96)  [4 term]
+          N22   (Un)BundleByName?  @(104,53)  [2 term]
+            wire: N19.0 -- N5.seq@(380,311).in
+            wire: N5.seq@(364,311).in -- N22.0 -- N19.1
+            wire: N16.0 -- N18.3
+            wire: N17.0 -- N18.2 -- N16.1
+            wire: N15.0 -- N16.2
+            wire: N22.1 -- N21.0 -- N18.0 -- N15.1
+            wire: N5.tunnel@(74,121).in -- N17.1 -- N21.3
+            wire: N18.1 -- N20.2
+            wire: N20.0 -- N19.2
+            wire: N21.1 -- N20.1
+        frame 2:
+          N23   prim       'Array Size' @(166,141)  [2 term]
+          N24   prim       'Subtract' @(197,248)  [3 term]
+          N25   prim       'Increment' @(118,211)  [2 term]
+          N26   node48      @(228,205)  [4 term]
+          N27   (Un)BundleByName?  @(326,150)  [3 term]
+          N28   node3a      @(279,149)  [3 term]
+          N29   node48      @(219,96)  [4 term]
+          N30   (Un)BundleByName?  @(110,53)  [2 term]
+            wire: N5.seq@(380,311).in -- N27.1 -- N30.0
+            wire: N27.0 -- N5.seq@(396,311).in
+            wire: N24.0 -- N26.3
+            wire: N25.0 -- N26.2 -- N24.1
+            wire: N23.0 -- N24.2
+            wire: N30.1 -- N29.0 -- N26.0 -- N23.1
+            wire: N5.tunnel@(74,121).in -- N25.1 -- N29.3
+            wire: N26.1 -- N28.2
+            wire: N28.0 -- N27.2
+            wire: N29.1 -- N28.1
+        frame 3:
+          N31   prim       'Array Size' @(166,141)  [2 term]
+          N32   prim       'Subtract' @(197,248)  [3 term]
+          N33   prim       'Increment' @(118,211)  [2 term]
+          N34   node48      @(228,205)  [4 term]
+          N35   (Un)BundleByName?  @(326,150)  [3 term]
+          N36   node3a      @(279,149)  [3 term]
+          N37   node48      @(219,96)  [4 term]
+          N38   (Un)BundleByName?  @(110,53)  [2 term]
+            wire: N35.0 -- N5.seq@(413,311).in
+            wire: N5.seq@(396,311).in -- N38.0 -- N35.1
+            wire: N32.0 -- N34.3
+            wire: N33.0 -- N34.2 -- N32.1
+            wire: N31.0 -- N32.2
+            wire: N38.1 -- N37.0 -- N34.0 -- N31.1
+            wire: N5.tunnel@(74,121).in -- N33.1 -- N37.3
+            wire: N34.1 -- N36.2
+            wire: N36.0 -- N35.2
+            wire: N37.1 -- N36.1
+        frame 4:
+          N39   prim       'Array Size' @(166,141)  [2 term]
+          N40   prim       'Subtract' @(197,248)  [3 term]
+          N41   prim       'Increment' @(118,211)  [2 term]
+          N42   node48      @(228,205)  [4 term]
+          N43   (Un)BundleByName?  @(326,150)  [3 term]
+          N44   node3a      @(279,149)  [3 term]
+          N45   node48      @(219,96)  [4 term]
+          N46   (Un)BundleByName?  @(110,53)  [2 term]
+            wire: N5.seq@(413,311).in -- N43.1 -- N46.0
+            wire: N40.0 -- N42.3
+            wire: N41.0 -- N42.2 -- N40.1
+            wire: N39.0 -- N40.2
+            wire: N46.1 -- N45.0 -- N42.0 -- N39.1
+            wire: N5.tunnel@(74,121).in -- N41.1 -- N45.3
+            wire: N42.1 -- N44.2
+            wire: N44.0 -- N43.2
+            wire: N43.0 -- N5.tunnel@(430,154).in
+            wire: N45.1 -- N44.1
+        wire: N4.tunnel@(54,121).in -- N5.tunnel@(74,121).out
+        wire: N4.tunnel@(54,153).in -- N5.tunnel@(74,153).out
+        wire: N5.tunnel@(430,154).out -- N4.tunnel@(442,151).in
+    wire: N1.0 -- N4.tunnel@(54,153).out
+    wire: N2.0 -- N4.tunnel@(54,121).out
+    wire: N4.tunnel@(442,151).out -- N3.0

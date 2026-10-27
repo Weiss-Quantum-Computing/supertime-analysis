@@ -1,0 +1,971 @@
+Channels
+Generate Signal
+Edges
+Variables
+Variable Array
+Add/Rem Edge
+Edit/View Edge
+Edit/View Channel
+Add/Rem Channel
+Add/Rem Variable
+Edge Array
+Relative Time
+Variables:
+Time Values At This Edge
+Edit/View Variable
+With Respect to Edge:
+Data Functions
+Up
+Increment Value
+Down
+Channel Plot
+Current Channel
+Increment Matching Values
+Control Functions
+Absolute Time
+Variable Info Lock
+Channel Info Lock
+Lock Edge Info
+Import 2nd prev. version
+Restore Array Data
+Clear Data
+Save Array Data
+Exit
+Data Set To Edit:
+Channel Values At This Edge
+Data Set To Edit:
+Edit Data Sets
+Set Name Array
+Sets To Run Array
+Channel Values At This Edge:                              Value:
+Assigned Channels:
+Data Sets To Output:
+Clock
+Target 
+Resolution (us):
+Channel Array
+Channel Array
+device
+Device number for timing card
+channel
+card
+edge
+edge
+card
+Channels on digital card are encoded as (up to) 32-bit integers for each card, with channel 0 the LSB and channel 31 the MSB.
+edge
+card
+channel
+edge
+Number of edges with duplicate, negative, or consecutive times
+Check for errors
+Number of unterminated ramps
+Enter an ending value for your ramps.
+Trigger
+Trigger:       Repeat:
+Number of installed cards
+Numeric
+Device and channel used to reset counters
+Digital I/O
+Digital I/O
+Analog Clock pin (PFI)
+Connections
+Timing error
+status
+code
+source
+error out
+status
+code
+source
+Analog out error
+Digital out error
+error out
+status
+code
+source
+First        Hardware
+Each       Software
+Graph converted?
+Graph
+
+conversion to Volts
+t (ms)
+V
+External .vi to run with each timing sequence
+External vi
+ext. .vi error out
+status
+code
+source
+Generate Once
+Generation
+Code "10012" is an out-of-range warning.  Actual output will continue in range.
+Error Reporting
+abort
+(calculated)
+Edge Name
+Absolute Time (ms)
+Defined with Respect to:               Abs Time (ms):
+Defined with Respect to
+Relative Time(ms)
+Variable Names                         Time (ms)
+Var Names         Time (ms)
+Cooling time             200.000
+Cs pulse length          2600.000
+Expansion time           1.500
+Exposure time            100.000
+Initial delay            50.000
+Time Type:
+File name
+Virtual digital card (Use this number for pseudo-digital channels)
+Analog card number which does digital outputs
+clear
+Analog out error?
+Digital out error?
+# points
+# of scans
+actual clock freq.
+timing taskID
+Import prev. version
+Hold
+Output and hold values at this edge
+wait
+status
+# remaining
+zero all channels
+Set ouput to zero on all channels
+type specifier VI Refnum (for type only)
+Total time (ms)
+Load values from global variables
+load vars
+Load variable values from global file
+load values
+Set Name Array
+Sets To Run Array
+actual clock freq.
+# of scans
+# points
+Add/Rem Edge
+Lock Edge Info
+Edge Array
+Edge Name
+Relative Time(ms)
+Time Type:
+timing taskID
+Analog Clock pin (PFI)
+Device and channel used to reset counters
+Numeric
+ext. .vi error out
+status
+code
+source
+Timing error
+status
+code
+source
+Analog out error
+status
+code
+source
+Digital out error
+error out
+status
+code
+source
+Digital out error?
+Analog out error?
+External vi
+error out
+Target 
+Resolution (us):
+Virtual digital card (Use this number for pseudo-digital channels)
+Analog card number which does digital outputs
+Number of installed cards
+Trigger:       Repeat:
+Exit
+Generate Signal
+wait
+Generate Once
+abort
+Import prev. version
+Save Array Data
+Clear Data
+Restore Array Data
+File name
+Edit Data Sets
+Data Sets To Output:
+Import v3
+status
+# remaining
+type specifier VI Refnum (for type only)
+Edit/View Channel
+Channel Plot
+Add/Rem Channel
+Relative Time
+Variables:
+With Respect to Edge:
+Increment Value
+Up
+Down
+Increment Matching Values
+Absolute Time
+Channel Info Lock
+Assigned Channels:
+clear
+Total time (ms)
+Variable Info Lock
+Variable Array
+Add/Rem Variable
+Time series
+Create time series
+notifier error
+status
+code
+source
+reference error
+status
+code
+source
+Numeric
+times out array
+times out array
+taskID out 2
+taskID out 2
+analog taskIDs
+analog taskIDs
+taskID out 2
+taskID out 2
+digital taskIDs
+digital taskIDs
+Numeric
+Numeric
+analog volt
+analog volt
+buffer size (analog)
+buffer size (analog)
+Buffer size Array
+Buffer size Array
+Numeric
+Numeric
+analog write data
+analog write data
+Numeric
+Numeric
+digital write data
+digital write data
+Non-essential indicators
+data socket error
+status
+code
+source
+You may push the Esc key to exit the program if the Exit button is not visible
+type specifier VI Refnum (for type only)
+Variable Cluster
+Variable Name
+Variable Value (ms)
+Variable Cluster
+Channel Values At This Edge:                              Value:
+Edges using this variable
+Total
+Inf loop?
+Wait (s)
+update top channel box?
+default = ON. Must be 
+ON for frame 4 to run
+update in progress...
+Channel Name
+Card #
+Channel #
+Edge Name
+Value At This
+Edge (V)
+Edge Value (Anlg)
+Value
+Value At This 
+Edge (0/1):
+Edge Value (Dig)
+Value
+Time constant
+Signal
+Type
+Function type
+Function type
+Function type
+Browse to a VI which converts your units to Volts
+Conversion VI
+Step size (ms)
+0, Default
+True
+True
+True
+2
+t
+f
+t
+f
+t
+f
+t
+f
+True
+offset (0)
+True
+True
+Frame 0: Set values and displays for
+channel related controls.
+Frame 2: Set values and displays for
+variable related controls.
+Frame 1: Set values for
+edge related stuff.
+This section adds or removes a channel, then searches
+True
+True
+1
+T button name ("OK")
+True
+wait
+Blinking
+1
+True
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+True
+True
+True
+1
+True
+y
+True
+True
+Put DIO device  low to make the pulse which zeroes the counters (reset line is reset on low)
+True
+AO Update Channel.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Time constant
+Add Value to Edge Names.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Edge Value (Dig)
+Up
+Down
+Increment Value
+Edge Value (Anlg)
+Edge Value (Dig)
+Edge Value (Anlg)
+Edge Name
+Channel Array
+Get Channel Names.vi
+Channel Edit/View
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Replace Channel Array Element.vi
+Edge Array
+Edge Edit/View
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Channel Values At This Edge
+Edge Array
+Defined with Respect to
+Var Names         Time (ms)
+Get Variable Names.vi
+Relative Time(ms)
+Var Names         Time (ms)
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Variable Value (ms)
+Get Variable Names.vi
+Variable Array
+Card #
+Add New Variable.vi
+Defined with Respect to
+Edge&Channel View
+Data Sets To Output:
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Sort Variable Array.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Edit/View Variable
+Edge Value (Anlg)
+Time constant
+Edge Value (Dig)
+Signal
+Type
+Relative Time(ms)
+Time Type:
+Channel Name
+Channel #
+Edge Name
+Variable Name
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Clear Data.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Start Cycle?
+Start Cycle?
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+zeroes the counters
+return to high to prepare for next pulse
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+True
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+0, Default
+False
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Get Edge Names.vi
+Get Edge Names.vi
+Add Time Value To Edge Array.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Get Channel Name+Value.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Analog card number which does digital outputs
+Virtual digital card (Use this number for pseudo-digital channels)
+t
+f
+Write digital data to digital cards.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Number of edges with duplicate, negative, or consecutive times
+1
+Number of unterminated ramps
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Save Data.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Generate Array Data.vi
+Function type
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+index
+index
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+iteration (0:initialize)
+iteration (0:initialize)
+Write to Digital Line.vi
+line state
+digital channel
+digital channel
+Write to Digital Line.vi
+line state
+Start high (should already be high, just
+make sure).
+True
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Restore Data from v2-1.vi
+1
+True
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Write to Digital Line.vi
+port width (8)
+Keeps from resetting all other lines to zero each time
+Write timing data to timing card.vi
+Round to nearest .001
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+True
+Sort Edge Array.vi
+DIO Clear.vi
+Add New Edge simple.vi
+Digital Clock Config.vi
+True
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+DIO Config.vi
+True
+Generate Signal
+x
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+True
+Generate Signal
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Coerce resolution to value provided by card?
+port list
+y
+y
+digital channel
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Generate Signal
+handshake source
+DIO Start11.vi
+-1=number set in DIO config
+Write analog data to analog cards.vi
+x
+Function type
+add ramps only.vi
+find ramp pairs only.vi
+True
+index
+index
+Loop over channels->
+t
+True
+P
+v  Loop over pairs
+tau
+t=s*tau*(sqrt(P0/P)-1);
+P0
+s
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Sort Edge Array.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Channel array contains NaNs, can't compare those elements with built-in !=
+Conversion VI
+Time constant
+Function type
+Conversion VI
+False
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+string
+Edge Value (Anlg)
+Function type
+f
+t
+Don't use auto-indexing because we don't always want to repeat this loop
+Calculate Times.vi
+Calculate Times.vi
+Let the "off" (smaller) value of the ramp determine the length.  An edge likely must be moved to accomodate that length.
+True: move the "off" edge.
+False: move second edge.
+True
+False
+True
+Warnings: Don't change values such that ramp-related edges move past each other or chaos results!  And don't switch methods without starting over with a new data set or you'll get a "defined with respect to" loop.
+Avoid creating consecutive edges with ramps.
+check consecutive edges.vi
+True
+message
+graph upstream channels.vi
+Channel Plot
+Channel Plot
+string
+True
+True
+Set plot styles for upstream ch.
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Edit/View Channel
+Edit/View Edge
+Edit/View Variable
+Convert UD units to Volts.vi
+string
+Output Cluster
+Channel Plot
+String
+Plot.Plot Interpolation
+Plot.Point Style
+Time Type:
+Shared edges: last channel wins (it's the last one through the loop).  If that's not OK, don't share edges.
+Convert UD units to Volts.vi
+add constants only.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Edge Name
+Edge Name
+True
+Boolean Text.Text
+wait
+wait
+Blinking
+Boolean Text.Text
+Boolean Text.Text Colors:Text Color
+Boolean Text.Text Colors:BG Color
+Generate Signal
+Boolean Text.Text Colors:Text Color
+Boolean Text.Text Colors:BG Color
+True
+The wire goes through this loop so the reference is not closed before it is used.
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+times out array
+Numeric
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+analog write data
+Numeric
+digital write data
+Numeric
+Log Data.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+abort
+abort
+Visible
+abort
+y
+index
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+AO Wait.vi
+If data is repeated by software, loop with the outer loop
+millisecond multiple
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+If the data is repeated by the card rather than in software, pause here and let it.  Outer loop will not repeat.
+False
+For update rate--seems to cause problems.
+False
+Task IDs not already cleared
+Task IDs already cleared
+clear all task ids.vi
+clear ids then stop.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Wait 90% of total time
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+y
+Generate Once
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+t
+f
+Increment values.vi
+True
+False
+True
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+If not using the D-A-D kludge, there is no need to generate the whole array, so this saves time.  (Generating the whole array can be time consuming for large data sets.)
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+URL
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Restore Data from v3-1.vi
+t
+f
+Step size (ms)
+Step size (ms)
+Step size (ms)
+Step size (ms)
+x
+element
+clear
+True
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+# remaining
+# remaining
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+# remaining
+zeroallchannels.vi
+True
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+disabled index (col)
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Keep from eating CPU time
+The variables are re-read at this point to see if anything has changed since the begining of the loop.  If not, certain tasks need not be done next time through the loop (replotting graph, etc.).
+milliseconds to wait
+Channel Plot
+y
+Channel Plot
+True
+y
+y
+y
+True
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+load channel vars.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+True
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+load time vars.vi
+load values
+load vars
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Restore Data from v3-2.vi
+add constants only.vi
+x
+Default
+ddscontrol.vi
+y
+y
+True
+ddscontrol.vi
+ddscontrol.vi
+ddscontrol.vi
+Operation
+Operation
+Operation
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+For ordering. Do
+not remove.--->
+find dds boards.vi
+init dds boards.vi
+External DDS clock frequency
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+x
+Convert for DDS units.vi
+True
+True
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Convert for DDS units.vi
+check for overlapping DDS commands.vi
+x
+True
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Send arrays to step program.vi
+name (unnamed)
+If "sets to run" is unwired, "position in run array" will instead be interpreted as the single edge to output.
+True
+message
+Enable/Disable datasocket notification
+Data-writing Sequence
+Tool Bar:Show Abort Button
+Tool Bar:Show Abort Button
+Operation
+Restore Data.vi
+Add Data Set.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Edit/View Channel
+Add New Channel.vi
+remove nulls.vi
+Assigned Channels:
+Used channels + conflicts.vi
+Begin-end processing.vi
+Edge Name
+Edges using this variable
+find edges using variable.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+compare channel array 2D except NaNs.vi
+True
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+Frame 4: Calculate the sequence and then do what it describes.
+Frame 3:  Load, save, clear, zero
+These boolean values are used in the last frame, but we read them here so that any changes on the front panel will be reflected in the data before we get to that frame.
+True
+iteration (0:initialize)
+Write to Digital Line.vi
+digital channel
+line state
+pattern
+Write to Digital Port .vi
+port width (8)
+digital channel
+y
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+update in progress...
+supertime-ExternalTrigger-pauseChannelUpdateV0.vi
+update in progress...
+update in progress...
+Channel Array
+Channel Name
+Card #
+Channel #
+Edge Name
+Edge Value (Anlg)
+Value
+Edge Value (Dig)
+Value
+Time constant
+Signal
+Type
+Function type
+Function type
+Conversion VI
+Step size (ms)
+Edge Array
+Absolute Time (ms)
+Edge Name
+Defined with Respect to
+Relative Time(ms)
+Var Names         Time (ms)
+Time Type:
+Variable Array
+Variable Cluster
+Variable Name
+Variable Value (ms)
+Set Name Array Input
+Sets To Run Array Input
+Target 
+Resolution (us):
+Digital I/O
+Device number for analog card which does digital outputs
+Number of installed cards
+Virtual device number used to enter pseudo-digital outputs
+File name
+Device and channel used to reset counters
+Numeric
+External vi
+Device number for timing card

@@ -1,0 +1,20 @@
+VI: Add_Time_Value_To_Edge_Array.vi
+  N1    FPterm     'Edge Array'  [1 term]
+  N2    ForLoop     @(354,194)  [4 term]
+    frame 0:
+      N5    IndexArray?  @(396,276)  [3 term]
+      N6    FormatString?  @(704,242)  [7 term]
+      N7    (Un)BundleByName?  @(435,233)  [2 term]
+      N8    const      string  [1 term]
+        wire: N2.tunnel@(354,218).in -- N6.5
+        wire: N7.1 -- N6.6
+        wire: N2.i -- N5.2
+        wire: N2.tunnel@(354,281).in -- N5.0
+        wire: N5.1 -- N7.0
+        wire: N6.2 -- N2.tunnel@(796,247).in
+        wire: N8.0 -- N6.0
+  N3    FPterm     'Edge Input Names'  [1 term]
+  N4    FPterm     'Edge Output Names'  [1 term]
+    wire: N1.0 -- N2.tunnel@(354,281).out
+    wire: N3.0 -- N2.tunnel@(354,218).out
+    wire: N2.tunnel@(796,247).out -- N4.0

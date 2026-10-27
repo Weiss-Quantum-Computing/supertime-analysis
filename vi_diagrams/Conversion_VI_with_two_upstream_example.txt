@@ -1,0 +1,19 @@
+VI: Conversion_VI_with_two_upstream_example.vi
+  # "Use either interpolation from a file of conversion data, or a function which fits the measured data."
+  # "The only"
+  N1    FPterm     'Edge Value (Anlg)'  [1 term]
+  N2    FPterm     'Edge Value (Anlg) out'  [1 term]
+  N3    FPterm     'Upstream channels affecting this conversion (in order from source)'  [1 term]
+  N4    FPterm     'Channel array'  [1 term]
+  N5    FPterm     'Names of upstream channels (in order from source)'  [1 term]
+  N6    FPterm     'spline error'  [1 term]
+  N7    FPterm     'Index of upstream channels'  [1 term]
+  N8    FPterm     'Unit symbol'  [1 term]
+  N9    FPterm     (fp@0x62cc)  [1 term]
+  N10   FPterm     'Path to conversion spreadsheet'  [1 term]
+  N11   const      array  [1 term]
+  N12   const      cls4e  [1 term]
+  N13   const      string 'string'  [1 term]
+  N14   const      string 'string'  [1 term]
+  N15   const      string 'string'  [1 term]
+  N16   const      array  [1 term]

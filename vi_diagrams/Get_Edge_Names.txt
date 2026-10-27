@@ -1,0 +1,10 @@
+VI: Get_Edge_Names.vi
+  N1    ForLoop     @(406,87)  [3 term]
+    frame 0:
+      N4    (Un)BundleByName?  @(463,144)  [2 term]
+        wire: N4.1 -- N1.tunnel@(611,147).in
+        wire: N1.tunnel@(406,146).in -- N4.0
+  N2    FPterm     'Edge Input Array'  [1 term]
+  N3    FPterm     'Edge Names'  [1 term]
+    wire: N2.0 -- N1.tunnel@(406,146).out
+    wire: N1.tunnel@(611,147).out -- N3.0

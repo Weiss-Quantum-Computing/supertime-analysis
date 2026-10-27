@@ -1,0 +1,84 @@
+VI: Local_copy_Lev-Mar_abx.vi
+  N1    prim       'Reciprocal' @(243,294)  [2 term]
+  N2    prim       'Multiply' @(215,294)  [3 term]
+  N3    FPterm     'Standard Deviation'  [1 term]
+  N4    FPterm     'chiSqr'  [1 term]
+  N5    IndexArray?  @(103,40)  [4 term]
+  N6    prim       'Array Size' @(47,160)  [2 term]
+  N7    IndexArray?  @(103,229)  [3 term]
+  N8    ForLoop     @(142,48)  [11 term]
+    frame 0:
+      N17   subVI      'Functions and derivatives for fit.vi'  params: 0=Derivatives, 1=Y, 2=X, 3=Coefficients, 4=Flag @(164,98)  [5 term]
+      N18   prim       'Multiply' @(432,246)  [3 term]
+      N19   prim       'Multiply' @(371,178)  [3 term]
+      N20   FPterm     'derivative'  [1 term]
+      N21   Case        @(162,151)  [4 term]
+        frame 0:
+          N29   subVI      'Local copy partial derivative.vi'  params: 0=Partial Derivative, 1=x, 2=Coefficients @(216,172)  [3 term]
+            wire: N29.Partial Derivative -- N21.tunnel@(308,187).in
+            wire: N21.tunnel@(162,192).in -- N29.x
+            wire: N21.tunnel@(162,181).in -- N29.Coefficients
+        frame 1:
+          N30   subVI      'Functions and derivatives for fit.vi'  params: 0=Derivatives, 1=Y, 2=X, 3=Coefficients, 4=Flag @(221,172)  [5 term]
+          N31   const      enum/ring  [1 term]
+            wire: N31.0 -- N30.Flag
+            wire: N21.tunnel@(162,192).in -- N30.X
+            wire: N21.tunnel@(162,181).in -- N30.Coefficients
+            wire: N30.Derivatives -- N21.tunnel@(308,187).in
+      N22   prim       'Add' @(465,224)  [3 term]
+      N23   prim       'Multiply' @(408,200)  [3 term]
+      N24   prim       'Add' @(484,254)  [3 term]
+      N25   prim       'Multiply' @(376,243)  [3 term]
+      N26   ForLoop     @(422,62)  [5 term]
+        frame 0:
+          N32   prim       'Add' @(479,79)  [3 term]
+          N33   prim       'Multiply' @(454,113)  [3 term]
+            wire: N26.tunnel@(422,135).in -- N33.1
+            wire: N32.0 -- N26.tunnel@(527,90).in
+            wire: N33.0 -- N32.1
+            wire: N26.tunnel@(422,88).in -- N32.2
+            wire: N26.tunnel@(422,118).in -- N33.2
+      N27   prim       'Subtract' @(216,121)  [3 term]
+      N28   const      enum/ring  [1 term]
+        wire: N21.tunnel@(308,187).out -- N19.2 -- N26.tunnel@(422,135).out
+        wire: N8.tunnel@(367,280).in -- N19.1 -- N18.1
+        wire: N18.0 -- N24.2
+        wire: N19.0 -- N26.tunnel@(422,118).out -- N23.2
+        wire: N28.0 -- N17.Flag
+        wire: N20.0 -- N21.selector
+        wire: N8.tunnel@(142,121).in -- N17.X -- N21.tunnel@(162,192).out
+        wire: N8.tunnel@(142,107).in -- N17.Coefficients -- N21.tunnel@(162,181).out
+        wire: N17.Y -- N27.1
+        wire: N24.0 -- N8.shiftreg@(556,265).in
+        wire: N26.tunnel@(527,90).out -- N8.shiftreg@(556,87).in
+        wire: N8.shiftreg@(142,87).in -- N26.tunnel@(422,88).out
+        wire: N27.0 -- N25.2 -- N25.1 -- N23.1
+        wire: N22.0 -- N8.shiftreg@(556,234).in
+        wire: N23.0 -- N22.2
+        wire: N8.shiftreg@(142,234).in -- N22.1
+        wire: N8.tunnel@(142,143).in -- N27.2
+        wire: N8.shiftreg@(142,265).in -- N24.1
+        wire: N25.0 -- N18.2
+  N9    FPterm     'Beta'  [1 term]
+  N10   FPterm     'Alpha'  [1 term]
+  N11   FPterm     'Coefficients'  [1 term]
+  N12   FPterm     'Y'  [1 term]
+  N13   FPterm     'X'  [1 term]
+  N14   const      numeric  [1 term]
+  N15   const      numeric  [1 term]
+  N16   const      numeric  [1 term]
+    wire: N1.0 -- N8.tunnel@(367,280).out
+    wire: N8.shiftreg@(556,265).out -- N4.0
+    wire: N2.0 -- N1.1
+    wire: N3.0 -- N2.2 -- N2.1
+    wire: N11.0 -- N6.1 -- N8.tunnel@(142,107).out
+    wire: N8.shiftreg@(556,87).out -- N10.0
+    wire: N12.0 -- N8.tunnel@(142,143).out
+    wire: N16.0 -- N8.shiftreg@(142,265).out
+    wire: N8.shiftreg@(556,234).out -- N9.0
+    wire: N14.0 -- N5.0
+    wire: N5.1 -- N8.shiftreg@(142,87).out
+    wire: N7.1 -- N8.shiftreg@(142,234).out
+    wire: N6.0 -- N7.2 -- N5.3 -- N5.2
+    wire: N15.0 -- N7.0
+    wire: N13.0 -- N8.tunnel@(142,121).out

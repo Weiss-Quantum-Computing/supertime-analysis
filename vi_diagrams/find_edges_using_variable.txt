@@ -1,0 +1,35 @@
+VI: find_edges_using_variable.vi
+  N1    ForLoop     @(332,155)  [5 term]
+    frame 0:
+      N6    prim       'Boolean To (0,1)' @(480,320)  [2 term]
+      N7    prim       'And' @(502,299)  [3 term]
+      N8    Case        @(536,210)  [4 term]
+        frame 0:
+            wire: N8.tunnel@(536,238).in -- N8.tunnel@(630,238).in
+        frame 1:
+          N12   node3a      @(574,263)  [3 term]
+            wire: N12.0 -- N8.tunnel@(630,238).in
+            wire: N8.tunnel@(536,271).in -- N12.2
+            wire: N8.tunnel@(536,238).in -- N12.1
+      N9    prim       'Or Array Elements' @(446,320)  [2 term]
+      N10   prim       'Equal?' @(418,321)  [3 term]
+      N11   (Un)BundleByName?  @(347,268)  [4 term]
+        wire: N6.0 -- N7.1
+        wire: N11.2 -- N7.2
+        wire: N7.0 -- N8.selector
+        wire: N9.0 -- N6.1
+        wire: N11.3 -- N10.2
+        wire: N8.tunnel@(630,238).out -- N1.shiftreg@(649,236).in
+        wire: N11.1 -- N8.tunnel@(536,271).out
+        wire: N1.shiftreg@(332,236).in -- N8.tunnel@(536,238).out
+        wire: N10.0 -- N9.1
+        wire: N1.tunnel@(332,348).in -- N10.1
+        wire: N1.tunnel@(332,285).in -- N11.0
+  N2    FPterm     'Edge Array'  [1 term]
+  N3    FPterm     'Edit/View Variable'  [1 term]
+  N4    FPterm     'Strings []'  [1 term]
+  N5    const      array  [1 term]
+    wire: N1.shiftreg@(649,236).out -- N4.0
+    wire: N5.0 -- N1.shiftreg@(332,236).out
+    wire: N3.0 -- N1.tunnel@(332,348).out
+    wire: N2.0 -- N1.tunnel@(332,285).out

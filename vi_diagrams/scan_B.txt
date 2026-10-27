@@ -1,0 +1,38 @@
+VI: scan_B.vi
+  N1    WhileLoop   @(15,67)  [0 term]
+    frame 0:
+      N2    FPterm     'stop'  [1 term]
+      N3    ForLoop     @(95,111)  [1 term]
+        frame 0:
+          N5    FPterm     'delay'  [1 term]
+          N6    FPterm     'scale'  [1 term]
+          N7    prim       'Multiply' @(171,261)  [3 term]
+          N8    prim       'Multiply' @(213,262)  [3 term]
+          N9    prim       'Add' @(267,270)  [3 term]
+          N10   prim       'Wait (ms)' @(407,360)  [2 term]
+          N11   prim       'Multiply' @(172,321)  [3 term]
+          N12   prim       'Divide' @(135,342)  [3 term]
+          N13   prim       'Sine' @(206,301)  [2 term]
+          N14   FPterm     'Waveform Chart'  [1 term]
+          N15   nodec5     'AO Update Channel.vi' @(277,193)  [3 term]
+          N16   FPterm     'Mean'  [1 term]
+          N17   FPterm     (fp@0xad0)  [1 term]
+          N18   FPterm     'device'  [1 term]
+          N19   const      cls4e  [1 term]
+            wire: N7.0 -- N8.2
+            wire: N6.0 -- N7.1
+            wire: N9.0 -- N14.0 -- N15.0
+            wire: N8.0 -- N9.1
+            wire: N13.0 -- N8.1
+            wire: N16.0 -- N9.2 -- N7.2
+            wire: N5.0 -- N10.1
+            wire: N19.0 -- N11.2
+            wire: N11.0 -- N13.1
+            wire: N3.i -- N12.2
+            wire: N3.N -- N12.1
+            wire: N12.0 -- N11.1
+            wire: N17.0 -- N15.1
+            wire: N18.0 -- N15.2
+      N4    const      numeric  [1 term]
+        wire: N4.0 -- N3.N
+        wire: N2.0 -- N1.cond

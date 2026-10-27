@@ -1,0 +1,107 @@
+VI: 3d_search.vi
+  N1    ForLoop     @(95,111)  [1 term]
+    frame 0:
+      N3    prim       'Add' @(151,289)  [3 term]
+      N4    prim       'Multiply' @(134,351)  [3 term]
+      N5    ForLoop     @(256,168)  [1 term]
+        frame 0:
+          N13   Sequence    @(334,195)  [3 term]
+            frame 0:
+              N26   nodec5     'AO Update Channel.vi' @(358,218)  [3 term]
+              N27   const      numeric 'value'  [1 term]
+                wire: N27.0 -- N26.0
+                wire: N13.tunnel@(334,219).in -- N26.2
+                wire: N13.tunnel@(334,230).in -- N26.1
+            frame 1:
+              N28   prim       'Wait (ms)' @(376,225)  [2 term]
+              N29   const      numeric 'milliseconds to wait'  [1 term]
+                wire: N29.0 -- N28.1
+            frame 2:
+              N30   nodec5     'AO Update Channel.vi' @(369,219)  [3 term]
+              N31   const      numeric 'value'  [1 term]
+                wire: N31.0 -- N30.0 -- N13.tunnel@(414,257).in
+                wire: N13.tunnel@(334,219).in -- N30.2
+                wire: N13.tunnel@(334,230).in -- N30.1
+          N14   FPterm     'LED'  [1 term]
+          N15   FPterm     (fp@0x2500)  [1 term]
+          N16   prim       'Add' @(315,383)  [3 term]
+          N17   prim       'Multiply' @(298,445)  [3 term]
+          N18   ForLoop     @(429,208)  [2 term]
+            frame 0:
+              # "This wire delays execution of for loop until LED sequence is done"
+              N32   Sequence    @(477,218)  [1 term]
+                frame 0:
+                  N41   FPterm     'Dwell time (ms)'  [1 term]
+                  N42   prim       'Wait (ms)' @(580,239)  [2 term]
+                    wire: N41.0 -- N42.1
+                frame 1:
+                  N43   subVI      'Write to Digital Line.vi' @(556,237)  [9 term]
+                  N44   const      numeric 'device'  [1 term]
+                  N45   const      refnum? 'digital channel'  [1 term]
+                  N46   const      numeric 'line'  [1 term]
+                  N47   const      path? 'line state'  [1 term]
+                    wire: N47.0 -- N43.4
+                    wire: N46.0 -- N43.3
+                    wire: N45.0 -- N43.2
+                    wire: N44.0 -- N43.0
+                frame 2:
+                  N48   subVI      'Write to Digital Line.vi' @(556,237)  [9 term]
+                  N49   const      path? 'line state'  [1 term]
+                  N50   const      numeric 'line'  [1 term]
+                  N51   const      refnum? 'digital channel'  [1 term]
+                  N52   const      numeric 'device'  [1 term]
+                    wire: N49.0 -- N48.4
+                    wire: N50.0 -- N48.3
+                    wire: N51.0 -- N48.2
+                    wire: N52.0 -- N48.0
+              N33   prim       'Add' @(473,317)  [3 term]
+              N34   prim       'Multiply' @(456,379)  [3 term]
+              N35   nodec5     'AO Update Channel.vi' @(596,307)  [3 term]
+              N36   FPterm     'Z'  [1 term]
+              N37   FPterm     (fp@0x199c)  [1 term]
+              N38   FPterm     'device'  [1 term]
+              N39   const      numeric  [1 term]
+              N40   const      numeric  [1 term]
+                wire: N18.tunnel@(429,257).in -- N32.tunnel@(477,257).out
+                wire: N33.0 -- N35.0 -- N36.0
+                wire: N18.i -- N34.1
+                wire: N39.0 -- N33.2
+                wire: N34.0 -- N33.1
+                wire: N40.0 -- N34.2
+                wire: N37.0 -- N35.1
+                wire: N38.0 -- N35.2
+          N19   nodec5     'AO Update Channel.vi' @(368,312)  [3 term]
+          N20   FPterm     'device'  [1 term]
+          N21   FPterm     (fp@0x1248)  [1 term]
+          N22   FPterm     'Y'  [1 term]
+          N23   const      numeric  [1 term]
+          N24   const      numeric  [1 term]
+          N25   const      numeric  [1 term]
+            wire: N13.tunnel@(414,257).out -- N18.tunnel@(429,257).out
+            wire: N14.0 -- N13.tunnel@(334,219).out
+            wire: N15.0 -- N13.tunnel@(334,230).out
+            wire: N25.0 -- N18.N
+            wire: N5.i -- N17.1
+            wire: N16.0 -- N19.0 -- N22.0
+            wire: N23.0 -- N16.2
+            wire: N17.0 -- N16.1
+            wire: N24.0 -- N17.2
+            wire: N20.0 -- N19.2
+            wire: N21.0 -- N19.1
+      N6    nodec5     'AO Update Channel.vi' @(215,193)  [3 term]
+      N7    FPterm     'X'  [1 term]
+      N8    FPterm     (fp@0xae4)  [1 term]
+      N9    FPterm     'device'  [1 term]
+      N10   const      numeric  [1 term]
+      N11   const      numeric  [1 term]
+      N12   const      numeric  [1 term]
+        wire: N12.0 -- N5.N
+        wire: N3.0 -- N6.0 -- N7.0
+        wire: N10.0 -- N3.2
+        wire: N4.0 -- N3.1
+        wire: N1.i -- N4.1
+        wire: N11.0 -- N4.2
+        wire: N8.0 -- N6.1
+        wire: N9.0 -- N6.2
+  N2    const      numeric  [1 term]
+    wire: N2.0 -- N1.N

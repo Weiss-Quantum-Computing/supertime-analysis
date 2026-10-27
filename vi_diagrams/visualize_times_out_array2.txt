@@ -1,0 +1,53 @@
+VI: visualize_times_out_array2.vi
+  N1    prim       'To Unsigned Byte Integer' @(797,600)  [2 term]
+  N2    prim       'Boolean To (0,1)' @(792,560)  [2 term]
+  N3    prim       'Transpose 2D Array' @(656,526)  [2 term]
+  N4    FPterm     'timing word as one long string of on/off'  [1 term]
+  N5    prim       'Multiply' @(728,598)  [3 term]
+  N6    IndexArray?  @(686,624)  [5 term]
+  N7    prim       'Array Size' @(645,618)  [2 term]
+  N8    IndexArray?  @(703,562)  [3 term]
+  N9    FPterm     'Output as it should come from the timing box'  [1 term]
+  N10   node40      @(119,165)  [5 term]
+  N11   ForLoop     @(292,274)  [8 term]
+    frame 0:
+      N16   node3a      @(473,492)  [3 term]
+      N17   node3a      @(409,479)  [5 term]
+      N18   prim       'Number To Boolean Array' @(350,499)  [2 term]
+      N19   prim       'Number To Boolean Array' @(349,484)  [2 term]
+      N20   prim       'Number To Boolean Array' @(349,472)  [2 term]
+      N21   prim       'Number To Boolean Array' @(348,458)  [2 term]
+      N22   const      string 'format string'  [1 term]
+        wire: N11.i -- N11.tunnel@(344,588).in
+        wire: N11.shiftreg@(292,534).in -- N16.1
+        wire: N17.0 -- N16.2
+        wire: N16.0 -- N11.shiftreg@(621,534).in
+        wire: N18.0 -- N17.4
+        wire: N19.0 -- N17.3
+        wire: N20.0 -- N17.2
+        wire: N21.0 -- N17.1
+        wire: N11.tunnel@(292,437).in -- N18.1
+        wire: N11.tunnel@(292,387).in -- N19.1
+        wire: N11.tunnel@(292,342).in -- N20.1
+        wire: N11.tunnel@(292,309).in -- N21.1
+  N12   FPterm     'times out array'  [1 term]
+  N13   const      array  [1 term]
+  N14   const      numeric 'index'  [1 term]
+  N15   const      numeric 'index'  [1 term]
+    wire: N1.0 -- N9.0
+    wire: N2.0 -- N1.1
+    wire: N3.0 -- N7.1 -- N8.0
+    wire: N11.shiftreg@(621,534).out -- N3.1
+    wire: N8.1 -- N4.0 -- N2.1
+    wire: N6.3 -- N5.1
+    wire: N6.1 -- N5.2
+    wire: N15.0 -- N6.4
+    wire: N5.0 -- N8.2
+    wire: N14.0 -- N6.2
+    wire: N7.0 -- N6.0
+    wire: N13.0 -- N11.shiftreg@(292,534).out
+    wire: N10.4 -- N11.tunnel@(292,437).out
+    wire: N10.3 -- N11.tunnel@(292,387).out
+    wire: N10.2 -- N11.tunnel@(292,342).out
+    wire: N10.1 -- N11.tunnel@(292,309).out
+    wire: N12.0 -- N10.0

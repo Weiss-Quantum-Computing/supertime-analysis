@@ -1,0 +1,37 @@
+VI: Main_external_dispatch2.vi
+  N1    Case        @(213,92)  [5 term]
+    frame 0:
+    frame 1:
+      N13   subVI      'control GPIB instruments.vi'  params: 0=Sets To Run Array, 1=(sequence) or edge number (hold), 2=Current data set, 3=Output Cluster @(226,122)  [4 term]
+        wire: N1.tunnel@(224,161).in -- N13.Current data set
+        wire: N1.tunnel@(262,126).in -- N13.(sequence) or edge number (hold)
+        wire: N1.tunnel@(240,161).in -- N13.Sets To Run Array
+        wire: N1.tunnel@(213,126).in -- N13.Output Cluster
+  N2    FPterm     'Output Cluster'  [1 term]
+  N3    node6c      @(371,200)  [4 term]
+  N4    prim       'Greater Than 0?' @(336,210)  [2 term]
+  N5    FPterm     'Auto data?'  [1 term]
+  N6    prim       'Equal To 0?' @(355,157)  [2 term]
+  N7    Case        @(405,83)  [3 term]
+    frame 0:
+    frame 1:
+      N14   const      string 'Control Name'  [1 term]
+      N15   const      string 'Control Name'  [1 term]
+      N16   const      path?  [1 term]
+      N17   const      enum/ring 'Execution:State'  [1 term]
+      N18   const      string 'Control Name'  [1 term]
+  N8    FPterm     'Position in run array'  [1 term]
+  N9    prim       'Array Size' @(266,226)  [2 term]
+  N10   FPterm     'Current data set'  [1 term]
+  N11   FPterm     'Sets To Run Array'  [1 term]
+  N12   const      path?  [1 term]
+    wire: N12.0 -- N1.selector
+    wire: N10.0 -- N1.tunnel@(224,161).out
+    wire: N8.0 -- N6.1 -- N1.tunnel@(262,126).out
+    wire: N11.0 -- N9.1 -- N1.tunnel@(240,161).out
+    wire: N2.0 -- N7.tunnel@(739,459).out -- N1.tunnel@(213,126).out
+    wire: N4.0 -- N3.3
+    wire: N9.0 -- N7.tunnel@(405,237).out -- N4.1
+    wire: N5.0 -- N3.2
+    wire: N6.0 -- N3.1
+    wire: N3.0 -- N7.selector

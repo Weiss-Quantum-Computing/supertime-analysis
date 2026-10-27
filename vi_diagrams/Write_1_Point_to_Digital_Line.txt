@@ -1,0 +1,26 @@
+VI: Write_1_Point_to_Digital_Line.vi
+  # "check for named channel"
+  N1    subVI      'Write to Digital Line.vi' @(273,179)  [9 term]
+  N2    subVI      'Get Channel Information.vi' @(46,284)  [12 term]
+  N3    prim       'Select' @(185,225)  [4 term]
+  N4    (Un)BundleByName?  @(84,305)  [2 term]
+  N5    node92      @(144,290)  [11 term]
+  N6    FPterm     'line state'  [1 term]
+  N7    FPterm     'port width'  [1 term]
+  N8    FPterm     'line'  [1 term]
+  N9    FPterm     'device'  [1 term]
+  N10   FPterm     'digital channel'  [1 term]
+  N11   const      numeric 'device port and line'  [1 term]
+  N12   const      string  [1 term]
+    wire: N8.0 -- N3.3
+    wire: N3.0 -- N1.3
+    wire: N5.10 -- N3.1
+    wire: N4.1 -- N3.2
+    wire: N2.0 -- N4.0
+    wire: N11.0 -- N2.10
+    wire: N12.0 -- N5.0
+    wire: N2.2 -- N5.1
+    wire: N10.0 -- N1.2 -- N2.11
+    wire: N6.0 -- N1.4
+    wire: N7.0 -- N1.1
+    wire: N9.0 -- N1.0

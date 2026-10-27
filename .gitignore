@@ -1,0 +1,5 @@
+.DS_Store
+__pycache__/
+*.pyc
+# derived pylabview extracts of the main VI (20 MB, regenerable with readRSRC -x)
+vi_dump/

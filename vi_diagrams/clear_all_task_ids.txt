@@ -1,0 +1,38 @@
+VI: clear_all_task_ids.vi
+  N1    subVI      'DIO Clear.vi' @(283,87)  [8 term]
+  N2    subVI      'Simple Error Handler.vi' @(341,86)  [10 term]
+  N3    FPterm     'timing taskID'  [1 term]
+  N4    FPterm     'timing error out'  [1 term]
+  N5    FPterm     'analog task ids'  [1 term]
+  N6    FPterm     'Analog out error'  [1 term]
+  N7    FPterm     'digital task ids'  [1 term]
+  N8    FPterm     'Digital out error'  [1 term]
+  N9    ForLoop     @(32,32)  [5 term]
+    frame 0:
+      N10   Case        @(119,135)  [2 term]
+        frame 0:
+        frame 1:
+          N12   subVI      'Simple Error Handler.vi' @(180,152)  [10 term]
+          N13   subVI      'DIO Clear.vi' @(139,151)  [8 term]
+            wire: N10.selector -- N13.4
+            wire: N13.3 -- N12.9
+            wire: N10.tunnel@(163,194).in -- N13.0
+      N11   Case        @(57,50)  [2 term]
+        frame 0:
+        frame 1:
+          N14   subVI      'Simple Error Handler.vi' @(123,68)  [10 term]
+          N15   subVI      'AO Clear.vi' @(80,68)  [8 term]
+            wire: N11.selector -- N15.4
+            wire: N15.3 -- N14.9
+            wire: N11.tunnel@(83,113).in -- N15.0
+        wire: N9.tunnel@(98,233).in -- N11.selector
+        wire: N9.tunnel@(159,233).in -- N10.selector
+        wire: N9.tunnel@(174,233).in -- N10.tunnel@(163,194).out
+        wire: N9.tunnel@(113,233).in -- N11.tunnel@(83,113).out
+    wire: N4.0 -- N1.0
+    wire: N3.0 -- N1.4
+    wire: N1.3 -- N2.9
+    wire: N5.0 -- N9.tunnel@(98,233).out
+    wire: N6.0 -- N9.tunnel@(113,233).out
+    wire: N7.0 -- N9.tunnel@(159,233).out
+    wire: N8.0 -- N9.tunnel@(174,233).out

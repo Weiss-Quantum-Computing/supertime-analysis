@@ -1,0 +1,44 @@
+VI: Load_Data.vi
+  N1    FPterm     'Target 
+Resolution (us):'  [1 term]
+  N2    FPterm     'Output Cluster'  [1 term]
+  N3    FPterm     'Sets To Run Array Input'  [1 term]
+  N4    FPterm     'Set Name Array Input'  [1 term]
+  N5    FPterm     'Error'  [1 term]
+  N6    Case        @(298,117)  [4 term]
+    frame 0:
+      N15   prim       'Open File' @(467,176)  [7 term]
+      N16   prim       'Read File' @(548,180)  [12 term]
+      N17   prim       'Close File' @(623,181)  [4 term]
+      N18   const      enum/ring 'open mode (0)'  [1 term]
+        wire: N16.2 -- N6.tunnel@(753,347).in
+        wire: N18.0 -- N15.1
+        wire: N15.6 -- N16.8
+        wire: N15.5 -- N16.11
+        wire: N6.tunnel@(298,176).in -- N15.0
+        wire: N6.tunnel@(298,347).in -- N16.4
+        wire: N16.0 -- N17.2
+        wire: N16.3 -- N17.3
+    frame 1:
+        wire: N6.tunnel@(298,347).in -- N6.tunnel@(753,347).in
+  N7    prim       'File Dialog' @(156,183)  [9 term]
+  N8    node34      @(180,442)  [8 term]
+  N9    FPterm     'Channel Array Type'  [1 term]
+  N10   FPterm     'Variable Array Type'  [1 term]
+  N11   FPterm     'Edge Array Type'  [1 term]
+  N12   prim       'Current VI's Path' @(100,156)  [1 term]
+  N13   const      numeric  [1 term]
+  N14   const      string 'pattern'  [1 term]
+    wire: N1.0 -- N8.7
+    wire: N6.tunnel@(753,347).out -- N2.0
+    wire: N3.0 -- N8.6
+    wire: N4.0 -- N8.5
+    wire: N7.8 -- N6.selector -- N5.0
+    wire: N14.0 -- N7.5
+    wire: N8.0 -- N6.tunnel@(298,347).out
+    wire: N7.6 -- N6.tunnel@(298,176).out
+    wire: N13.0 -- N7.2
+    wire: N12.0 -- N7.0
+    wire: N9.0 -- N8.2
+    wire: N10.0 -- N8.4
+    wire: N11.0 -- N8.3

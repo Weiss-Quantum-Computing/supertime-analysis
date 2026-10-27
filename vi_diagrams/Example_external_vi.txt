@@ -1,0 +1,10 @@
+VI: Example_external_vi.vi
+  N1    FPterm     'Position in run array'  [1 term]
+  N2    FPterm     'Current data set'  [1 term]
+  N3    FPterm     'Sets To Run Array'  [1 term]
+  N4    prim       'One Button Dialog' @(353,219)  [3 term]
+  N5    FPterm     'Variable Array'  [1 term]
+  N6    FPterm     'Edge Array'  [1 term]
+  N7    FPterm     'Channel Array'  [1 term]
+  N8    const      string 'message'  [1 term]
+    wire: N8.0 -- N4.2

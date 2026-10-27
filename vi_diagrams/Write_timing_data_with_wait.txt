@@ -1,0 +1,78 @@
+VI: Write_timing_data_with_wait.vi
+  # "Timing"
+  N1    prim       'Quotient & Remainder' @(164,161)  [4 term]
+  N2    subVI      'DIO Wait.vi' @(117,524)  [16 term]
+  N3    Case        @(196,245)  [5 term]
+    frame 0:
+        wire: N3.tunnel@(196,312).in -- N3.tunnel@(411,313).in
+        wire: N3.tunnel@(196,287).in -- N3.tunnel@(411,287).in
+    frame 1:
+      N29   subVI      'DIO Parameter.vi' @(282,288)  [20 term]
+      N30   const      enum/ring 'value in'  [1 term]
+      N31   const      enum/ring 'operation'  [1 term]
+      N32   const      enum/ring 'parameter name'  [1 term]
+        wire: N3.tunnel@(196,287).in -- N29.0
+        wire: N29.14 -- N3.tunnel@(411,287).in
+        wire: N3.tunnel@(196,312).in -- N29.5
+        wire: N29.19 -- N3.tunnel@(411,313).in
+        wire: N32.0 -- N29.3
+        wire: N31.0 -- N29.2
+        wire: N30.0 -- N29.8
+  N4    FPterm     'timing error'  [1 term]
+  N5    subVI      'Simple Error Handler.vi' @(252,524)  [10 term]
+  N6    subVI      'DIO Clear.vi' @(202,524)  [8 term]
+  N7    FPterm     'timing error 2'  [1 term]
+  N8    FPterm     'Target 
+Resolution (us):'  [1 term]
+  N9    FPterm     'Times Out'  [1 term]
+  N10   FPterm     'Scans'  [1 term]
+  N11   FPterm     'Device number for timing card'  [1 term]
+  N12   prim       'Multiply' @(411,383)  [3 term]
+  N13   prim       'Reciprocal' @(483,380)  [2 term]
+  N14   subVI      'DIO Write.vi' @(436,289)  [16 term]
+  N15   subVI      'DIO Config.vi' @(148,288)  [16 term]
+  N16   FPterm     'actual clock freq.'  [1 term]
+  N17   prim       'Array Size' @(110,161)  [2 term]
+  N18   subVI      'Digital Trigger Config.vi' @(521,289)  [12 term]
+  N19   subVI      'DIO Start11.vi' @(630,289)  [16 term]
+  N20   const      enum/ring 'handshake source'  [1 term]
+  N21   const      enum/ring 'mode (0: no change)'  [1 term]
+  N22   const      enum/ring 'trigger type (0: no change)'  [1 term]
+  N23   const      numeric  [1 term]
+  N24   const      enum/ring  [1 term]
+  N25   const      array 'Array Constant'  [1 term]
+  N26   const      numeric  [1 term]
+  N27   const      path?  [1 term]
+  N28   const      enum/ring 'direction'  [1 term]
+    wire: N28.0 -- N2.5
+    wire: N27.0 -- N3.selector
+    wire: N19.15 -- N2.11
+    wire: N19.4 -- N2.0
+    wire: N2.15 -- N6.0
+    wire: N2.4 -- N6.4
+    wire: N5.0 -- N4.0
+    wire: N6.3 -- N5.9
+    wire: N5.6 -- N7.0
+    wire: N25.0 -- N15.7
+    wire: N24.0 -- N15.9
+    wire: N8.0 -- N12.2
+    wire: N26.0 -- N12.1
+    wire: N12.0 -- N13.1
+    wire: N17.0 -- N1.3
+    wire: N23.0 -- N1.2
+    wire: N14.4 -- N18.11
+    wire: N14.15 -- N18.8
+    wire: N9.0 -- N14.5 -- N17.1
+    wire: N1.0 -- N15.1 -- N10.0
+    wire: N15.4 -- N3.tunnel@(196,287).out
+    wire: N3.tunnel@(411,287).out -- N14.0
+    wire: N15.15 -- N3.tunnel@(196,312).out
+    wire: N3.tunnel@(411,313).out -- N14.11
+    wire: N18.0 -- N19.11
+    wire: N18.3 -- N19.0
+    wire: N13.0 -- N19.9
+    wire: N19.12 -- N16.0
+    wire: N21.0 -- N18.9
+    wire: N22.0 -- N18.10
+    wire: N11.0 -- N15.0
+    wire: N20.0 -- N19.7

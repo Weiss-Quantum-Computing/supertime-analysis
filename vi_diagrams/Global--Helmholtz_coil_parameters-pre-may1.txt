@@ -1,0 +1,1 @@
+VI: Global--Helmholtz_coil_parameters-pre-may1.vi

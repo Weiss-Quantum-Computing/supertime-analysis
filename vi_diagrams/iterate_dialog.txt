@@ -1,0 +1,96 @@
+VI: iterate_dialog.vi
+  N1    FPterm     'Number of iterations'  [1 term]
+  N2    Case        @(809,175)  [3 term]
+    frame 0:
+        wire: N2.tunnel@(809,220).in -- N2.tunnel@(885,220).in
+    frame 1:
+      N9    const      numeric '3.  Enter number of iterations or 0 to cancel'  [1 term]
+        wire: N9.0 -- N2.tunnel@(885,220).in
+  N3    WhileLoop   @(223,84)  [5 term]
+    frame 0:
+      N10   prim       'Subtract' @(297,500)  [3 term]
+      N11   LocalVar   '?' @(155,208)  [1 term]
+      N12   nodebb      @(266,109)  [5 term]
+      N13   WhileLoop   @(330,102)  [6 term]
+        frame 0:
+          N18   prim       'Or' @(595,469)  [3 term]
+          N19   prim       'Or' @(528,476)  [3 term]
+          N20   FPterm     'Cancel'  [1 term]
+          N21   prim       'Wait Until Next ms Multiple' @(643,378)  [2 term]
+          N22   IndexArray?  @(427,337)  [3 term]
+          N23   PropertyNode '1.  Find Channel and Edge you want to scan' [4 props] @(342,330)  [5 term]
+          N24   FPterm     '1.  Find Channel and Edge you want to scan'  [1 term]
+          N25   subVI      'Get Edge Names.vi'  params: 0=Edge Names, 1=Edge Input Array @(407,393)  [2 term]
+          N26   subVI      'Add Value to Edge Names.vi'  params: 0=Item Names, 1=Edge Names, 2=Edit/View Channel, 3=Channel Array @(471,389)  [4 term]
+          N27   FPterm     'Edge Array Input'  [1 term]
+          N28   PropertyNode 'Edge Name' [4 props] @(543,387)  [5 term]
+          N29   FPterm     '3.  Enter number of iterations or 0 to cancel'  [1 term]
+          N30   FPterm     '2.  Enter Increment'  [1 term]
+          N31   PropertyNode 'Time constant' [4 props] @(489,261)  [5 term]
+          N32   PropertyNode 'Edge Name' [4 props] @(350,254)  [5 term]
+          N33   node3a      @(350,289)  [2 term]
+          N34   nodeb9      @(438,132)  [5 term]
+          N35   PropertyNode 'Edge Value (Anlg)' [4 props] @(389,290)  [5 term]
+          N36   node3a      @(426,182)  [4 term]
+          N37   FPterm     'Done'  [1 term]
+          N38   prim       'Or' @(574,447)  [3 term]
+          N39   LocalVar   '?' @(478,157)  [1 term]
+          N40   IndexArray?  @(383,200)  [3 term]
+          N41   PropertyNode '1.  Find Channel and Edge you want to scan' [4 props] @(344,168)  [5 term]
+          N42   FPterm     '4.  Click Next to add another channel or edge to the list, or click or Done'  [1 term]
+          N43   const      numeric 'index'  [1 term]
+          N44   const      numeric 'index'  [1 term]
+          N45   const      numeric 'millisecond multiple'  [1 term]
+            wire: N34.1 -- N39.0 -- N13.shiftreg@(728,116).in
+            wire: N20.0 -- N19.1 -- N13.tunnel@(505,502).in
+            wire: N18.0 -- N13.cond
+            wire: N19.0 -- N13.tunnel@(569,502).in -- N18.1
+            wire: N38.0 -- N18.2
+            wire: N37.0 -- N38.1 -- N19.2
+            wire: N45.0 -- N21.1
+            wire: N25.Edge Names -- N26.Edge Names
+            wire: N24.0 -- N26.Channel Array
+            wire: N22.1 -- N26.Edit/View Channel
+            wire: N44.0 -- N22.2
+            wire: N23.4 -- N22.0
+            wire: N27.0 -- N25.Edge Input Array
+            wire: N26.Item Names -- N28.4
+            wire: N29.0 -- N13.tunnel@(735,220).in
+            wire: N30.0 -- N36.3
+            wire: N13.shiftreg@(330,116).in -- N34.0
+            wire: N33.0 -- N35.4 -- N31.4
+            wire: N32.4 -- N36.2 -- N33.1
+            wire: N13.tunnel@(330,145).in -- N34.3
+            wire: N40.1 -- N36.1
+            wire: N36.0 -- N34.2
+            wire: N42.0 -- N38.2
+            wire: N43.0 -- N40.2
+            wire: N41.4 -- N40.0
+      N14   node3a      @(334,524)  [2 term]
+      N15   PropertyNode 'List of channels and edges to scan' [4 props] @(377,537)  [5 term]
+      N16   const      numeric 'y'  [1 term]
+      N17   const      array 'appended array'  [1 term]
+        wire: N13.shiftreg@(728,116).out -- N3.shiftreg@(761,116).in
+        wire: N13.tunnel@(505,502).out -- N3.tunnel@(505,570).in
+        wire: N13.tunnel@(735,220).out -- N3.tunnel@(768,220).in
+        wire: N14.0 -- N15.4
+        wire: N16.0 -- N10.1
+        wire: N3.i -- N13.tunnel@(330,145).out -- N10.2
+        wire: N10.0 -- N14.1
+        wire: N3.tunnel@(223,177).in -- N11.0
+        wire: N17.0 -- N12.4
+        wire: N3.shiftreg@(223,116).in -- N12.0
+        wire: N12.1 -- N13.shiftreg@(330,116).out
+        wire: N13.tunnel@(569,502).out -- N3.cond
+  N4    FPterm     'List of channels and edges to scan'  [1 term]
+  N5    IndexArray?  @(177,155)  [4 term]
+  N6    FPterm     'Channel Array Input'  [1 term]
+  N7    FPterm     'Template for new Set'  [1 term]
+  N8    const      array 'Array'  [1 term]
+    wire: N8.0 -- N3.shiftreg@(223,116).out
+    wire: N3.tunnel@(505,570).out -- N2.selector
+    wire: N2.tunnel@(885,220).out -- N1.0
+    wire: N3.tunnel@(768,220).out -- N2.tunnel@(809,220).out
+    wire: N5.1 -- N3.tunnel@(223,177).out
+    wire: N7.0 -- N5.3
+    wire: N6.0 -- N5.0

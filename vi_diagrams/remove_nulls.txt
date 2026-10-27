@@ -1,0 +1,71 @@
+VI: remove_nulls.vi
+  N1    ForLoop     @(1,16)  [3 term]
+    frame 0:
+      N9    prim       'Select' @(128,41)  [4 term]
+      N10   prim       'Equal?' @(89,38)  [3 term]
+      N11   (Un)BundleByName?  @(68,108)  [3 term]
+      N12   (Un)BundleByName?  @(31,80)  [2 term]
+      N13   const      cls4e  [1 term]
+      N14   const      string  [1 term]
+        wire: N14.0 -- N9.3
+        wire: N11.0 -- N1.tunnel@(174,112).in
+        wire: N9.0 -- N11.2
+        wire: N10.0 -- N9.2
+        wire: N13.0 -- N10.2
+        wire: N12.1 -- N10.1 -- N9.1
+        wire: N1.tunnel@(35,134).in -- N12.0 -- N11.1
+  N2    FPterm     'Channel Array'  [1 term]
+  N3    FPterm     'Array'  [1 term]
+  N4    ForLoop     @(145,206)  [4 term]
+    frame 0:
+      # "Find indices of / Null Elements."
+      N15   node36      @(173,217)  [12 term]
+      N16   Case        @(269,278)  [4 term]
+        frame 0:
+            wire: N16.tunnel@(269,350).in -- N16.tunnel@(320,354).in
+        frame 1:
+          N19   node3a      @(282,350)  [3 term]
+            wire: N16.tunnel@(269,358).in -- N19.2
+            wire: N16.tunnel@(269,350).in -- N19.1
+            wire: N19.0 -- N16.tunnel@(320,354).in
+      N17   prim       'Equal?' @(205,276)  [3 term]
+      N18   const      string  [1 term]
+        wire: N17.0 -- N16.selector
+        wire: N15.1 -- N17.2
+        wire: N4.i -- N16.tunnel@(269,358).out
+        wire: N4.shiftreg@(145,350).in -- N16.tunnel@(269,350).out
+        wire: N16.tunnel@(320,354).out -- N4.shiftreg@(328,350).in
+        wire: N4.tunnel@(145,256).in -- N15.0
+        wire: N18.0 -- N17.1
+  N5    Case        @(396,153)  [4 term]
+    frame 0:
+      N20   ForLoop     @(421,173)  [4 term]
+        frame 0:
+          # "Used to ove Null Elements to end of array.  Why not remove them entirely?"
+          N21   node48      @(530,244)  [4 term]
+          N22   IndexArray?  @(509,331)  [3 term]
+          N23   node3a      @(571,213)  [3 term]
+          N24   prim       'Split 1D Array' @(485,210)  [4 term]
+          N25   const      numeric  [1 term]
+            wire: N23.0 -- N20.tunnel@(652,217).in
+            wire: N21.1 -- N23.2
+            wire: N25.0 -- N21.2
+            wire: N24.0 -- N21.0
+            wire: N20.tunnel@(421,300).in -- N24.2 -- N22.2
+            wire: N20.tunnel@(451,173).in -- N24.3 -- N22.0
+            wire: N24.1 -- N23.1
+        wire: N5.tunnel@(451,153).in -- N20.tunnel@(451,173).out
+        wire: N20.tunnel@(652,217).out -- N5.tunnel@(678,217).in
+        wire: N5.tunnel@(396,300).in -- N20.tunnel@(421,300).out
+    frame 1:
+        wire: N5.tunnel@(451,153).in -- N5.tunnel@(678,217).in
+  N6    prim       'Equal?' @(362,370)  [3 term]
+  N7    const      array '  '  [1 term]
+  N8    const      array 'y'  [1 term]
+    wire: N1.tunnel@(174,112).out -- N4.tunnel@(145,256).out -- N5.tunnel@(451,153).out
+    wire: N2.0 -- N1.tunnel@(35,134).out
+    wire: N6.0 -- N5.selector
+    wire: N4.shiftreg@(328,350).out -- N5.tunnel@(396,300).out -- N6.2
+    wire: N8.0 -- N6.1
+    wire: N5.tunnel@(678,217).out -- N3.0
+    wire: N7.0 -- N4.shiftreg@(145,350).out

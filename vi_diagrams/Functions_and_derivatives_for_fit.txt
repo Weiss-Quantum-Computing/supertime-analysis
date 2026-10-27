@@ -1,0 +1,250 @@
+VI: Functions_and_derivatives_for_fit.vi
+  N1    LocalVar   '?' @(44,314)  [1 term]
+  N2    IndexArray?  @(83,228)  [3 term]
+  N3    Case        @(217,26)  [9 term]
+    frame 0:
+      N16   Case        @(297,51)  [10 term]
+        frame 0:
+          N19   const      numeric '  '  [1 term]
+            wire: N19.0 -- N16.tunnel@(519,123).in -- N16.tunnel@(519,136).in -- N16.tunnel@(519,148).in -- N16.tunnel@(519,175).in
+        frame 1:
+          N20   node4a     'Partial Derivatives of f(x) with respect to the coefficients a.' @(311,96)  [9 term]
+            wire: N20.8 -- N16.tunnel@(519,175).in
+            wire: N16.tunnel@(297,183).in -- N20.7
+            wire: N16.tunnel@(297,114).in -- N20.0
+            wire: N20.6 -- N16.tunnel@(519,148).in
+            wire: N20.5 -- N16.tunnel@(519,136).in
+            wire: N20.4 -- N16.tunnel@(519,123).in
+            wire: N16.tunnel@(297,164).in -- N20.3
+            wire: N16.tunnel@(297,146).in -- N20.2
+            wire: N16.tunnel@(297,131).in -- N20.1
+      N17   node3a      @(548,127)  [5 term]
+      N18   node4a     'Function f(x)' @(300,232)  [6 term]
+        wire: N16.tunnel@(519,175).out -- N17.4
+        wire: N3.tunnel@(217,246).in -- N18.5 -- N16.tunnel@(297,183).out
+        wire: N3.tunnel@(217,83).in -- N16.selector
+        wire: N3.tunnel@(217,93).in -- N16.tunnel@(297,114).out -- N18.1
+        wire: N17.0 -- N3.tunnel@(592,135).in
+        wire: N16.tunnel@(519,148).out -- N17.3
+        wire: N16.tunnel@(519,136).out -- N17.2
+        wire: N16.tunnel@(519,123).out -- N17.1
+        wire: N3.tunnel@(217,200).in -- N16.tunnel@(297,164).out -- N18.4
+        wire: N3.tunnel@(217,147).in -- N16.tunnel@(297,146).out -- N18.3
+        wire: N3.tunnel@(217,130).in -- N16.tunnel@(297,131).out -- N18.2
+        wire: N18.0 -- N3.tunnel@(592,284).in
+    frame 1:
+      N21   Case        @(297,51)  [10 term]
+        frame 0:
+          N24   const      numeric '  '  [1 term]
+            wire: N24.0 -- N21.tunnel@(519,123).in -- N21.tunnel@(519,136).in -- N21.tunnel@(519,148).in -- N21.tunnel@(519,175).in
+        frame 1:
+          N25   node4a     'Partial Derivatives of f(x) with respect to the coefficients a.' @(311,107)  [9 term]
+            wire: N21.tunnel@(297,193).in -- N25.7
+            wire: N21.tunnel@(297,176).in -- N25.3
+            wire: N21.tunnel@(297,159).in -- N25.2
+            wire: N21.tunnel@(297,143).in -- N25.1
+            wire: N21.tunnel@(297,122).in -- N25.0
+            wire: N25.8 -- N21.tunnel@(519,175).in
+            wire: N25.6 -- N21.tunnel@(519,148).in
+            wire: N25.5 -- N21.tunnel@(519,136).in
+            wire: N25.4 -- N21.tunnel@(519,123).in
+      N22   node3a      @(548,127)  [5 term]
+      N23   node4a     'Function f(x)' @(333,400)  [6 term]
+        wire: N3.tunnel@(217,246).in -- N21.tunnel@(297,193).out -- N23.5
+        wire: N3.tunnel@(217,200).in -- N21.tunnel@(297,176).out -- N23.4
+        wire: N3.tunnel@(217,147).in -- N21.tunnel@(297,159).out -- N23.3
+        wire: N3.tunnel@(217,93).in -- N21.tunnel@(297,122).out -- N23.1
+        wire: N3.tunnel@(217,130).in -- N21.tunnel@(297,143).out -- N23.2
+        wire: N21.tunnel@(519,175).out -- N22.4
+        wire: N3.tunnel@(217,83).in -- N21.selector
+        wire: N22.0 -- N3.tunnel@(592,135).in
+        wire: N21.tunnel@(519,148).out -- N22.3
+        wire: N21.tunnel@(519,136).out -- N22.2
+        wire: N21.tunnel@(519,123).out -- N22.1
+        wire: N23.0 -- N3.tunnel@(592,284).in
+    frame 2:
+      N26   Case        @(297,51)  [8 term]
+        frame 0:
+          N29   const      numeric '  '  [1 term]
+            wire: N29.0 -- N26.tunnel@(519,123).in -- N26.tunnel@(519,136).in -- N26.tunnel@(519,148).in
+        frame 1:
+          N30   node4a     'Partial Derivatives of f(x) with respect to the coefficients a.' @(311,96)  [7 term]
+            wire: N26.tunnel@(297,114).in -- N30.0
+            wire: N30.6 -- N26.tunnel@(519,148).in
+            wire: N30.5 -- N26.tunnel@(519,136).in
+            wire: N30.4 -- N26.tunnel@(519,123).in
+            wire: N26.tunnel@(297,164).in -- N30.3
+            wire: N26.tunnel@(297,146).in -- N30.2
+            wire: N26.tunnel@(297,131).in -- N30.1
+      N27   node3a      @(548,127)  [4 term]
+      N28   node4a     'Function f(x)' @(300,232)  [5 term]
+        wire: N3.tunnel@(217,83).in -- N26.selector
+        wire: N3.tunnel@(217,93).in -- N26.tunnel@(297,114).out -- N28.1
+        wire: N27.0 -- N3.tunnel@(592,135).in
+        wire: N26.tunnel@(519,148).out -- N27.3
+        wire: N26.tunnel@(519,136).out -- N27.2
+        wire: N26.tunnel@(519,123).out -- N27.1
+        wire: N3.tunnel@(217,200).in -- N26.tunnel@(297,164).out -- N28.4
+        wire: N3.tunnel@(217,147).in -- N26.tunnel@(297,146).out -- N28.3
+        wire: N3.tunnel@(217,130).in -- N26.tunnel@(297,131).out -- N28.2
+        wire: N28.0 -- N3.tunnel@(592,284).in
+    frame 3:
+      N31   Case        @(297,51)  [8 term]
+        frame 0:
+          N34   const      numeric '  '  [1 term]
+            wire: N34.0 -- N31.tunnel@(519,123).in -- N31.tunnel@(519,136).in -- N31.tunnel@(519,148).in
+        frame 1:
+          N35   node4a     'Partial Derivatives of f(x) with respect to the coefficients a.' @(311,96)  [7 term]
+            wire: N31.tunnel@(297,114).in -- N35.0
+            wire: N35.6 -- N31.tunnel@(519,148).in
+            wire: N35.5 -- N31.tunnel@(519,136).in
+            wire: N35.4 -- N31.tunnel@(519,123).in
+            wire: N31.tunnel@(297,164).in -- N35.3
+            wire: N31.tunnel@(297,146).in -- N35.2
+            wire: N31.tunnel@(297,131).in -- N35.1
+      N32   node3a      @(548,127)  [4 term]
+      N33   node4a     'Function f(x)' @(300,232)  [5 term]
+        wire: N3.tunnel@(217,83).in -- N31.selector
+        wire: N3.tunnel@(217,93).in -- N31.tunnel@(297,114).out -- N33.1
+        wire: N32.0 -- N3.tunnel@(592,135).in
+        wire: N31.tunnel@(519,148).out -- N32.3
+        wire: N31.tunnel@(519,136).out -- N32.2
+        wire: N31.tunnel@(519,123).out -- N32.1
+        wire: N3.tunnel@(217,200).in -- N31.tunnel@(297,164).out -- N33.4
+        wire: N3.tunnel@(217,147).in -- N31.tunnel@(297,146).out -- N33.3
+        wire: N3.tunnel@(217,130).in -- N31.tunnel@(297,131).out -- N33.2
+        wire: N33.0 -- N3.tunnel@(592,284).in
+    frame 4:
+      N36   Case        @(297,51)  [6 term]
+        frame 0:
+          N39   const      numeric '  '  [1 term]
+            wire: N39.0 -- N36.tunnel@(519,123).in -- N36.tunnel@(519,136).in
+        frame 1:
+          N40   node4a     'Partial Derivatives of f(x) with respect to the coefficients a.' @(311,96)  [5 term]
+            wire: N36.tunnel@(297,114).in -- N40.0
+            wire: N40.4 -- N36.tunnel@(519,136).in
+            wire: N40.3 -- N36.tunnel@(519,123).in
+            wire: N36.tunnel@(297,146).in -- N40.2
+            wire: N36.tunnel@(297,131).in -- N40.1
+      N37   node3a      @(548,127)  [3 term]
+      N38   node4a     'Function f(x)' @(300,232)  [4 term]
+        wire: N3.tunnel@(217,83).in -- N36.selector
+        wire: N3.tunnel@(217,93).in -- N36.tunnel@(297,114).out -- N38.1
+        wire: N37.0 -- N3.tunnel@(592,135).in
+        wire: N36.tunnel@(519,136).out -- N37.2
+        wire: N36.tunnel@(519,123).out -- N37.1
+        wire: N3.tunnel@(217,147).in -- N36.tunnel@(297,146).out -- N38.3
+        wire: N3.tunnel@(217,130).in -- N36.tunnel@(297,131).out -- N38.2
+        wire: N38.0 -- N3.tunnel@(592,284).in
+    frame 5:
+      N41   Case        @(309,48)  [8 term]
+        frame 0:
+          N44   const      numeric '  '  [1 term]
+            wire: N44.0 -- N41.tunnel@(531,120).in -- N41.tunnel@(531,133).in -- N41.tunnel@(531,149).in
+        frame 1:
+          N45   node4a     'Partial Derivatives of f(x) with respect to the coefficients a.' @(323,93)  [7 term]
+            wire: N45.6 -- N41.tunnel@(531,149).in
+            wire: N41.tunnel@(309,165).in -- N45.5
+            wire: N41.tunnel@(309,111).in -- N45.0
+            wire: N45.4 -- N41.tunnel@(531,133).in
+            wire: N45.3 -- N41.tunnel@(531,120).in
+            wire: N41.tunnel@(309,143).in -- N45.2
+            wire: N41.tunnel@(309,128).in -- N45.1
+      N42   node3a      @(560,124)  [4 term]
+      N43   node4a     'Function f(x)' @(312,229)  [5 term]
+        wire: N41.tunnel@(531,149).out -- N42.3
+        wire: N3.tunnel@(217,200).in -- N43.4 -- N41.tunnel@(309,165).out
+        wire: N42.0 -- N3.tunnel@(592,135).in
+        wire: N43.0 -- N3.tunnel@(592,284).in
+        wire: N3.tunnel@(217,83).in -- N41.selector
+        wire: N3.tunnel@(217,147).in -- N43.3 -- N41.tunnel@(309,143).out
+        wire: N3.tunnel@(217,130).in -- N43.2 -- N41.tunnel@(309,128).out
+        wire: N3.tunnel@(217,93).in -- N43.1 -- N41.tunnel@(309,111).out
+        wire: N41.tunnel@(531,133).out -- N42.2
+        wire: N41.tunnel@(531,120).out -- N42.1
+    frame 6:
+      N46   Case        @(297,51)  [10 term]
+        frame 0:
+          N49   const      numeric '  '  [1 term]
+            wire: N49.0 -- N46.tunnel@(519,123).in -- N46.tunnel@(519,136).in -- N46.tunnel@(519,148).in -- N46.tunnel@(519,175).in
+        frame 1:
+          N50   node4a     'Partial Derivatives of f(x) with respect to the coefficients a.' @(311,96)  [9 term]
+            wire: N50.8 -- N46.tunnel@(519,175).in
+            wire: N46.tunnel@(297,183).in -- N50.7
+            wire: N46.tunnel@(297,114).in -- N50.0
+            wire: N50.6 -- N46.tunnel@(519,148).in
+            wire: N50.5 -- N46.tunnel@(519,136).in
+            wire: N50.4 -- N46.tunnel@(519,123).in
+            wire: N46.tunnel@(297,164).in -- N50.3
+            wire: N46.tunnel@(297,146).in -- N50.2
+            wire: N46.tunnel@(297,131).in -- N50.1
+      N47   node3a      @(548,127)  [5 term]
+      N48   node4a     'Function f(x)' @(300,232)  [6 term]
+        wire: N46.tunnel@(519,175).out -- N47.4
+        wire: N3.tunnel@(217,246).in -- N48.5 -- N46.tunnel@(297,183).out
+        wire: N3.tunnel@(217,83).in -- N46.selector
+        wire: N3.tunnel@(217,93).in -- N46.tunnel@(297,114).out -- N48.1
+        wire: N47.0 -- N3.tunnel@(592,135).in
+        wire: N46.tunnel@(519,148).out -- N47.3
+        wire: N46.tunnel@(519,136).out -- N47.2
+        wire: N46.tunnel@(519,123).out -- N47.1
+        wire: N3.tunnel@(217,200).in -- N46.tunnel@(297,164).out -- N48.4
+        wire: N3.tunnel@(217,147).in -- N46.tunnel@(297,146).out -- N48.3
+        wire: N3.tunnel@(217,130).in -- N46.tunnel@(297,131).out -- N48.2
+        wire: N48.0 -- N3.tunnel@(592,284).in
+    frame 7:
+      N51   Case        @(297,51)  [10 term]
+        frame 0:
+          N54   const      numeric '  '  [1 term]
+            wire: N54.0 -- N51.tunnel@(519,123).in -- N51.tunnel@(519,136).in -- N51.tunnel@(519,148).in -- N51.tunnel@(519,175).in
+        frame 1:
+          N55   node4a     'Partial Derivatives of f(x) with respect to the coefficients a.' @(311,96)  [9 term]
+            wire: N55.8 -- N51.tunnel@(519,175).in
+            wire: N51.tunnel@(297,183).in -- N55.7
+            wire: N51.tunnel@(297,114).in -- N55.0
+            wire: N55.6 -- N51.tunnel@(519,148).in
+            wire: N55.5 -- N51.tunnel@(519,136).in
+            wire: N55.4 -- N51.tunnel@(519,123).in
+            wire: N51.tunnel@(297,164).in -- N55.3
+            wire: N51.tunnel@(297,146).in -- N55.2
+            wire: N51.tunnel@(297,131).in -- N55.1
+      N52   node3a      @(548,127)  [5 term]
+      N53   node4a     'Function f(x)' @(300,232)  [6 term]
+        wire: N51.tunnel@(519,175).out -- N52.4
+        wire: N3.tunnel@(217,246).in -- N53.5 -- N51.tunnel@(297,183).out
+        wire: N3.tunnel@(217,83).in -- N51.selector
+        wire: N3.tunnel@(217,93).in -- N51.tunnel@(297,114).out -- N53.1
+        wire: N52.0 -- N3.tunnel@(592,135).in
+        wire: N51.tunnel@(519,148).out -- N52.3
+        wire: N51.tunnel@(519,136).out -- N52.2
+        wire: N51.tunnel@(519,123).out -- N52.1
+        wire: N3.tunnel@(217,200).in -- N51.tunnel@(297,164).out -- N53.4
+        wire: N3.tunnel@(217,147).in -- N51.tunnel@(297,146).out -- N53.3
+        wire: N3.tunnel@(217,130).in -- N51.tunnel@(297,131).out -- N53.2
+        wire: N53.0 -- N3.tunnel@(592,284).in
+  N4    FPterm     'Derivatives'  [1 term]
+  N5    FPterm     'X'  [1 term]
+  N6    FPterm     'Y'  [1 term]
+  N7    IndexArray?  @(85,182)  [3 term]
+  N8    FPterm     'Coefficients'  [1 term]
+  N9    FPterm     'Flag'  [1 term]
+  N10   IndexArray?  @(85,149)  [3 term]
+  N11   IndexArray?  @(85,116)  [3 term]
+  N12   const      numeric '  '  [1 term]
+  N13   const      numeric '  '  [1 term]
+  N14   const      numeric '  '  [1 term]
+  N15   const      numeric 'index'  [1 term]
+    wire: N2.1 -- N3.tunnel@(217,246).out
+    wire: N15.0 -- N2.2
+    wire: N8.0 -- N7.0 -- N10.0 -- N11.0 -- N2.0
+    wire: N14.0 -- N7.2
+    wire: N1.0 -- N3.selector
+    wire: N9.0 -- N3.tunnel@(217,83).out
+    wire: N5.0 -- N3.tunnel@(217,93).out
+    wire: N3.tunnel@(592,135).out -- N4.0
+    wire: N7.1 -- N3.tunnel@(217,200).out
+    wire: N10.1 -- N3.tunnel@(217,147).out
+    wire: N11.1 -- N3.tunnel@(217,130).out
+    wire: N3.tunnel@(592,284).out -- N6.0
+    wire: N13.0 -- N10.2
+    wire: N12.0 -- N11.2

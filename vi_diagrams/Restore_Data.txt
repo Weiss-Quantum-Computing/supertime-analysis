@@ -1,0 +1,47 @@
+VI: Restore_Data.vi
+  N1    FPterm     'cancelled'  [1 term]
+  N2    Case        @(51,156)  [5 term]
+    frame 0:
+      N11   const      path? 'cancelled'  [1 term]
+        wire: N11.0 -- N2.tunnel@(220,205).in
+        wire: N2.tunnel@(192,156).in -- N2.tunnel@(220,176).in
+    frame 1:
+      N12   prim       'File Dialog' @(156,183)  [9 term]
+      N13   const      numeric  [1 term]
+      N14   const      string 'pattern'  [1 term]
+        wire: N2.tunnel@(128,255).in -- N12.3
+        wire: N14.0 -- N12.5
+        wire: N12.8 -- N2.tunnel@(220,205).in
+        wire: N12.6 -- N2.tunnel@(220,176).in
+        wire: N13.0 -- N12.2
+  N3    prim       'Equal?' @(124,100)  [3 term]
+  N4    FPterm     'Path'  [1 term]
+  N5    (Un)BundleByName?  @(140,292)  [2 term]
+  N6    prim       'Strip Path' @(252,113)  [3 term]
+  N7    FPterm     'Output Cluster'  [1 term]
+  N8    FPterm     'Input Cluster'  [1 term]
+  N9    Case        @(298,117)  [4 term]
+    frame 0:
+      N15   prim       'Open File' @(467,180)  [7 term]
+      N16   prim       'Read File' @(548,180)  [12 term]
+      N17   prim       'Close File' @(623,181)  [4 term]
+      N18   const      enum/ring 'open mode (0)'  [1 term]
+        wire: N9.tunnel@(298,347).in -- N16.4
+        wire: N16.2 -- N9.tunnel@(753,347).in
+        wire: N18.0 -- N15.1
+        wire: N15.6 -- N16.8
+        wire: N15.5 -- N16.11
+        wire: N9.tunnel@(298,176).in -- N15.0
+        wire: N16.0 -- N17.2
+        wire: N16.3 -- N17.3
+    frame 1:
+        wire: N9.tunnel@(298,347).in -- N9.tunnel@(753,347).in
+  N10   const      cls4e  [1 term]
+    wire: N3.0 -- N2.selector
+    wire: N4.0 -- N3.2 -- N2.tunnel@(192,156).out
+    wire: N10.0 -- N3.1
+    wire: N5.1 -- N2.tunnel@(128,255).out
+    wire: N9.tunnel@(753,347).out -- N7.0
+    wire: N8.0 -- N9.tunnel@(298,347).out -- N5.0
+    wire: N2.tunnel@(220,205).out -- N9.selector -- N1.0
+    wire: N2.tunnel@(220,176).out -- N6.0 -- N9.tunnel@(298,176).out

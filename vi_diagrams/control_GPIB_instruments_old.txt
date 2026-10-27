@@ -1,0 +1,170 @@
+VI: control_GPIB_instruments_old.vi
+  N1    FPterm     'Position in run array'  [1 term]
+  N2    FPterm     'Sets To Run Array'  [1 term]
+  N3    FPterm     'Current data set'  [1 term]
+  N4    IndexArray?  @(346,757)  [4 term]
+  N5    ForLoop     @(390,593)  [4 term]
+    frame 0:
+      N27   prim       'Multiply' @(753,793)  [3 term]
+      N28   WhileLoop   @(431,610)  [4 term]
+        frame 0:
+          N34   WhileLoop   @(558,621)  [3 term]
+            frame 0:
+              N39   FPterm     'stop 2'  [1 term]
+              N40   prim       'Or' @(638,674)  [3 term]
+              N41   prim       'Equal?' @(599,652)  [3 term]
+              N42   (Un)BundleByName?  @(597,635)  [2 term]
+                wire: N39.0 -- N40.2
+                wire: N40.0 -- N34.cond
+                wire: N41.0 -- N40.1
+                wire: N34.i -- N34.tunnel@(572,705).in
+                wire: N34.tunnel@(558,656).in -- N41.1
+                wire: N42.1 -- N41.2
+                wire: N34.tunnel@(558,633).in -- N42.0
+          N35   Case        @(604,732)  [5 term]
+            frame 0:
+              N43   IndexArray?  @(642,773)  [3 term]
+                wire: N43.1 -- N35.tunnel@(691,805).in
+                wire: N35.tunnel@(604,752).in -- N43.2
+                wire: N35.tunnel@(604,776).in -- N43.0
+            frame 1:
+              N44   IndexArray?  @(644,787)  [3 term]
+                wire: N44.1 -- N35.tunnel@(691,805).in
+                wire: N35.tunnel@(604,752).in -- N44.2
+                wire: N35.tunnel@(604,791).in -- N44.0
+          N36   prim       'Equal?' @(478,722)  [3 term]
+          N37   (Un)BundleByName?  @(450,691)  [3 term]
+          N38   (Un)BundleByName?  @(448,758)  [5 term]
+            wire: N36.0 -- N28.cond
+            wire: N35.tunnel@(691,805).out -- N28.tunnel@(726,805).in
+            wire: N34.tunnel@(572,705).out -- N35.tunnel@(604,752).out
+            wire: N37.1 -- N34.tunnel@(558,656).out
+            wire: N28.tunnel@(431,627).in -- N34.tunnel@(558,633).out
+            wire: N38.3 -- N35.tunnel@(604,791).out
+            wire: N38.2 -- N35.tunnel@(604,776).out
+            wire: N38.4 -- N35.selector
+            wire: N38.1 -- N36.1
+            wire: N37.2 -- N36.2
+            wire: N28.tunnel@(431,710).in -- N37.0
+            wire: N28.tunnel@(431,761).in -- N38.0
+      N29   FormatString?  @(846,660)  [6 term]
+      N30   prim       'GPIB Write' @(846,785)  [7 term]
+      N31   (Un)BundleByName?  @(756,709)  [4 term]
+      N32   FormatString?  @(789,785)  [6 term]
+      N33   const      string 'format string'  [1 term]
+        wire: N29.2 -- N30.0
+        wire: N31.2 -- N32.0
+        wire: N31.3 -- N27.2
+        wire: N27.0 -- N32.5
+        wire: N32.2 -- N30.1
+        wire: N33.0 -- N29.0
+        wire: N31.1 -- N29.5
+        wire: N5.tunnel@(390,710).in -- N28.tunnel@(431,710).out -- N31.0
+        wire: N28.tunnel@(726,805).out -- N27.1
+        wire: N5.tunnel@(390,627).in -- N28.tunnel@(431,627).out
+        wire: N5.tunnel@(390,761).in -- N28.tunnel@(431,761).out
+  N6    Case        @(152,341)  [7 term]
+    frame 0:
+    frame 1:
+      N45   Sequence    @(193,366)  [6 term]
+        frame 0:
+          N46   prim       'GPIB Write' @(313,490)  [7 term]
+          N47   prim       'Wait (ms)' @(361,454)  [2 term]
+          N48   prim       'GPIB Write' @(311,426)  [7 term]
+          N49   const      string 'data'  [1 term]
+            wire: N45.tunnel@(405,405).in -- N47.1
+            wire: N45.tunnel@(193,438).in -- N46.0
+            wire: N49.0 -- N48.1 -- N46.1
+            wire: N45.tunnel@(193,406).in -- N48.0
+        frame 1:
+          N50   prim       'GPIB Write' @(305,501)  [7 term]
+          N51   prim       'Wait (ms)' @(357,452)  [2 term]
+          N52   prim       'GPIB Write' @(305,451)  [7 term]
+          N53   const      string 'data'  [1 term]
+          N54   const      string 'data'  [1 term]
+            wire: N54.0 -- N50.1
+            wire: N53.0 -- N52.1
+            wire: N45.tunnel@(405,382).in -- N51.1
+            wire: N45.tunnel@(193,438).in -- N50.0
+            wire: N45.tunnel@(193,406).in -- N52.0
+        frame 2:
+          N55   prim       'Wait (ms)' @(353,441)  [2 term]
+          N56   prim       'GPIB Write' @(304,488)  [7 term]
+          N57   prim       'GPIB Write' @(306,436)  [7 term]
+          N58   const      string 'data'  [1 term]
+            wire: N45.tunnel@(405,423).in -- N55.1
+            wire: N45.tunnel@(193,438).in -- N56.0
+            wire: N58.0 -- N57.1 -- N56.1
+            wire: N45.tunnel@(193,406).in -- N57.0
+        wire: N6.tunnel@(446,405).in -- N45.tunnel@(405,405).out
+        wire: N6.tunnel@(446,450).in -- N45.tunnel@(405,450).out
+        wire: N6.tunnel@(446,423).in -- N45.tunnel@(405,423).out
+        wire: N6.tunnel@(446,382).in -- N45.tunnel@(405,382).out
+        wire: N6.tunnel@(152,438).in -- N45.tunnel@(193,438).out
+        wire: N6.tunnel@(152,406).in -- N45.tunnel@(193,406).out
+  N7    FPterm     'Channels to read for data to send to GPIB'  [1 term]
+  N8    FPterm     '(This is the time it takes the software to get around to executing this .vi after it has already triggered the timing sequence.  A positive number means this .vi starts later than the timing sequence.)'  [1 term]
+  N9    prim       'Subtract' @(640,328)  [3 term]
+  N10   prim       'Subtract' @(861,234)  [3 term]
+  N11   prim       'Subtract' @(818,250)  [3 term]
+  N12   prim       'Subtract' @(768,266)  [3 term]
+  N13   ForLoop     @(229,55)  [5 term]
+    frame 0:
+      N59   node3a      @(534,283)  [3 term]
+      N60   WhileLoop   @(264,83)  [3 term]
+        frame 0:
+          N61   FPterm     'stop'  [1 term]
+          N62   prim       'Not' @(363,173)  [2 term]
+          N63   prim       'And' @(395,144)  [3 term]
+          N64   prim       'Not Equal?' @(343,135)  [3 term]
+          N65   (Un)BundleByName?  @(303,102)  [3 term]
+            wire: N61.0 -- N62.1
+            wire: N62.0 -- N63.1
+            wire: N64.0 -- N63.2
+            wire: N63.0 -- N60.cond
+            wire: N65.1 -- N60.tunnel@(469,105).in
+            wire: N60.tunnel@(264,175).in -- N64.1
+            wire: N65.2 -- N64.2
+            wire: N60.tunnel@(264,104).in -- N65.0
+        wire: N60.tunnel@(469,105).out -- N59.2
+        wire: N59.0 -- N13.shiftreg@(585,283).in
+        wire: N13.shiftreg@(229,283).in -- N59.1
+        wire: N13.tunnel@(229,104).in -- N60.tunnel@(264,104).out
+        wire: N13.tunnel@(229,175).in -- N60.tunnel@(264,175).out
+  N14   FPterm     'Edges to use for timing delays'  [1 term]
+  N15   IndexArray?  @(658,253)  [9 term]
+  N16   FPterm     'Variable Array'  [1 term]
+  N17   FPterm     'Edge Array'  [1 term]
+  N18   FPterm     'Channel Array'  [1 term]
+  N19   const      string 'address string'  [1 term]
+  N20   const      string 'address string'  [1 term]
+  N21   const      numeric 'index'  [1 term]
+  N22   const      numeric 'index'  [1 term]
+  N23   const      array  [1 term]
+  N24   const      numeric 'index'  [1 term]
+  N25   const      numeric 'index'  [1 term]
+  N26   const      path?  [1 term]
+    wire: N3.0 -- N4.3
+    wire: N18.0 -- N4.0
+    wire: N4.1 -- N5.tunnel@(390,761).out
+    wire: N26.0 -- N6.selector
+    wire: N7.0 -- N5.tunnel@(390,710).out
+    wire: N14.0 -- N13.tunnel@(229,175).out
+    wire: N15.1 -- N9.2
+    wire: N9.0 -- N12.1 -- N6.tunnel@(446,405).out
+    wire: N13.shiftreg@(585,283).out -- N15.0
+    wire: N8.0 -- N9.1
+    wire: N10.0 -- N6.tunnel@(446,450).out
+    wire: N15.7 -- N10.2
+    wire: N15.5 -- N11.2 -- N10.1
+    wire: N11.0 -- N6.tunnel@(446,423).out
+    wire: N15.3 -- N12.2 -- N11.1
+    wire: N12.0 -- N6.tunnel@(446,382).out
+    wire: N21.0 -- N15.8
+    wire: N22.0 -- N15.6
+    wire: N25.0 -- N15.4
+    wire: N17.0 -- N13.tunnel@(229,104).out -- N5.tunnel@(390,627).out
+    wire: N23.0 -- N13.shiftreg@(229,283).out
+    wire: N24.0 -- N15.2
+    wire: N20.0 -- N6.tunnel@(152,438).out
+    wire: N19.0 -- N6.tunnel@(152,406).out

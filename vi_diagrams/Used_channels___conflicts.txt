@@ -1,0 +1,53 @@
+VI: Used_channels___conflicts.vi
+  N1    FPterm     'sorted array'  [1 term]
+  N2    FPterm     'Boolean'  [1 term]
+  N3    prim       'Sort 1D Array' @(1166,217)  [2 term]
+  N4    ForLoop     @(802,59)  [6 term]
+    frame 0:
+      # "Create array with  / Card:Dig/An:Chan - Name / info to be displayed."
+      # "Search for matching elements / and return boolean to start or / stop blinking."
+      N7    subVI      'Search Channels.vi'  params: 0=Matching Elements, 1=Matching?, 2=Input Index, 3=Channel Array Input, 4=Cluster Input @(859,148)  [5 term]
+      N8    node36      @(829,216)  [12 term]
+      N9    Case        @(944,267)  [2 term]
+        frame 0:
+          N17   const      string  [1 term]
+            wire: N17.0 -- N9.tunnel@(983,298).in
+        frame 1:
+          N18   const      string  [1 term]
+            wire: N18.0 -- N9.tunnel@(983,298).in
+      N10   prim       'Number To Decimal String' @(961,226)  [3 term]
+      N11   prim       'Number To Decimal String' @(961,175)  [3 term]
+      N12   node3e      @(1039,213)  [8 term]
+      N13   Case        @(897,80)  [3 term]
+        frame 0:
+            wire: N13.tunnel@(897,109).in -- N13.tunnel@(953,109).in
+        frame 1:
+          N19   const      path?  [1 term]
+            wire: N19.0 -- N13.tunnel@(953,109).in
+      N14   const      string  [1 term]
+      N15   const      string  [1 term]
+      N16   const      string  [1 term]
+        wire: N8.8 -- N9.selector
+        wire: N8.3 -- N10.2
+        wire: N8.2 -- N11.2
+        wire: N8.1 -- N12.7
+        wire: N10.0 -- N12.5
+        wire: N9.tunnel@(983,298).out -- N12.3
+        wire: N15.0 -- N12.6
+        wire: N16.0 -- N12.4
+        wire: N12.0 -- N4.tunnel@(1152,229).in
+        wire: N14.0 -- N12.2
+        wire: N11.0 -- N12.1
+        wire: N4.tunnel@(802,149).in -- N7.Cluster Input -- N8.0
+        wire: N4.shiftreg@(802,107).in -- N13.tunnel@(897,109).out
+        wire: N13.tunnel@(953,109).out -- N4.shiftreg@(1145,107).in
+        wire: N7.Matching? -- N13.selector
+        wire: N4.i -- N7.Input Index
+        wire: N4.tunnel@(802,160).in -- N7.Channel Array Input
+  N5    FPterm     'Array'  [1 term]
+  N6    const      path?  [1 term]
+    wire: N3.0 -- N1.0
+    wire: N4.tunnel@(1152,229).out -- N3.1
+    wire: N4.shiftreg@(1145,107).out -- N2.0
+    wire: N6.0 -- N4.shiftreg@(802,107).out
+    wire: N5.0 -- N4.tunnel@(802,149).out -- N4.tunnel@(802,160).out

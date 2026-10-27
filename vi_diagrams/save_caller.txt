@@ -1,0 +1,22 @@
+VI: save_caller.vi
+  N1    Sequence    @(41,-15)  [0 term]
+    frame 0:
+      # "Pause to give the caller time to quit"
+      N2    prim       'Wait (ms)' @(229,94)  [2 term]
+      N3    const      numeric 'milliseconds to wait'  [1 term]
+        wire: N3.0 -- N2.1
+    frame 1:
+      N4    FPterm     'reference'  [1 term]
+      N5    node36      @(379,102)  [4 term]
+      N6    FPterm     'error out 2'  [1 term]
+      N7    node a9     @(256,49)  [12 term]
+      N8    FPterm     'error out'  [1 term]
+      N9    node a9     @(69,50)  [6 term]
+        wire: N4.0 -- N9.0
+        wire: N7.3 -- N6.0 -- N5.0
+        wire: N9.3 -- N7.2 -- N8.0
+        wire: N9.1 -- N7.0
+    frame 2:
+      N10   PropertyNode '?' [4 props] @(249,68)  [5 term]
+      N11   const      path? 'Front Panel Window:Open'  [1 term]
+        wire: N11.0 -- N10.4

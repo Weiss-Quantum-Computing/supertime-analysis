@@ -1,0 +1,41 @@
+VI: Log_Data.vi
+  N1    prim       'Strip Path' @(271,130)  [3 term]
+  N2    node36      @(462,167)  [4 term]
+  N3    Case        @(516,97)  [7 term]
+    frame 0:
+        wire: N3.tunnel@(531,191).in -- N3.tunnel@(618,191).in
+        wire: N3.tunnel@(552,191).in -- N3.tunnel@(605,191).in
+    frame 1:
+      N15   prim       'New File' @(566,134)  [9 term]
+        wire: N15.1 -- N3.tunnel@(618,191).in
+        wire: N15.0 -- N3.tunnel@(605,191).in
+        wire: N3.tunnel@(582,191).in -- N15.2
+        wire: N3.tunnel@(516,120).in -- N15.8
+  N4    subVI      'General Error Handler.vi' @(798,223)  [16 term]
+  N5    prim       'Close File' @(725,223)  [4 term]
+  N6    prim       'Get Date/Time String' @(395,289)  [5 term]
+  N7    node34      @(495,317)  [5 term]
+  N8    prim       'Build Path' @(338,136)  [3 term]
+  N9    prim       'Open File' @(437,222)  [7 term]
+  N10   FPterm     'Input Cluster'  [1 term]
+  N11   prim       'Write File' @(656,223)  [10 term]
+  N12   prim       'Current VI's Path' @(200,126)  [1 term]
+  N13   const      enum/ring 'open mode (0)'  [1 term]
+  N14   const      string 'name or relative path'  [1 term]
+    wire: N1.1 -- N8.2
+    wire: N12.0 -- N1.0
+    wire: N7.0 -- N11.4 -- N9.4 -- N3.tunnel@(582,191).out
+    wire: N8.0 -- N9.0 -- N3.tunnel@(516,120).out
+    wire: N9.5 -- N3.tunnel@(531,191).out
+    wire: N3.tunnel@(618,191).out -- N11.9
+    wire: N3.tunnel@(605,191).out -- N11.6
+    wire: N9.6 -- N2.0 -- N3.tunnel@(552,191).out
+    wire: N2.1 -- N3.selector
+    wire: N5.0 -- N4.11
+    wire: N11.0 -- N5.2
+    wire: N11.2 -- N5.3
+    wire: N6.0 -- N7.3
+    wire: N6.1 -- N7.2
+    wire: N10.0 -- N7.4
+    wire: N14.0 -- N8.1
+    wire: N13.0 -- N9.1

@@ -1,0 +1,126 @@
+VI: Convert_UD_units_to_Volts.vi
+  # "Convert using orginal values each time..."
+  # "...but keep track of changes for repeats."
+  N1    Case        @(250,-23)  [1 term]
+    frame 0:
+    frame 1:
+      # "If speed is more important than memory, put all the conversion files you use here.  This will load and keep them all in memory, saving time.  Since the files are called by reference, they can't be loaded until the file name is received from the mai"
+      N10   subVI      'z lattice 2.vi'  params: 0=Edge Value (Anlg), 1=Channel array, 2=Edge Value (Anlg) out, 3=Unit symbol, 4=Index of upstream channels @(650,71)  [5 term]
+      N11   subVI      'y lattice 2.vi'  params: 0=Edge Value (Anlg), 1=Channel array, 2=Edge Value (Anlg) out, 3=Unit symbol, 4=Index of upstream channels @(745,31)  [5 term]
+      N12   subVI      'x lattice 2.vi'  params: 0=Edge Value (Anlg), 1=Channel array, 2=Edge Value (Anlg) out, 3=Unit symbol, 4=Index of upstream channels @(681,31)  [5 term]
+      N13   subVI      'HelmholtzZ.vi'  params: 0=Edge Value (Anlg), 1=Channel array, 2=Edge Value (Anlg) out, 3=Unit symbol, 4=Index of upstream channels @(682,71)  [5 term]
+      N14   subVI      'HelmholtzY.vi'  params: 0=Edge Value (Anlg), 1=Channel array, 2=Edge Value (Anlg) out, 3=Unit symbol, 4=Index of upstream channels @(777,31)  [5 term]
+      N15   subVI      'uwave power.vi'  params: 0=Edge Value (Anlg), 1=Channel array, 2=Edge Value (Anlg) out, 3=Unit symbol, 4=Index of upstream channels @(713,31)  [5 term]
+      N16   subVI      'uwave power DDS.vi'  params: 0=Edge Value (Anlg), 1=Channel array, 2=Edge Value (Anlg) out, 3=Unit symbol, 4=Index of upstream channels @(649,31)  [5 term]
+      N17   subVI      'uwave freq DDS.vi'  params: 0=Edge Value (Anlg), 1=Channel array, 2=Edge Value (Anlg) out, 3=Unit symbol, 4=Index of upstream channels @(714,71)  [5 term]
+      N18   subVI      'HelmholtzX.vi'  params: 0=Edge Value (Anlg), 1=Channel array, 2=Edge Value (Anlg) out, 3=Unit symbol, 4=Index of upstream channels @(776,-5)  [5 term]
+      N19   subVI      'OP AO 4-5.vi'  params: 0=Edge Value (Anlg), 1=Channel array, 2=Edge Value (Anlg) out, 3=Unit symbol, 4=Index of upstream channels @(744,-5)  [5 term]
+      N20   subVI      'OP AO 4-4.vi'  params: 0=Edge Value (Anlg), 1=Channel array, 2=Edge Value (Anlg) out, 3=Unit symbol, 4=Index of upstream channels @(712,-5)  [5 term]
+      N21   subVI      'MOT.vi'  params: 0=Edge Value (Anlg), 1=Channel array, 2=Edge Value (Anlg) out, 3=Unit symbol, 4=Index of upstream channels @(680,-5)  [5 term]
+      N22   subVI      'molasses.vi'  params: 0=Edge Value (Anlg), 1=Channel array, 2=Edge Value (Anlg) out, 3=Unit symbol, 4=Index of upstream channels @(648,-5)  [5 term]
+  N2    ForLoop     @(247,131)  [9 term]
+    frame 0:
+      # "Unconverted data should be passed to downstream conversions"
+      N23   prim       'Less Than 0?' @(326,340)  [2 term]
+      N24   node6c      @(421,302)  [3 term]
+      N25   prim       'Search 1D Array' @(282,444)  [4 term]
+      N26   nodeb9      @(873,404)  [4 term]
+      N27   (Un)BundleByName?  @(805,309)  [3 term]
+      N28   Case        @(455,177)  [10 term]
+        frame 0:
+          N32   Case        @(537,215)  [10 term]
+            frame 0:
+              N39   nodeae      @(584,245)  [9 term]
+                wire: N39.4 -- N32.tunnel@(609,339).in
+                wire: N39.3 -- N32.tunnel@(650,280).in
+                wire: N39.2 -- N32.tunnel@(650,269).in
+                wire: N32.tunnel@(593,339).in -- N39.1
+                wire: N32.tunnel@(561,339).in -- N39.0
+                wire: N32.tunnel@(537,245).in -- N39.0
+                wire: N39.1 -- N32.tunnel@(650,245).in
+                wire: N39.3 -- N32.tunnel@(650,311).in
+                wire: N32.tunnel@(537,254).in -- N39.2
+            frame 1:
+              N40   nodeae      @(584,245)  [9 term]
+                wire: N32.tunnel@(561,339).in -- N32.tunnel@(650,269).in
+                wire: N40.4 -- N32.tunnel@(609,339).in
+                wire: N40.3 -- N32.tunnel@(650,280).in
+                wire: N32.tunnel@(593,339).in -- N40.1
+                wire: N32.tunnel@(537,245).in -- N40.0
+                wire: N40.1 -- N32.tunnel@(650,245).in
+                wire: N40.3 -- N32.tunnel@(650,311).in
+                wire: N32.tunnel@(537,254).in -- N40.2
+          N33   subVI      'build array with -1 padding.vi'  params: 0=Concatenated array, 1=added array, 2=Original array @(663,404)  [3 term]
+          N34   prim       'Close LV Object Reference' @(693,292)  [3 term]
+          N35   subVI      'Simple Error Handler.vi' @(721,357)  [10 term]
+          N36   FPterm     'error out'  [1 term]
+          N37   FPterm     'type specifier VI Refnum (for type only)'  [1 term]
+          N38   prim       'Open VI Reference' @(475,230)  [8 term]
+            wire: N28.tunnel@(455,335).in -- N32.selector
+            wire: N32.tunnel@(609,339).out -- N33.added array
+            wire: N28.tunnel@(493,458).in -- N33.Original array
+            wire: N33.Concatenated array -- N28.tunnel@(722,458).in
+            wire: N32.tunnel@(650,280).out -- N28.tunnel@(765,225).in
+            wire: N32.tunnel@(650,269).out -- N28.tunnel@(765,280).in
+            wire: N28.tunnel@(455,386).in -- N32.tunnel@(593,339).out
+            wire: N28.tunnel@(455,363).in -- N32.tunnel@(561,339).out
+            wire: N38.1 -- N32.tunnel@(537,245).out
+            wire: N34.0 -- N35.9 -- N36.0
+            wire: N32.tunnel@(650,245).out -- N34.2
+            wire: N32.tunnel@(650,311).out -- N34.1
+            wire: N38.0 -- N32.tunnel@(537,254).out
+            wire: N37.0 -- N38.3
+            wire: N28.tunnel@(455,238).in -- N38.6
+        frame 1:
+          N41   subVI      'build array with -1 padding.vi'  params: 0=Concatenated array, 1=added array, 2=Original array @(639,405)  [3 term]
+          N42   Case        @(522,215)  [2 term]
+            frame 0:
+              N44   const      string 'Unit symbol'  [1 term]
+                wire: N44.0 -- N42.tunnel@(620,251).in
+            frame 1:
+              N45   const      string 'Unit symbol'  [1 term]
+                wire: N45.0 -- N42.tunnel@(620,251).in
+          N43   const      array 'array'  [1 term]
+            wire: N42.tunnel@(620,251).out -- N28.tunnel@(765,225).in
+            wire: N28.tunnel@(455,219).in -- N42.selector
+            wire: N43.0 -- N41.added array
+            wire: N41.Concatenated array -- N28.tunnel@(722,458).in
+            wire: N28.tunnel@(493,458).in -- N41.Original array
+            wire: N28.tunnel@(455,363).in -- N28.tunnel@(765,280).in
+      N29   prim       'Empty String/Path?' @(386,307)  [2 term]
+      N30   prim       'Not A Number/Path/Refnum?' @(386,280)  [2 term]
+      N31   (Un)BundleByName?  @(267,274)  [5 term]
+        wire: N23.0 -- N28.tunnel@(455,335).out
+        wire: N24.0 -- N28.selector
+        wire: N29.0 -- N24.2
+        wire: N25.0 -- N23.1
+        wire: N31.4 -- N25.2
+        wire: N2.tunnel@(247,445).in -- N25.3
+        wire: N2.tunnel@(247,386).in -- N28.tunnel@(455,386).out
+        wire: N31.1 -- N28.tunnel@(455,219).out
+        wire: N28.tunnel@(765,225).out -- N2.tunnel@(966,225).in
+        wire: N2.shiftreg@(247,517).in -- N28.tunnel@(493,458).out
+        wire: N28.tunnel@(722,458).out -- N2.shiftreg@(959,517).in
+        wire: N26.1 -- N2.shiftreg@(959,406).in
+        wire: N27.0 -- N26.2
+        wire: N2.i -- N26.3
+        wire: N2.shiftreg@(247,406).in -- N26.0
+        wire: N28.tunnel@(765,280).out -- N27.2
+        wire: N2.tunnel@(247,312).in -- N31.0 -- N27.1
+        wire: N31.3 -- N28.tunnel@(455,363).out
+        wire: N30.0 -- N24.1
+        wire: N31.2 -- N30.1 -- N29.1 -- N28.tunnel@(455,238).out
+  N3    subVI      'find dds boards.vi'  params: 0=Array, 1=Channel Array @(120,433)  [2 term]
+  N4    FPterm     'Unit symbol of each channel'  [1 term]
+  N5    FPterm     'Index of upstream channels'  [1 term]
+  N6    FPterm     'Channel out'  [1 term]
+  N7    FPterm     'Channel array'  [1 term]
+  N8    const      array  [1 term]
+  N9    const      path?  [1 term]
+    wire: N9.0 -- N1.selector
+    wire: N8.0 -- N2.shiftreg@(247,517).out
+    wire: N3.Array -- N2.tunnel@(247,445).out
+    wire: N2.tunnel@(966,225).out -- N4.0
+    wire: N2.shiftreg@(959,517).out -- N5.0
+    wire: N7.0 -- N3.Channel Array -- N2.shiftreg@(247,406).out -- N2.tunnel@(247,312).out -- N2.tunnel@(247,386).out
+    wire: N2.shiftreg@(959,406).out -- N6.0

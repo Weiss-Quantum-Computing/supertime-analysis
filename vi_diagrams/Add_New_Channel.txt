@@ -1,0 +1,181 @@
+VI: Add_New_Channel.vi
+  N1    Sequence    @(312,2)  [3 term]
+    frame 0:
+      N8    LocalVar   '?' @(662,265)  [1 term]
+      N9    PropertyNode 'Channel Output Array' [4 props] @(658,359)  [5 term]
+      N10   PropertyNode 'Channel Input Array' [4 props] @(658,312)  [5 term]
+      N11   LocalVar   '?' @(606,460)  [1 term]
+      N12   FPterm     'Input Selection'  [1 term]
+      N13   const      path?  [1 term]
+      N14   const      path?  [1 term]
+        wire: N12.0 -- N11.0
+        wire: N13.0 -- N10.4 -- N9.4
+        wire: N14.0 -- N8.0
+    frame 1:
+      N15   WhileLoop   @(340,37)  [3 term]
+        frame 0:
+          N16   LocalVar   '?' @(994,590)  [1 term]
+          N17   prim       'Sort 1D Array' @(1139,448)  [2 term]
+          N18   prim       'Not' @(1034,585)  [2 term]
+          N19   Sequence    @(375,63)  [3 term]
+            frame 0:
+              N20   WhileLoop   @(430,164)  [7 term]
+                frame 0:
+                  N21   subVI      'Get Channel Names.vi'  params: 0=Channel Names, 1=Channel Array @(478,351)  [2 term]
+                  N22   PropertyNode 'Select Channel to Remove' [4 props] @(529,354)  [5 term]
+                  N23   FPterm     'Signal Type:'  [1 term]
+                  N24   prim       'Add' @(755,482)  [3 term]
+                  N25   prim       'Select' @(697,456)  [4 term]
+                  N26   prim       'Select' @(639,456)  [4 term]
+                  N27   node6c      @(823,398)  [4 term]
+                  N28   FPterm     'Select Channel to Remove'  [1 term]
+                  N29   FPterm     'Remove It'  [1 term]
+                  N30   FPterm     'Exit'  [1 term]
+                  N31   prim       'Wait (ms)' @(836,226)  [2 term]
+                  N32   FPterm     'Add It'  [1 term]
+                  N33   FPterm     'Card #'  [1 term]
+                  N34   FPterm     'Channel #'  [1 term]
+                  N35   FPterm     'Channel Name'  [1 term]
+                  N36   const      numeric  [1 term]
+                  N37   const      numeric 't'  [1 term]
+                  N38   const      numeric 't'  [1 term]
+                  N39   const      numeric 'f'  [1 term]
+                  N40   const      numeric 'f'  [1 term]
+                    wire: N23.0 -- N20.tunnel@(702,164).in
+                    wire: N24.0 -- N20.tunnel@(796,526).in
+                    wire: N26.0 -- N24.1
+                    wire: N25.0 -- N24.2
+                    wire: N30.0 -- N27.1
+                    wire: N40.0 -- N25.1
+                    wire: N37.0 -- N25.3
+                    wire: N39.0 -- N26.1
+                    wire: N38.0 -- N26.3
+                    wire: N21.Channel Names -- N22.4
+                    wire: N20.tunnel@(430,459).in -- N21.Channel Array
+                    wire: N32.0 -- N27.2 -- N26.2
+                    wire: N29.0 -- N27.3 -- N25.2
+                    wire: N27.0 -- N20.cond
+                    wire: N28.0 -- N20.tunnel@(430,258).in
+                    wire: N33.0 -- N20.tunnel@(584,164).in
+                    wire: N34.0 -- N20.tunnel@(623,164).in
+                    wire: N35.0 -- N20.tunnel@(554,164).in
+                    wire: N36.0 -- N31.1
+                wire: N20.tunnel@(702,164).out -- N19.seq@(651,72).in
+                wire: N20.tunnel@(796,526).out -- N19.seq@(795,559).in
+                wire: N19.tunnel@(375,459).in -- N20.tunnel@(430,459).out
+                wire: N20.tunnel@(430,258).out -- N19.seq@(380,257).in
+                wire: N20.tunnel@(623,164).out -- N19.seq@(609,72).in
+                wire: N20.tunnel@(554,164).out -- N19.seq@(552,72).in
+                wire: N20.tunnel@(584,164).out -- N19.seq@(584,72).in
+            frame 1:
+              N41   Case        @(470,126)  [9 term]
+                frame 0:
+                    wire: N41.tunnel@(470,459).in -- N41.tunnel@(1102,459).in
+                frame 1:
+                  N42   IndexArray?  @(709,417)  [3 term]
+                  N43   IndexArray?  @(784,427)  [3 term]
+                  N44   (Un)BundleByName?  @(693,208)  [11 term]
+                  N45   IndexArray?  @(614,365)  [3 term]
+                  N46   subVI      'Compare Channel.vi'  params: 0=Error?, 1=Channel Array Input, 2=Cluster Input @(820,292)  [3 term]
+                  N47   IndexArray?  @(610,416)  [3 term]
+                  N48   IndexArray? 'Initialize Array' @(542,330)  [3 term]
+                  N49   Case        @(864,280)  [4 term]
+                    frame 0:
+                      N56   LocalVar   '?' @(896,310)  [1 term]
+                      N57   LocalVar   '?' @(909,360)  [1 term]
+                      N58   LocalVar   '?' @(989,316)  [1 term]
+                      N59   LocalVar   '?' @(989,370)  [1 term]
+                      N60   node3a      @(905,449)  [3 term]
+                      N61   const      string 'Channel Name'  [1 term]
+                      N62   const      numeric 'Card #'  [1 term]
+                      N63   const      numeric 'Channel #'  [1 term]
+                      N64   const      enum/ring 'Signal Type'  [1 term]
+                        wire: N64.0 -- N59.0
+                        wire: N61.0 -- N58.0
+                        wire: N63.0 -- N56.0
+                        wire: N62.0 -- N57.0
+                        wire: N49.tunnel@(882,280).in -- N60.1
+                        wire: N49.tunnel@(864,459).in -- N60.2
+                        wire: N60.0 -- N49.tunnel@(1081,459).in
+                    frame 1:
+                        wire: N49.tunnel@(864,459).in -- N49.tunnel@(1081,459).in
+                  N50   const      numeric  [1 term]
+                  N51   const      numeric 'element'  [1 term]
+                  N52   const      cluster  [1 term]
+                  N53   const      numeric 'element'  [1 term]
+                  N54   const      numeric 'element'  [1 term]
+                  N55   const      cluster 'Function type'  [1 term]
+                    wire: N42.1 -- N44.9
+                    wire: N41.tunnel@(470,329).in -- N43.2 -- N48.2 -- N47.2 -- N45.2 -- N42.2
+                    wire: N55.0 -- N42.0
+                    wire: N43.1 -- N44.10
+                    wire: N54.0 -- N43.0
+                    wire: N53.0 -- N47.0
+                    wire: N47.1 -- N44.7
+                    wire: N45.1 -- N44.6
+                    wire: N48.1 -- N44.5
+                    wire: N41.tunnel@(628,126).in -- N44.8
+                    wire: N41.tunnel@(586,126).in -- N44.3
+                    wire: N41.tunnel@(611,126).in -- N44.4
+                    wire: N41.tunnel@(554,126).in -- N44.2
+                    wire: N52.0 -- N44.1
+                    wire: N50.0 -- N48.0
+                    wire: N51.0 -- N45.0
+                    wire: N49.tunnel@(1081,459).out -- N41.tunnel@(1102,459).in
+                    wire: N41.tunnel@(470,459).in -- N49.tunnel@(864,459).out -- N46.Channel Array Input
+                    wire: N44.0 -- N46.Cluster Input -- N49.tunnel@(882,280).out
+                    wire: N46.Error? -- N49.selector
+                frame 2:
+                  N65   subVI      'Get Channel Names.vi'  params: 0=Channel Names, 1=Channel Array @(524,407)  [2 term]
+                  N66   Case        @(687,305)  [4 term]
+                    frame 0:
+                        wire: N66.tunnel@(703,390).in -- N66.tunnel@(827,336).in
+                    frame 1:
+                      N72   subVI      'Remove Channel.vi'  params: 0=Channel Array Output, 1=Channel #, 2=Channel Array Input @(754,323)  [3 term]
+                        wire: N66.tunnel@(687,338).in -- N72.Channel #
+                        wire: N72.Channel Array Output -- N66.tunnel@(827,336).in
+                        wire: N66.tunnel@(703,390).in -- N72.Channel Array Input
+                  N67   prim       'Two Button Dialog' @(634,359)  [4 term]
+                  N68   node3e      @(595,307)  [4 term]
+                  N69   IndexArray?  @(528,351)  [3 term]
+                  N70   const      string  [1 term]
+                  N71   const      string  [1 term]
+                    wire: N41.tunnel@(470,259).in -- N69.2 -- N66.tunnel@(687,338).out
+                    wire: N41.tunnel@(470,459).in -- N65.Channel Array -- N66.tunnel@(703,390).out
+                    wire: N66.tunnel@(827,336).out -- N41.tunnel@(1102,459).in
+                    wire: N67.0 -- N66.selector
+                    wire: N68.0 -- N67.3
+                    wire: N71.0 -- N68.3
+                    wire: N70.0 -- N68.1
+                    wire: N65.Channel Names -- N69.0
+                    wire: N69.1 -- N68.2
+                wire: N19.seq@(651,72).in -- N41.tunnel@(628,126).out
+                wire: N19.seq@(795,559).in -- N41.selector
+                wire: N19.seq@(380,257).in -- N41.tunnel@(470,259).out
+                wire: N41.tunnel@(1102,459).out -- N19.tunnel@(1124,459).in
+                wire: N19.tunnel@(375,459).in -- N41.tunnel@(470,459).out
+                wire: N19.tunnel@(375,299).in -- N41.tunnel@(470,329).out
+                wire: N19.seq@(609,72).in -- N41.tunnel@(611,126).out
+                wire: N19.seq@(584,72).in -- N41.tunnel@(586,126).out
+                wire: N19.seq@(552,72).in -- N41.tunnel@(554,126).out
+            wire: N17.0 -- N15.shiftreg@(1174,457).in
+            wire: N19.tunnel@(1124,459).out -- N17.1
+            wire: N18.0 -- N15.cond
+            wire: N16.0 -- N18.1
+            wire: N15.shiftreg@(340,457).in -- N19.tunnel@(375,459).out
+            wire: N15.tunnel@(340,299).in -- N19.tunnel@(375,299).out
+        wire: N15.shiftreg@(1174,457).out -- N1.tunnel@(1201,459).in
+        wire: N1.tunnel@(312,459).in -- N15.shiftreg@(340,457).out
+        wire: N1.tunnel@(312,299).in -- N15.tunnel@(340,299).out
+  N2    prim       'Array Size' @(236,288)  [2 term]
+  N3    (Un)BundleByName?  @(196,332)  [2 term]
+  N4    IndexArray?  @(202,374)  [3 term]
+  N5    FPterm     'Channel Array Output'  [1 term]
+  N6    FPterm     'Channel Array Input'  [1 term]
+  N7    const      numeric  [1 term]
+    wire: N1.tunnel@(1201,459).out -- N5.0
+    wire: N6.0 -- N4.0 -- N1.tunnel@(312,459).out
+    wire: N2.0 -- N1.tunnel@(312,299).out
+    wire: N3.1 -- N2.1
+    wire: N4.1 -- N3.0
+    wire: N7.0 -- N4.2

@@ -1,0 +1,27 @@
+VI: temporary.vi
+  N1    FPterm     'not working 6-19-23 re-run on 7-6'  [1 term]
+  N2    FPterm     'Array'  [1 term]
+  N3    ForLoop     @(353,268)  [4 term]
+    frame 0:
+      N9    Case        @(397,295)  [4 term]
+        frame 0:
+          N10   node3a      @(438,340)  [3 term]
+            wire: N9.tunnel@(397,352).in -- N10.1
+            wire: N10.0 -- N9.tunnel@(489,344).in
+            wire: N9.tunnel@(446,378).in -- N10.2
+        frame 1:
+            wire: N9.tunnel@(397,352).in -- N9.tunnel@(489,344).in
+        wire: N3.shiftreg@(353,350).in -- N9.tunnel@(397,352).out
+        wire: N9.tunnel@(489,344).out -- N3.shiftreg@(514,350).in
+        wire: N3.i -- N9.tunnel@(446,378).out
+        wire: N3.tunnel@(353,327).in -- N9.selector
+  N4    FPterm     'x = y?'  [1 term]
+  N5    prim       'Equal?' @(272,211)  [3 term]
+  N6    FPterm     'working 6-19-23'  [1 term]
+  N7    FPterm     'non-working 6-23-23'  [1 term]
+  N8    const      array  [1 term]
+    wire: N1.0 -- N5.2
+    wire: N6.0 -- N5.1
+    wire: N3.shiftreg@(514,350).out -- N2.0
+    wire: N8.0 -- N3.shiftreg@(353,350).out
+    wire: N5.0 -- N4.0 -- N3.tunnel@(353,327).out

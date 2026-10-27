@@ -1,0 +1,1450 @@
+VI: ddscontrol.vi
+  N1    FPterm     'Saved External clock frequency'  [1 term]
+  N2    FPterm     'FSK/BPSK/Hold pin state'  [1 term]
+  N3    FPterm     'OSK pin state'  [1 term]
+  N4    FPterm     'Clock multiplier amount'  [1 term]
+  N5    ForLoop     @(-268,61)  [9 term]
+    frame 0:
+      # "For loop provides shift register which saves values from run to run.  You should set the multiplier before setting the frequency for this to work properly."
+      # "OSK pin state"
+      # "FSK/BPSK/Hold pin state"
+      # "MSByte first"
+      N7    prim       'To Word Integer' @(-74,507)  [2 term]
+      N8    prim       'Greater Or Equal To 0?' @(-78,481)  [2 term]
+      N9    prim       'Select' @(-41,483)  [4 term]
+      N10   prim       'Equal To 0?' @(-202,588)  [2 term]
+      N11   Case        @(-104,577)  [4 term]
+        frame 0:
+            wire: N11.tunnel@(-104,612).in -- N11.tunnel@(-19,612).in
+        frame 1:
+          # "FIXME.  This / doesn't work yet"
+            wire: N11.tunnel@(-104,585).in -- N11.tunnel@(-19,612).in
+      N12   prim       'Boolean To (0,1)' @(-125,265)  [2 term]
+      N13   prim       'Boolean To (0,1)' @(-145,307)  [2 term]
+      N14   prim       'Or' @(-48,280)  [3 term]
+      N15   prim       'Logical Shift' @(-91,303)  [3 term]
+      N16   prim       'Logical Shift' @(-93,261)  [3 term]
+      N17   FPterm     'FTW'  [1 term]
+      N18   prim       'To Unsigned Byte Integer' @(76,227)  [2 term]
+      N19   prim       'Multiply' @(-201,531)  [3 term]
+      N20   node3a      @(115,556)  [5 term]
+      N21   prim       'Split Number' @(68,572)  [3 term]
+      N22   prim       'Split Number' @(69,545)  [3 term]
+      N23   prim       'Split Number' @(45,561)  [3 term]
+      N24   node3a      @(108,523)  [3 term]
+      N25   prim       'Split Number' @(64,518)  [3 term]
+      N26   prim       'Increment' @(120,226)  [2 term]
+      N27   FPterm     'Load or load/update'  [1 term]
+      N28   node3a      @(109,434)  [7 term]
+      N29   prim       'Scale By Power Of 2' @(-115,483)  [3 term]
+      N30   prim       'Split Number' @(47,458)  [3 term]
+      N31   prim       'Split Number' @(49,437)  [3 term]
+      N32   prim       'To Unsigned Word Integer' @(-21,450)  [2 term]
+      N33   prim       'To Unsigned Long Integer' @(-4,436)  [2 term]
+      N34   prim       'Split Number' @(24,436)  [3 term]
+      N35   prim       'Split Number' @(68,476)  [3 term]
+      N36   prim       'Quotient & Remainder' @(-59,442)  [4 term]
+      N37   prim       'Round To Nearest' @(-91,441)  [2 term]
+      N38   prim       'Scale By Power Of 2' @(-134,364)  [3 term]
+      N39   prim       'Divide' @(-65,394)  [3 term]
+      N40   FPterm     'Actual frequency'  [1 term]
+      N41   prim       'Multiply' @(-122,391)  [3 term]
+      N42   prim       'Divide' @(-124,440)  [3 term]
+      N43   prim       'Scale By Power Of 2' @(-169,436)  [3 term]
+      N44   FPterm     'External clock frequency'  [1 term]
+      N45   prim       'Logical Shift' @(101,202)  [3 term]
+      N46   FPterm     'Frequency'  [1 term]
+      N47   FPterm     'Update (32 bits) or ramp (20 bits) clock'  [1 term]
+      N48   Case        @(154,81)  [18 term]
+        frame 0:
+          N64   Sequence    @(359,129)  [3 term]
+            frame 0:
+              N68   subVI      'Write to Digital Port .vi' @(476,157)  [8 term]
+                wire: N64.tunnel@(359,218).in -- N68.3
+                wire: N64.tunnel@(359,182).in -- N68.2
+                wire: N64.tunnel@(386,129).in -- N68.0
+            frame 1:
+              N69   subVI      'Write to Digital Line.vi' @(488,168)  [9 term]
+              N70   const      numeric 'line'  [1 term]
+              N71   const      path? 'line state'  [1 term]
+                wire: N64.tunnel@(359,182).in -- N69.2
+                wire: N64.tunnel@(386,129).in -- N69.0
+                wire: N71.0 -- N69.4
+                wire: N70.0 -- N69.3
+            frame 2:
+              N72   subVI      'Write to Digital Line.vi' @(488,168)  [9 term]
+              N73   const      numeric 'line'  [1 term]
+              N74   const      path? 'line state'  [1 term]
+                wire: N64.tunnel@(359,182).in -- N72.2
+                wire: N64.tunnel@(386,129).in -- N72.0
+                wire: N74.0 -- N72.4
+                wire: N73.0 -- N72.3
+          N65   prim       'Number To Decimal String' @(263,170)  [3 term]
+          N66   prim       'Or' @(268,206)  [3 term]
+          N67   const      numeric 'y'  [1 term]
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N66.0 -- N64.tunnel@(359,218).out
+            wire: N65.0 -- N64.tunnel@(359,182).out
+            wire: N67.0 -- N66.1
+            wire: N48.tunnel@(154,175).in -- N65.2
+            wire: N48.tunnel@(154,122).in -- N64.tunnel@(386,129).out
+            wire: N48.tunnel@(154,214).in -- N66.2
+        frame 1:
+          N75   Sequence    @(359,129)  [3 term]
+            frame 0:
+              N79   subVI      'Write to Digital Port .vi' @(476,157)  [8 term]
+                wire: N75.tunnel@(359,218).in -- N79.3
+                wire: N75.tunnel@(359,182).in -- N79.2
+                wire: N75.tunnel@(386,129).in -- N79.0
+            frame 1:
+              N80   subVI      'Write to Digital Line.vi' @(488,168)  [9 term]
+              N81   const      numeric 'line'  [1 term]
+              N82   const      path? 'line state'  [1 term]
+                wire: N75.tunnel@(359,182).in -- N80.2
+                wire: N75.tunnel@(386,129).in -- N80.0
+                wire: N82.0 -- N80.4
+                wire: N81.0 -- N80.3
+            frame 2:
+              N83   subVI      'Write to Digital Line.vi' @(488,168)  [9 term]
+              N84   const      numeric 'line'  [1 term]
+              N85   const      path? 'line state'  [1 term]
+                wire: N75.tunnel@(359,182).in -- N83.2
+                wire: N75.tunnel@(386,129).in -- N83.0
+                wire: N85.0 -- N83.4
+                wire: N84.0 -- N83.3
+          N76   prim       'Number To Decimal String' @(263,170)  [3 term]
+          N77   prim       'Or' @(268,206)  [3 term]
+          N78   const      numeric 'y'  [1 term]
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N77.0 -- N75.tunnel@(359,218).out
+            wire: N76.0 -- N75.tunnel@(359,182).out
+            wire: N78.0 -- N77.1
+            wire: N48.tunnel@(154,175).in -- N76.2
+            wire: N48.tunnel@(154,122).in -- N75.tunnel@(386,129).out
+            wire: N48.tunnel@(154,214).in -- N77.2
+        frame 2:
+          N86   Sequence    @(359,129)  [3 term]
+            frame 0:
+              N90   subVI      'Write to Digital Port .vi' @(476,157)  [8 term]
+                wire: N86.tunnel@(359,218).in -- N90.3
+                wire: N86.tunnel@(359,182).in -- N90.2
+                wire: N86.tunnel@(386,129).in -- N90.0
+            frame 1:
+              N91   subVI      'Write to Digital Line.vi' @(488,168)  [9 term]
+              N92   const      numeric 'line'  [1 term]
+              N93   const      path? 'line state'  [1 term]
+                wire: N86.tunnel@(359,182).in -- N91.2
+                wire: N86.tunnel@(386,129).in -- N91.0
+                wire: N93.0 -- N91.4
+                wire: N92.0 -- N91.3
+            frame 2:
+              N94   subVI      'Write to Digital Line.vi' @(488,168)  [9 term]
+              N95   const      numeric 'line'  [1 term]
+              N96   const      path? 'line state'  [1 term]
+                wire: N86.tunnel@(359,182).in -- N94.2
+                wire: N86.tunnel@(386,129).in -- N94.0
+                wire: N96.0 -- N94.4
+                wire: N95.0 -- N94.3
+          N87   prim       'Number To Decimal String' @(263,170)  [3 term]
+          N88   prim       'Or' @(268,206)  [3 term]
+          N89   const      numeric 'y'  [1 term]
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N88.0 -- N86.tunnel@(359,218).out
+            wire: N87.0 -- N86.tunnel@(359,182).out
+            wire: N89.0 -- N88.1
+            wire: N48.tunnel@(154,175).in -- N87.2
+            wire: N48.tunnel@(154,122).in -- N86.tunnel@(386,129).out
+            wire: N48.tunnel@(154,214).in -- N88.2
+        frame 3:
+          N97   prim       'Or' @(366,284)  [3 term]
+          N98   prim       'Number To Decimal String' @(273,261)  [3 term]
+          N99   prim       'Number To Decimal String' @(271,130)  [3 term]
+          N100  node6c      @(499,378)  [4 term]
+          N101  prim       'Logical Shift' @(420,409)  [3 term]
+          N102  prim       'Logical Shift' @(438,385)  [3 term]
+          N103  prim       'Logical Shift' @(437,341)  [3 term]
+          N104  (Un)BundleByName?  @(248,369)  [4 term]
+          N105  Sequence    @(368,130)  [7 term]
+            frame 0:
+              N113  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N105.tunnel@(368,219).in -- N113.3
+                wire: N105.tunnel@(368,183).in -- N113.2
+                wire: N105.tunnel@(395,130).in -- N113.0
+            frame 1:
+              N114  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N105.tunnel@(368,239).in -- N114.2
+                wire: N105.tunnel@(419,261).in -- N114.3
+                wire: N105.tunnel@(395,130).in -- N114.0
+            frame 2:
+              N115  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N105.tunnel@(368,167).in -- N115.2
+                wire: N105.tunnel@(459,261).in -- N115.3
+                wire: N105.tunnel@(395,130).in -- N115.0
+            frame 3:
+              N116  subVI      'Write to Digital Line.vi' @(497,169)  [9 term]
+              N117  const      numeric 'line'  [1 term]
+              N118  const      path? 'line state'  [1 term]
+                wire: N105.tunnel@(368,183).in -- N116.2
+                wire: N105.tunnel@(395,130).in -- N116.0
+                wire: N118.0 -- N116.4
+                wire: N117.0 -- N116.3
+            frame 4:
+              N119  subVI      'Write to Digital Line.vi' @(497,169)  [9 term]
+              N120  const      numeric 'line'  [1 term]
+              N121  const      path? 'line state'  [1 term]
+                wire: N105.tunnel@(368,183).in -- N119.2
+                wire: N105.tunnel@(395,130).in -- N119.0
+                wire: N121.0 -- N119.4
+                wire: N120.0 -- N119.3
+          N106  prim       'Number To Decimal String' @(272,171)  [3 term]
+          N107  prim       'Or' @(277,207)  [3 term]
+          N108  FPterm     'Control 1: Set OSK and sinc filter options'  [1 term]
+          N109  const      numeric  [1 term]
+          N110  const      numeric  [1 term]
+          N111  const      numeric 'pattern'  [1 term]
+          N112  const      numeric  [1 term]
+            wire: N97.0 -- N105.tunnel@(419,261).out
+            wire: N111.0 -- N97.1
+            wire: N48.tunnel@(154,292).in -- N97.2
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,238).in -- N107.1
+            wire: N100.0 -- N105.tunnel@(459,261).out
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N98.0 -- N105.tunnel@(368,239).out
+            wire: N48.tunnel@(154,409).in -- N98.2
+            wire: N48.tunnel@(154,274).in -- N99.2
+            wire: N48.tunnel@(154,175).in -- N106.2
+            wire: N99.0 -- N105.tunnel@(368,167).out
+            wire: N102.0 -- N100.2
+            wire: N101.0 -- N100.3
+            wire: N103.0 -- N100.1
+            wire: N112.0 -- N101.2
+            wire: N109.0 -- N102.2
+            wire: N104.3 -- N101.1
+            wire: N104.2 -- N102.1
+            wire: N110.0 -- N103.2
+            wire: N104.1 -- N103.1
+            wire: N108.0 -- N104.0
+            wire: N48.tunnel@(154,214).in -- N107.2
+            wire: N48.tunnel@(154,122).in -- N105.tunnel@(395,130).out
+            wire: N107.0 -- N105.tunnel@(368,219).out
+            wire: N106.0 -- N105.tunnel@(368,183).out
+        frame 4:
+          N122  prim       'Or' @(366,289)  [3 term]
+          N123  prim       'Number To Decimal String' @(273,261)  [3 term]
+          N124  prim       'Number To Decimal String' @(272,130)  [3 term]
+          N125  prim       'Logical Shift' @(406,438)  [3 term]
+          N126  FPterm     'Control 2: Set Update clock, output mode, triangle sweep, and clear accumlator functions'  [1 term]
+          N127  node6c      @(506,378)  [5 term]
+          N128  prim       'Logical Shift' @(427,409)  [3 term]
+          N129  prim       'Logical Shift' @(445,385)  [3 term]
+          N130  prim       'Logical Shift' @(444,341)  [3 term]
+          N131  (Un)BundleByName?  @(272,369)  [5 term]
+          N132  Sequence    @(368,130)  [7 term]
+            frame 0:
+              N140  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N132.tunnel@(368,219).in -- N140.3
+                wire: N132.tunnel@(368,183).in -- N140.2
+                wire: N132.tunnel@(395,130).in -- N140.0
+            frame 1:
+              N141  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N132.tunnel@(368,239).in -- N141.2
+                wire: N132.tunnel@(416,261).in -- N141.3
+                wire: N132.tunnel@(395,130).in -- N141.0
+            frame 2:
+              N142  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N132.tunnel@(368,167).in -- N142.2
+                wire: N132.tunnel@(459,261).in -- N142.3
+                wire: N132.tunnel@(395,130).in -- N142.0
+            frame 3:
+              N143  subVI      'Write to Digital Line.vi' @(497,169)  [9 term]
+              N144  const      numeric 'line'  [1 term]
+              N145  const      path? 'line state'  [1 term]
+                wire: N132.tunnel@(368,183).in -- N143.2
+                wire: N132.tunnel@(395,130).in -- N143.0
+                wire: N145.0 -- N143.4
+                wire: N144.0 -- N143.3
+            frame 4:
+              N146  subVI      'Write to Digital Line.vi' @(497,169)  [9 term]
+              N147  const      numeric 'line'  [1 term]
+              N148  const      path? 'line state'  [1 term]
+                wire: N132.tunnel@(368,183).in -- N146.2
+                wire: N132.tunnel@(395,130).in -- N146.0
+                wire: N148.0 -- N146.4
+                wire: N147.0 -- N146.3
+          N133  prim       'Number To Decimal String' @(272,171)  [3 term]
+          N134  prim       'Or' @(277,207)  [3 term]
+          N135  const      numeric  [1 term]
+          N136  const      numeric  [1 term]
+          N137  const      numeric  [1 term]
+          N138  const      numeric  [1 term]
+          N139  const      numeric 'pattern'  [1 term]
+            wire: N122.0 -- N132.tunnel@(416,261).out
+            wire: N139.0 -- N122.1
+            wire: N48.tunnel@(154,292).in -- N122.2
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,238).in -- N134.1
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N123.0 -- N132.tunnel@(368,239).out
+            wire: N48.tunnel@(154,409).in -- N123.2
+            wire: N124.0 -- N132.tunnel@(368,167).out
+            wire: N48.tunnel@(154,274).in -- N124.2
+            wire: N48.tunnel@(154,175).in -- N133.2
+            wire: N125.0 -- N127.4
+            wire: N135.0 -- N125.2
+            wire: N131.4 -- N125.1
+            wire: N126.0 -- N131.0
+            wire: N127.0 -- N132.tunnel@(459,261).out
+            wire: N129.0 -- N127.2
+            wire: N128.0 -- N127.3
+            wire: N130.0 -- N127.1
+            wire: N136.0 -- N128.2
+            wire: N137.0 -- N129.2
+            wire: N131.3 -- N128.1
+            wire: N131.2 -- N129.1
+            wire: N138.0 -- N130.2
+            wire: N131.1 -- N130.1
+            wire: N48.tunnel@(154,214).in -- N134.2
+            wire: N48.tunnel@(154,122).in -- N132.tunnel@(395,130).out
+            wire: N134.0 -- N132.tunnel@(368,219).out
+            wire: N133.0 -- N132.tunnel@(368,183).out
+        frame 5:
+          N149  Sequence    @(368,130)  [7 term]
+            frame 0:
+              N165  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N149.tunnel@(368,219).in -- N165.3
+                wire: N149.tunnel@(368,183).in -- N165.2
+                wire: N149.tunnel@(395,130).in -- N165.0
+            frame 1:
+              N166  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N149.tunnel@(368,240).in -- N166.2
+                wire: N149.tunnel@(417,261).in -- N166.3
+                wire: N149.tunnel@(395,130).in -- N166.0
+            frame 2:
+              N167  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N149.tunnel@(368,167).in -- N167.2
+                wire: N149.tunnel@(459,261).in -- N167.3
+                wire: N149.tunnel@(395,130).in -- N167.0
+            frame 3:
+              N168  subVI      'Write to Digital Line.vi' @(497,169)  [9 term]
+              N169  const      numeric 'line'  [1 term]
+              N170  const      path? 'line state'  [1 term]
+                wire: N149.tunnel@(368,183).in -- N168.2
+                wire: N149.tunnel@(395,130).in -- N168.0
+                wire: N170.0 -- N168.4
+                wire: N169.0 -- N168.3
+            frame 4:
+              N171  subVI      'Write to Digital Line.vi' @(497,169)  [9 term]
+              N172  const      numeric 'line'  [1 term]
+              N173  const      path? 'line state'  [1 term]
+                wire: N149.tunnel@(368,183).in -- N171.2
+                wire: N149.tunnel@(395,130).in -- N171.0
+                wire: N173.0 -- N171.4
+                wire: N172.0 -- N171.3
+          N150  prim       'Or' @(357,289)  [3 term]
+          N151  prim       'Number To Decimal String' @(274,262)  [3 term]
+          N152  prim       'Number To Decimal String' @(273,130)  [3 term]
+          N153  prim       'Logical Shift' @(480,416)  [3 term]
+          N154  FPterm     'Control 3: Set clock multiplier, PLL enable, and PLL range'  [1 term]
+          N155  node6c      @(551,378)  [4 term]
+          N156  prim       'Logical Shift' @(490,385)  [3 term]
+          N157  prim       'Logical Shift' @(489,341)  [3 term]
+          N158  (Un)BundleByName?  @(228,369)  [4 term]
+          N159  prim       'Number To Decimal String' @(272,171)  [3 term]
+          N160  prim       'Or' @(277,207)  [3 term]
+          N161  const      numeric  [1 term]
+          N162  const      numeric  [1 term]
+          N163  const      numeric  [1 term]
+          N164  const      numeric 'pattern'  [1 term]
+            wire: N150.0 -- N149.tunnel@(417,261).out
+            wire: N164.0 -- N150.1
+            wire: N48.tunnel@(154,292).in -- N150.2
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,238).in -- N160.1
+            wire: N158.1 -- N157.1 -- N48.tunnel@(697,548).in
+            wire: N48.tunnel@(154,409).in -- N151.2
+            wire: N151.0 -- N149.tunnel@(368,240).out
+            wire: N152.0 -- N149.tunnel@(368,167).out
+            wire: N48.tunnel@(154,274).in -- N152.2
+            wire: N48.tunnel@(154,175).in -- N159.2
+            wire: N153.0 -- N155.3
+            wire: N158.3 -- N153.1
+            wire: N161.0 -- N153.2
+            wire: N154.0 -- N158.0
+            wire: N155.0 -- N149.tunnel@(459,261).out
+            wire: N156.0 -- N155.2
+            wire: N157.0 -- N155.1
+            wire: N162.0 -- N156.2
+            wire: N158.2 -- N156.1
+            wire: N163.0 -- N157.2
+            wire: N48.tunnel@(154,214).in -- N160.2
+            wire: N48.tunnel@(154,122).in -- N149.tunnel@(395,130).out
+            wire: N160.0 -- N149.tunnel@(368,219).out
+            wire: N159.0 -- N149.tunnel@(368,183).out
+        frame 6:
+          N174  prim       'Or' @(342,291)  [3 term]
+          N175  prim       'Number To Decimal String' @(274,261)  [3 term]
+          N176  prim       'Number To Decimal String' @(272,130)  [3 term]
+          N177  FPterm     'Control 4: Power-down options'  [1 term]
+          N178  prim       'Logical Shift' @(462,438)  [3 term]
+          N179  node6c      @(562,378)  [5 term]
+          N180  prim       'Logical Shift' @(483,409)  [3 term]
+          N181  prim       'Logical Shift' @(501,385)  [3 term]
+          N182  prim       'Logical Shift' @(500,341)  [3 term]
+          N183  (Un)BundleByName?  @(224,369)  [5 term]
+          N184  Sequence    @(368,130)  [7 term]
+            frame 0:
+              N192  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N184.tunnel@(368,219).in -- N192.3
+                wire: N184.tunnel@(368,183).in -- N192.2
+                wire: N184.tunnel@(395,130).in -- N192.0
+            frame 1:
+              N193  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N184.tunnel@(368,239).in -- N193.2
+                wire: N184.tunnel@(418,261).in -- N193.3
+                wire: N184.tunnel@(395,130).in -- N193.0
+            frame 2:
+              N194  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N184.tunnel@(368,167).in -- N194.2
+                wire: N184.tunnel@(459,261).in -- N194.3
+                wire: N184.tunnel@(395,130).in -- N194.0
+            frame 3:
+              N195  subVI      'Write to Digital Line.vi' @(497,169)  [9 term]
+              N196  const      numeric 'line'  [1 term]
+              N197  const      path? 'line state'  [1 term]
+                wire: N184.tunnel@(368,183).in -- N195.2
+                wire: N184.tunnel@(395,130).in -- N195.0
+                wire: N197.0 -- N195.4
+                wire: N196.0 -- N195.3
+            frame 4:
+              N198  subVI      'Write to Digital Line.vi' @(497,169)  [9 term]
+              N199  const      numeric 'line'  [1 term]
+              N200  const      path? 'line state'  [1 term]
+                wire: N184.tunnel@(368,183).in -- N198.2
+                wire: N184.tunnel@(395,130).in -- N198.0
+                wire: N200.0 -- N198.4
+                wire: N199.0 -- N198.3
+          N185  prim       'Number To Decimal String' @(272,171)  [3 term]
+          N186  prim       'Or' @(277,207)  [3 term]
+          N187  const      numeric  [1 term]
+          N188  const      numeric  [1 term]
+          N189  const      numeric  [1 term]
+          N190  const      numeric  [1 term]
+          N191  const      numeric 'pattern'  [1 term]
+            wire: N174.0 -- N184.tunnel@(418,261).out
+            wire: N191.0 -- N174.1
+            wire: N48.tunnel@(154,292).in -- N174.2
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,238).in -- N186.1
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N48.tunnel@(154,409).in -- N175.2
+            wire: N175.0 -- N184.tunnel@(368,239).out
+            wire: N176.0 -- N184.tunnel@(368,167).out
+            wire: N48.tunnel@(154,274).in -- N176.2
+            wire: N48.tunnel@(154,175).in -- N185.2
+            wire: N177.0 -- N183.0
+            wire: N178.0 -- N179.4
+            wire: N187.0 -- N178.2
+            wire: N183.4 -- N178.1
+            wire: N179.0 -- N184.tunnel@(459,261).out
+            wire: N181.0 -- N179.2
+            wire: N180.0 -- N179.3
+            wire: N182.0 -- N179.1
+            wire: N188.0 -- N180.2
+            wire: N189.0 -- N181.2
+            wire: N183.3 -- N180.1
+            wire: N183.2 -- N181.1
+            wire: N190.0 -- N182.2
+            wire: N183.1 -- N182.1
+            wire: N48.tunnel@(154,214).in -- N186.2
+            wire: N48.tunnel@(154,122).in -- N184.tunnel@(395,130).out
+            wire: N186.0 -- N184.tunnel@(368,219).out
+            wire: N185.0 -- N184.tunnel@(368,183).out
+        frame 7:
+          # "MSByte first"
+          N201  Sequence    @(368,130)  [7 term]
+            frame 0:
+              N208  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N201.tunnel@(368,219).in -- N208.3
+                wire: N201.tunnel@(368,207).in -- N208.2
+                wire: N201.tunnel@(395,130).in -- N208.0
+            frame 1:
+              N209  ForLoop     @(394,156)  [7 term]
+                frame 0:
+                  N210  prim       'Add' @(446,333)  [3 term]
+                  N211  Sequence    @(420,185)  [6 term]
+                    frame 0:
+                      N212  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N211.tunnel@(420,254).in -- N212.2
+                        wire: N211.tunnel@(470,316).in -- N212.3
+                        wire: N211.tunnel@(447,185).in -- N212.0
+                    frame 1:
+                      N213  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N211.tunnel@(420,197).in -- N213.2
+                        wire: N211.tunnel@(511,316).in -- N213.3
+                        wire: N211.tunnel@(447,185).in -- N213.0
+                    frame 2:
+                      N214  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N215  const      numeric 'line'  [1 term]
+                      N216  const      path? 'line state'  [1 term]
+                        wire: N211.tunnel@(420,238).in -- N214.2
+                        wire: N211.tunnel@(447,185).in -- N214.0
+                        wire: N216.0 -- N214.4
+                        wire: N215.0 -- N214.3
+                    frame 3:
+                      N217  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N218  const      numeric 'line'  [1 term]
+                      N219  const      path? 'line state'  [1 term]
+                        wire: N211.tunnel@(420,238).in -- N217.2
+                        wire: N211.tunnel@(447,185).in -- N217.0
+                        wire: N219.0 -- N217.4
+                        wire: N218.0 -- N217.3
+                    wire: N209.tunnel@(511,364).in -- N211.tunnel@(511,316).out
+                    wire: N209.tunnel@(394,192).in -- N211.tunnel@(420,197).out
+                    wire: N209.tunnel@(394,207).in -- N211.tunnel@(420,238).out
+                    wire: N209.tunnel@(394,254).in -- N211.tunnel@(420,254).out
+                    wire: N209.tunnel@(448,156).in -- N211.tunnel@(447,185).out
+                    wire: N210.0 -- N211.tunnel@(470,316).out
+                    wire: N209.i -- N210.1
+                    wire: N209.tunnel@(418,364).in -- N210.2
+                wire: N201.tunnel@(511,394).in -- N209.tunnel@(511,364).out
+                wire: N201.tunnel@(368,167).in -- N209.tunnel@(394,192).out
+                wire: N201.tunnel@(368,207).in -- N209.tunnel@(394,207).out
+                wire: N201.tunnel@(368,254).in -- N209.tunnel@(394,254).out
+                wire: N201.tunnel@(395,130).in -- N209.tunnel@(448,156).out
+                wire: N201.tunnel@(418,394).in -- N209.tunnel@(418,364).out
+          N202  prim       'Or' @(295,400)  [3 term]
+          N203  prim       'Number To Decimal String' @(274,261)  [3 term]
+          N204  prim       'Number To Decimal String' @(272,130)  [3 term]
+          N205  prim       'Number To Decimal String' @(272,171)  [3 term]
+          N206  prim       'Or' @(277,207)  [3 term]
+          N207  const      numeric 'Base Address'  [1 term]
+            wire: N48.tunnel@(154,459).in -- N201.tunnel@(511,394).out
+            wire: N202.0 -- N201.tunnel@(418,394).out
+            wire: N207.0 -- N202.1
+            wire: N48.tunnel@(154,292).in -- N202.2
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N48.tunnel@(154,238).in -- N206.1
+            wire: N48.tunnel@(154,409).in -- N203.2
+            wire: N203.0 -- N201.tunnel@(368,254).out
+            wire: N204.0 -- N201.tunnel@(368,167).out
+            wire: N48.tunnel@(154,274).in -- N204.2
+            wire: N48.tunnel@(154,175).in -- N205.2
+            wire: N48.tunnel@(154,214).in -- N206.2
+            wire: N48.tunnel@(154,122).in -- N201.tunnel@(395,130).out
+            wire: N206.0 -- N201.tunnel@(368,219).out
+            wire: N205.0 -- N201.tunnel@(368,207).out
+        frame 8:
+          N220  prim       'Or' @(297,401)  [3 term]
+          N221  prim       'Number To Decimal String' @(274,261)  [3 term]
+          N222  prim       'Number To Decimal String' @(272,130)  [3 term]
+          N223  Sequence    @(368,130)  [7 term]
+            frame 0:
+              N227  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N223.tunnel@(368,219).in -- N227.3
+                wire: N223.tunnel@(368,207).in -- N227.2
+                wire: N223.tunnel@(395,130).in -- N227.0
+            frame 1:
+              N228  ForLoop     @(394,156)  [7 term]
+                frame 0:
+                  N229  prim       'Add' @(446,333)  [3 term]
+                  N230  Sequence    @(420,185)  [6 term]
+                    frame 0:
+                      N231  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N230.tunnel@(420,254).in -- N231.2
+                        wire: N230.tunnel@(470,316).in -- N231.3
+                        wire: N230.tunnel@(447,185).in -- N231.0
+                    frame 1:
+                      N232  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N230.tunnel@(420,197).in -- N232.2
+                        wire: N230.tunnel@(511,316).in -- N232.3
+                        wire: N230.tunnel@(447,185).in -- N232.0
+                    frame 2:
+                      N233  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N234  const      numeric 'line'  [1 term]
+                      N235  const      path? 'line state'  [1 term]
+                        wire: N230.tunnel@(420,238).in -- N233.2
+                        wire: N230.tunnel@(447,185).in -- N233.0
+                        wire: N235.0 -- N233.4
+                        wire: N234.0 -- N233.3
+                    frame 3:
+                      N236  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N237  const      numeric 'line'  [1 term]
+                      N238  const      path? 'line state'  [1 term]
+                        wire: N230.tunnel@(420,238).in -- N236.2
+                        wire: N230.tunnel@(447,185).in -- N236.0
+                        wire: N238.0 -- N236.4
+                        wire: N237.0 -- N236.3
+                    wire: N228.tunnel@(511,364).in -- N230.tunnel@(511,316).out
+                    wire: N228.tunnel@(394,192).in -- N230.tunnel@(420,197).out
+                    wire: N228.tunnel@(394,207).in -- N230.tunnel@(420,238).out
+                    wire: N228.tunnel@(394,254).in -- N230.tunnel@(420,254).out
+                    wire: N228.tunnel@(448,156).in -- N230.tunnel@(447,185).out
+                    wire: N229.0 -- N230.tunnel@(470,316).out
+                    wire: N228.i -- N229.1
+                    wire: N228.tunnel@(418,364).in -- N229.2
+                wire: N223.tunnel@(511,394).in -- N228.tunnel@(511,364).out
+                wire: N223.tunnel@(368,167).in -- N228.tunnel@(394,192).out
+                wire: N223.tunnel@(368,207).in -- N228.tunnel@(394,207).out
+                wire: N223.tunnel@(368,254).in -- N228.tunnel@(394,254).out
+                wire: N223.tunnel@(395,130).in -- N228.tunnel@(448,156).out
+                wire: N223.tunnel@(418,394).in -- N228.tunnel@(418,364).out
+          N224  prim       'Number To Decimal String' @(272,171)  [3 term]
+          N225  prim       'Or' @(277,207)  [3 term]
+          N226  const      numeric 'Base Address'  [1 term]
+            wire: N220.0 -- N223.tunnel@(418,394).out
+            wire: N226.0 -- N220.1
+            wire: N48.tunnel@(154,292).in -- N220.2
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N48.tunnel@(154,238).in -- N225.1
+            wire: N48.tunnel@(154,459).in -- N223.tunnel@(511,394).out
+            wire: N48.tunnel@(154,409).in -- N221.2
+            wire: N221.0 -- N223.tunnel@(368,254).out
+            wire: N222.0 -- N223.tunnel@(368,167).out
+            wire: N48.tunnel@(154,274).in -- N222.2
+            wire: N48.tunnel@(154,175).in -- N224.2
+            wire: N48.tunnel@(154,214).in -- N225.2
+            wire: N48.tunnel@(154,122).in -- N223.tunnel@(395,130).out
+            wire: N225.0 -- N223.tunnel@(368,219).out
+            wire: N224.0 -- N223.tunnel@(368,207).out
+        frame 9:
+          # "Frequency delta takes 48-bit two's complement data."
+          N239  prim       'Or' @(308,400)  [3 term]
+          N240  prim       'Number To Decimal String' @(274,261)  [3 term]
+          N241  prim       'Number To Decimal String' @(272,130)  [3 term]
+          N242  Sequence    @(368,130)  [7 term]
+            frame 0:
+              N246  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N242.tunnel@(368,219).in -- N246.3
+                wire: N242.tunnel@(368,207).in -- N246.2
+                wire: N242.tunnel@(395,130).in -- N246.0
+            frame 1:
+              N247  ForLoop     @(394,156)  [7 term]
+                frame 0:
+                  N248  prim       'Add' @(446,333)  [3 term]
+                  N249  Sequence    @(420,185)  [6 term]
+                    frame 0:
+                      N250  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N249.tunnel@(420,254).in -- N250.2
+                        wire: N249.tunnel@(470,316).in -- N250.3
+                        wire: N249.tunnel@(447,185).in -- N250.0
+                    frame 1:
+                      N251  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N249.tunnel@(420,197).in -- N251.2
+                        wire: N249.tunnel@(511,316).in -- N251.3
+                        wire: N249.tunnel@(447,185).in -- N251.0
+                    frame 2:
+                      N252  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N253  const      numeric 'line'  [1 term]
+                      N254  const      path? 'line state'  [1 term]
+                        wire: N249.tunnel@(420,238).in -- N252.2
+                        wire: N249.tunnel@(447,185).in -- N252.0
+                        wire: N254.0 -- N252.4
+                        wire: N253.0 -- N252.3
+                    frame 3:
+                      N255  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N256  const      numeric 'line'  [1 term]
+                      N257  const      path? 'line state'  [1 term]
+                        wire: N249.tunnel@(420,238).in -- N255.2
+                        wire: N249.tunnel@(447,185).in -- N255.0
+                        wire: N257.0 -- N255.4
+                        wire: N256.0 -- N255.3
+                    wire: N247.tunnel@(511,364).in -- N249.tunnel@(511,316).out
+                    wire: N247.tunnel@(394,192).in -- N249.tunnel@(420,197).out
+                    wire: N247.tunnel@(394,207).in -- N249.tunnel@(420,238).out
+                    wire: N247.tunnel@(394,254).in -- N249.tunnel@(420,254).out
+                    wire: N247.tunnel@(448,156).in -- N249.tunnel@(447,185).out
+                    wire: N248.0 -- N249.tunnel@(470,316).out
+                    wire: N247.i -- N248.1
+                    wire: N247.tunnel@(418,364).in -- N248.2
+                wire: N242.tunnel@(511,394).in -- N247.tunnel@(511,364).out
+                wire: N242.tunnel@(368,167).in -- N247.tunnel@(394,192).out
+                wire: N242.tunnel@(368,207).in -- N247.tunnel@(394,207).out
+                wire: N242.tunnel@(368,254).in -- N247.tunnel@(394,254).out
+                wire: N242.tunnel@(395,130).in -- N247.tunnel@(448,156).out
+                wire: N242.tunnel@(418,394).in -- N247.tunnel@(418,364).out
+          N243  prim       'Number To Decimal String' @(272,171)  [3 term]
+          N244  prim       'Or' @(277,207)  [3 term]
+          N245  const      numeric 'Base Address'  [1 term]
+            wire: N48.tunnel@(154,292).in -- N239.2
+            wire: N239.0 -- N242.tunnel@(418,394).out
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N48.tunnel@(154,238).in -- N244.1
+            wire: N48.tunnel@(154,459).in -- N242.tunnel@(511,394).out
+            wire: N48.tunnel@(154,409).in -- N240.2
+            wire: N240.0 -- N242.tunnel@(368,254).out
+            wire: N241.0 -- N242.tunnel@(368,167).out
+            wire: N48.tunnel@(154,274).in -- N241.2
+            wire: N48.tunnel@(154,175).in -- N243.2
+            wire: N245.0 -- N239.1
+            wire: N48.tunnel@(154,214).in -- N244.2
+            wire: N48.tunnel@(154,122).in -- N242.tunnel@(395,130).out
+            wire: N244.0 -- N242.tunnel@(368,219).out
+            wire: N243.0 -- N242.tunnel@(368,207).out
+        frame 10:
+          N258  prim       'Or' @(307,400)  [3 term]
+          N259  prim       'Number To Decimal String' @(274,261)  [3 term]
+          N260  prim       'Number To Decimal String' @(272,130)  [3 term]
+          N261  Sequence    @(368,130)  [7 term]
+            frame 0:
+              N265  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N261.tunnel@(368,219).in -- N265.3
+                wire: N261.tunnel@(368,207).in -- N265.2
+                wire: N261.tunnel@(395,130).in -- N265.0
+            frame 1:
+              N266  ForLoop     @(394,156)  [7 term]
+                frame 0:
+                  N267  prim       'Add' @(446,333)  [3 term]
+                  N268  Sequence    @(420,185)  [6 term]
+                    frame 0:
+                      N269  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N268.tunnel@(420,254).in -- N269.2
+                        wire: N268.tunnel@(470,316).in -- N269.3
+                        wire: N268.tunnel@(447,185).in -- N269.0
+                    frame 1:
+                      N270  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N268.tunnel@(420,197).in -- N270.2
+                        wire: N268.tunnel@(511,316).in -- N270.3
+                        wire: N268.tunnel@(447,185).in -- N270.0
+                    frame 2:
+                      N271  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N272  const      numeric 'line'  [1 term]
+                      N273  const      path? 'line state'  [1 term]
+                        wire: N268.tunnel@(420,238).in -- N271.2
+                        wire: N268.tunnel@(447,185).in -- N271.0
+                        wire: N273.0 -- N271.4
+                        wire: N272.0 -- N271.3
+                    frame 3:
+                      N274  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N275  const      numeric 'line'  [1 term]
+                      N276  const      path? 'line state'  [1 term]
+                        wire: N268.tunnel@(420,238).in -- N274.2
+                        wire: N268.tunnel@(447,185).in -- N274.0
+                        wire: N276.0 -- N274.4
+                        wire: N275.0 -- N274.3
+                    wire: N266.tunnel@(511,364).in -- N268.tunnel@(511,316).out
+                    wire: N266.tunnel@(394,192).in -- N268.tunnel@(420,197).out
+                    wire: N266.tunnel@(394,207).in -- N268.tunnel@(420,238).out
+                    wire: N266.tunnel@(394,254).in -- N268.tunnel@(420,254).out
+                    wire: N266.tunnel@(448,156).in -- N268.tunnel@(447,185).out
+                    wire: N267.0 -- N268.tunnel@(470,316).out
+                    wire: N266.i -- N267.1
+                    wire: N266.tunnel@(418,364).in -- N267.2
+                wire: N261.tunnel@(511,394).in -- N266.tunnel@(511,364).out
+                wire: N261.tunnel@(368,167).in -- N266.tunnel@(394,192).out
+                wire: N261.tunnel@(368,207).in -- N266.tunnel@(394,207).out
+                wire: N261.tunnel@(368,254).in -- N266.tunnel@(394,254).out
+                wire: N261.tunnel@(395,130).in -- N266.tunnel@(448,156).out
+                wire: N261.tunnel@(418,394).in -- N266.tunnel@(418,364).out
+          N262  prim       'Number To Decimal String' @(272,171)  [3 term]
+          N263  prim       'Or' @(277,207)  [3 term]
+          N264  const      numeric 'Base Address'  [1 term]
+            wire: N48.tunnel@(154,292).in -- N258.2
+            wire: N258.0 -- N261.tunnel@(418,394).out
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N48.tunnel@(154,527).in -- N261.tunnel@(511,394).out
+            wire: N48.tunnel@(154,238).in -- N263.1
+            wire: N48.tunnel@(154,409).in -- N259.2
+            wire: N259.0 -- N261.tunnel@(368,254).out
+            wire: N260.0 -- N261.tunnel@(368,167).out
+            wire: N48.tunnel@(154,274).in -- N260.2
+            wire: N48.tunnel@(154,175).in -- N262.2
+            wire: N264.0 -- N258.1
+            wire: N48.tunnel@(154,214).in -- N263.2
+            wire: N48.tunnel@(154,122).in -- N261.tunnel@(395,130).out
+            wire: N263.0 -- N261.tunnel@(368,219).out
+            wire: N262.0 -- N261.tunnel@(368,207).out
+        frame 11:
+          N277  prim       'Or' @(299,400)  [3 term]
+          N278  prim       'Number To Decimal String' @(274,261)  [3 term]
+          N279  prim       'Number To Decimal String' @(272,130)  [3 term]
+          N280  Sequence    @(368,130)  [7 term]
+            frame 0:
+              N284  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N280.tunnel@(368,219).in -- N284.3
+                wire: N280.tunnel@(368,207).in -- N284.2
+                wire: N280.tunnel@(395,130).in -- N284.0
+            frame 1:
+              N285  ForLoop     @(394,156)  [7 term]
+                frame 0:
+                  N286  prim       'Add' @(446,333)  [3 term]
+                  N287  Sequence    @(420,185)  [6 term]
+                    frame 0:
+                      N288  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N287.tunnel@(420,254).in -- N288.2
+                        wire: N287.tunnel@(470,316).in -- N288.3
+                        wire: N287.tunnel@(447,185).in -- N288.0
+                    frame 1:
+                      N289  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N287.tunnel@(420,197).in -- N289.2
+                        wire: N287.tunnel@(511,316).in -- N289.3
+                        wire: N287.tunnel@(447,185).in -- N289.0
+                    frame 2:
+                      N290  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N291  const      numeric 'line'  [1 term]
+                      N292  const      path? 'line state'  [1 term]
+                        wire: N287.tunnel@(420,238).in -- N290.2
+                        wire: N287.tunnel@(447,185).in -- N290.0
+                        wire: N292.0 -- N290.4
+                        wire: N291.0 -- N290.3
+                    frame 3:
+                      N293  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N294  const      numeric 'line'  [1 term]
+                      N295  const      path? 'line state'  [1 term]
+                        wire: N287.tunnel@(420,238).in -- N293.2
+                        wire: N287.tunnel@(447,185).in -- N293.0
+                        wire: N295.0 -- N293.4
+                        wire: N294.0 -- N293.3
+                    wire: N285.tunnel@(511,364).in -- N287.tunnel@(511,316).out
+                    wire: N285.tunnel@(394,192).in -- N287.tunnel@(420,197).out
+                    wire: N285.tunnel@(394,207).in -- N287.tunnel@(420,238).out
+                    wire: N285.tunnel@(394,254).in -- N287.tunnel@(420,254).out
+                    wire: N285.tunnel@(448,156).in -- N287.tunnel@(447,185).out
+                    wire: N286.0 -- N287.tunnel@(470,316).out
+                    wire: N285.i -- N286.1
+                    wire: N285.tunnel@(418,364).in -- N286.2
+                wire: N280.tunnel@(511,394).in -- N285.tunnel@(511,364).out
+                wire: N280.tunnel@(368,167).in -- N285.tunnel@(394,192).out
+                wire: N280.tunnel@(368,207).in -- N285.tunnel@(394,207).out
+                wire: N280.tunnel@(368,254).in -- N285.tunnel@(394,254).out
+                wire: N280.tunnel@(395,130).in -- N285.tunnel@(448,156).out
+                wire: N280.tunnel@(418,394).in -- N285.tunnel@(418,364).out
+          N281  prim       'Number To Decimal String' @(272,171)  [3 term]
+          N282  prim       'Or' @(277,207)  [3 term]
+          N283  const      numeric 'Base Address'  [1 term]
+            wire: N48.tunnel@(154,292).in -- N277.2
+            wire: N277.0 -- N280.tunnel@(418,394).out
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N48.tunnel@(154,527).in -- N280.tunnel@(511,394).out
+            wire: N48.tunnel@(154,238).in -- N282.1
+            wire: N48.tunnel@(154,409).in -- N278.2
+            wire: N278.0 -- N280.tunnel@(368,254).out
+            wire: N279.0 -- N280.tunnel@(368,167).out
+            wire: N48.tunnel@(154,274).in -- N279.2
+            wire: N48.tunnel@(154,175).in -- N281.2
+            wire: N283.0 -- N277.1
+            wire: N48.tunnel@(154,214).in -- N282.2
+            wire: N48.tunnel@(154,122).in -- N280.tunnel@(395,130).out
+            wire: N282.0 -- N280.tunnel@(368,219).out
+            wire: N281.0 -- N280.tunnel@(368,207).out
+        frame 12:
+          N296  prim       'Or' @(309,401)  [3 term]
+          N297  prim       'Number To Decimal String' @(274,261)  [3 term]
+          N298  prim       'Number To Decimal String' @(272,130)  [3 term]
+          N299  Sequence    @(368,130)  [7 term]
+            frame 0:
+              N303  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N299.tunnel@(368,219).in -- N303.3
+                wire: N299.tunnel@(368,207).in -- N303.2
+                wire: N299.tunnel@(395,130).in -- N303.0
+            frame 1:
+              N304  ForLoop     @(394,156)  [7 term]
+                frame 0:
+                  N305  prim       'Add' @(446,333)  [3 term]
+                  N306  Sequence    @(420,185)  [6 term]
+                    frame 0:
+                      N307  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N306.tunnel@(420,254).in -- N307.2
+                        wire: N306.tunnel@(470,316).in -- N307.3
+                        wire: N306.tunnel@(447,185).in -- N307.0
+                    frame 1:
+                      N308  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N306.tunnel@(420,197).in -- N308.2
+                        wire: N306.tunnel@(511,316).in -- N308.3
+                        wire: N306.tunnel@(447,185).in -- N308.0
+                    frame 2:
+                      N309  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N310  const      numeric 'line'  [1 term]
+                      N311  const      path? 'line state'  [1 term]
+                        wire: N306.tunnel@(420,238).in -- N309.2
+                        wire: N306.tunnel@(447,185).in -- N309.0
+                        wire: N311.0 -- N309.4
+                        wire: N310.0 -- N309.3
+                    frame 3:
+                      N312  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N313  const      numeric 'line'  [1 term]
+                      N314  const      path? 'line state'  [1 term]
+                        wire: N306.tunnel@(420,238).in -- N312.2
+                        wire: N306.tunnel@(447,185).in -- N312.0
+                        wire: N314.0 -- N312.4
+                        wire: N313.0 -- N312.3
+                    wire: N304.tunnel@(511,364).in -- N306.tunnel@(511,316).out
+                    wire: N304.tunnel@(394,192).in -- N306.tunnel@(420,197).out
+                    wire: N304.tunnel@(394,207).in -- N306.tunnel@(420,238).out
+                    wire: N304.tunnel@(394,254).in -- N306.tunnel@(420,254).out
+                    wire: N304.tunnel@(448,156).in -- N306.tunnel@(447,185).out
+                    wire: N305.0 -- N306.tunnel@(470,316).out
+                    wire: N304.i -- N305.1
+                    wire: N304.tunnel@(418,364).in -- N305.2
+                wire: N299.tunnel@(511,394).in -- N304.tunnel@(511,364).out
+                wire: N299.tunnel@(368,167).in -- N304.tunnel@(394,192).out
+                wire: N299.tunnel@(368,207).in -- N304.tunnel@(394,207).out
+                wire: N299.tunnel@(368,254).in -- N304.tunnel@(394,254).out
+                wire: N299.tunnel@(395,130).in -- N304.tunnel@(448,156).out
+                wire: N299.tunnel@(418,394).in -- N304.tunnel@(418,364).out
+          N300  prim       'Number To Decimal String' @(272,171)  [3 term]
+          N301  prim       'Or' @(277,207)  [3 term]
+          N302  const      numeric 'Base Address'  [1 term]
+            wire: N48.tunnel@(154,292).in -- N296.2
+            wire: N296.0 -- N299.tunnel@(418,394).out
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N48.tunnel@(154,568).in -- N299.tunnel@(511,394).out
+            wire: N48.tunnel@(154,238).in -- N301.1
+            wire: N48.tunnel@(154,409).in -- N297.2
+            wire: N297.0 -- N299.tunnel@(368,254).out
+            wire: N298.0 -- N299.tunnel@(368,167).out
+            wire: N48.tunnel@(154,274).in -- N298.2
+            wire: N48.tunnel@(154,175).in -- N300.2
+            wire: N302.0 -- N296.1
+            wire: N48.tunnel@(154,214).in -- N301.2
+            wire: N48.tunnel@(154,122).in -- N299.tunnel@(395,130).out
+            wire: N301.0 -- N299.tunnel@(368,219).out
+            wire: N300.0 -- N299.tunnel@(368,207).out
+        frame 13:
+          N315  prim       'Less?' @(411,537)  [3 term]
+          N316  prim       'Select' @(469,515)  [4 term]
+          N317  IndexArray?  @(365,532)  [3 term]
+          N318  prim       'Or' @(300,400)  [3 term]
+          N319  node48      @(300,507)  [4 term]
+          N320  prim       'Number To Decimal String' @(274,261)  [3 term]
+          N321  prim       'Number To Decimal String' @(272,130)  [3 term]
+          N322  Sequence    @(368,130)  [7 term]
+            frame 0:
+              N331  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N322.tunnel@(368,219).in -- N331.3
+                wire: N322.tunnel@(368,207).in -- N331.2
+                wire: N322.tunnel@(395,130).in -- N331.0
+            frame 1:
+              N332  ForLoop     @(394,156)  [7 term]
+                frame 0:
+                  N333  prim       'Add' @(446,333)  [3 term]
+                  N334  Sequence    @(420,185)  [6 term]
+                    frame 0:
+                      N335  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N334.tunnel@(420,254).in -- N335.2
+                        wire: N334.tunnel@(470,316).in -- N335.3
+                        wire: N334.tunnel@(447,185).in -- N335.0
+                    frame 1:
+                      N336  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N334.tunnel@(420,197).in -- N336.2
+                        wire: N334.tunnel@(511,316).in -- N336.3
+                        wire: N334.tunnel@(447,185).in -- N336.0
+                    frame 2:
+                      N337  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N338  const      numeric 'line'  [1 term]
+                      N339  const      path? 'line state'  [1 term]
+                        wire: N334.tunnel@(420,238).in -- N337.2
+                        wire: N334.tunnel@(447,185).in -- N337.0
+                        wire: N339.0 -- N337.4
+                        wire: N338.0 -- N337.3
+                    frame 3:
+                      N340  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N341  const      numeric 'line'  [1 term]
+                      N342  const      path? 'line state'  [1 term]
+                        wire: N334.tunnel@(420,238).in -- N340.2
+                        wire: N334.tunnel@(447,185).in -- N340.0
+                        wire: N342.0 -- N340.4
+                        wire: N341.0 -- N340.3
+                    wire: N332.tunnel@(511,364).in -- N334.tunnel@(511,316).out
+                    wire: N332.tunnel@(394,192).in -- N334.tunnel@(420,197).out
+                    wire: N332.tunnel@(394,207).in -- N334.tunnel@(420,238).out
+                    wire: N332.tunnel@(394,254).in -- N334.tunnel@(420,254).out
+                    wire: N332.tunnel@(448,156).in -- N334.tunnel@(447,185).out
+                    wire: N333.0 -- N334.tunnel@(470,316).out
+                    wire: N332.i -- N333.1
+                    wire: N332.tunnel@(418,364).in -- N333.2
+                wire: N322.tunnel@(511,394).in -- N332.tunnel@(511,364).out
+                wire: N322.tunnel@(368,167).in -- N332.tunnel@(394,192).out
+                wire: N322.tunnel@(368,207).in -- N332.tunnel@(394,207).out
+                wire: N322.tunnel@(368,254).in -- N332.tunnel@(394,254).out
+                wire: N322.tunnel@(395,130).in -- N332.tunnel@(448,156).out
+                wire: N322.tunnel@(418,394).in -- N332.tunnel@(418,364).out
+          N323  prim       'Number To Decimal String' @(272,171)  [3 term]
+          N324  prim       'Or' @(277,207)  [3 term]
+          N325  const      numeric 'index'  [1 term]
+          N326  const      numeric 'Base Address'  [1 term]
+          N327  const      numeric 'length'  [1 term]
+          N328  const      numeric 'index'  [1 term]
+          N329  const      numeric 'y'  [1 term]
+          N330  const      array 'subarray'  [1 term]
+            wire: N316.0 -- N322.tunnel@(511,394).out
+            wire: N330.0 -- N316.1
+            wire: N319.1 -- N317.0 -- N316.3
+            wire: N315.0 -- N316.2
+            wire: N329.0 -- N315.1
+            wire: N317.1 -- N315.2
+            wire: N328.0 -- N317.2
+            wire: N48.tunnel@(154,292).in -- N318.2
+            wire: N318.0 -- N322.tunnel@(418,394).out
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N48.tunnel@(154,568).in -- N319.0
+            wire: N327.0 -- N319.3
+            wire: N325.0 -- N319.2
+            wire: N48.tunnel@(154,238).in -- N324.1
+            wire: N48.tunnel@(154,409).in -- N320.2
+            wire: N320.0 -- N322.tunnel@(368,254).out
+            wire: N321.0 -- N322.tunnel@(368,167).out
+            wire: N48.tunnel@(154,274).in -- N321.2
+            wire: N48.tunnel@(154,175).in -- N323.2
+            wire: N326.0 -- N318.1
+            wire: N48.tunnel@(154,214).in -- N324.2
+            wire: N48.tunnel@(154,122).in -- N322.tunnel@(395,130).out
+            wire: N324.0 -- N322.tunnel@(368,219).out
+            wire: N323.0 -- N322.tunnel@(368,207).out
+        frame 14:
+          N343  prim       'Or' @(311,401)  [3 term]
+          N344  node3a      @(467,481)  [3 term]
+          N345  prim       'Split Number' @(403,474)  [3 term]
+          N346  FPterm     'OSK multiplier'  [1 term]
+          N347  prim       'Number To Decimal String' @(274,261)  [3 term]
+          N348  prim       'Number To Decimal String' @(272,130)  [3 term]
+          N349  Sequence    @(368,130)  [7 term]
+            frame 0:
+              N353  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N349.tunnel@(368,219).in -- N353.3
+                wire: N349.tunnel@(368,207).in -- N353.2
+                wire: N349.tunnel@(395,130).in -- N353.0
+            frame 1:
+              N354  ForLoop     @(394,156)  [7 term]
+                frame 0:
+                  N355  prim       'Add' @(446,333)  [3 term]
+                  N356  Sequence    @(420,185)  [6 term]
+                    frame 0:
+                      N357  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N356.tunnel@(420,254).in -- N357.2
+                        wire: N356.tunnel@(470,316).in -- N357.3
+                        wire: N356.tunnel@(447,185).in -- N357.0
+                    frame 1:
+                      N358  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N356.tunnel@(420,197).in -- N358.2
+                        wire: N356.tunnel@(511,316).in -- N358.3
+                        wire: N356.tunnel@(447,185).in -- N358.0
+                    frame 2:
+                      N359  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N360  const      numeric 'line'  [1 term]
+                      N361  const      path? 'line state'  [1 term]
+                        wire: N356.tunnel@(420,238).in -- N359.2
+                        wire: N356.tunnel@(447,185).in -- N359.0
+                        wire: N361.0 -- N359.4
+                        wire: N360.0 -- N359.3
+                    frame 3:
+                      N362  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N363  const      numeric 'line'  [1 term]
+                      N364  const      path? 'line state'  [1 term]
+                        wire: N356.tunnel@(420,238).in -- N362.2
+                        wire: N356.tunnel@(447,185).in -- N362.0
+                        wire: N364.0 -- N362.4
+                        wire: N363.0 -- N362.3
+                    wire: N354.tunnel@(511,364).in -- N356.tunnel@(511,316).out
+                    wire: N354.tunnel@(394,192).in -- N356.tunnel@(420,197).out
+                    wire: N354.tunnel@(394,207).in -- N356.tunnel@(420,238).out
+                    wire: N354.tunnel@(394,254).in -- N356.tunnel@(420,254).out
+                    wire: N354.tunnel@(448,156).in -- N356.tunnel@(447,185).out
+                    wire: N355.0 -- N356.tunnel@(470,316).out
+                    wire: N354.i -- N355.1
+                    wire: N354.tunnel@(418,364).in -- N355.2
+                wire: N349.tunnel@(511,394).in -- N354.tunnel@(511,364).out
+                wire: N349.tunnel@(368,167).in -- N354.tunnel@(394,192).out
+                wire: N349.tunnel@(368,207).in -- N354.tunnel@(394,207).out
+                wire: N349.tunnel@(368,254).in -- N354.tunnel@(394,254).out
+                wire: N349.tunnel@(395,130).in -- N354.tunnel@(448,156).out
+                wire: N349.tunnel@(418,394).in -- N354.tunnel@(418,364).out
+          N350  prim       'Number To Decimal String' @(272,171)  [3 term]
+          N351  prim       'Or' @(277,207)  [3 term]
+          N352  const      numeric 'Base Address'  [1 term]
+            wire: N345.2 -- N344.2
+            wire: N345.1 -- N344.1
+            wire: N48.tunnel@(154,292).in -- N343.2
+            wire: N343.0 -- N349.tunnel@(418,394).out
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N344.0 -- N349.tunnel@(511,394).out
+            wire: N346.0 -- N345.0
+            wire: N48.tunnel@(154,238).in -- N351.1
+            wire: N48.tunnel@(154,409).in -- N347.2
+            wire: N347.0 -- N349.tunnel@(368,254).out
+            wire: N348.0 -- N349.tunnel@(368,167).out
+            wire: N48.tunnel@(154,274).in -- N348.2
+            wire: N48.tunnel@(154,175).in -- N350.2
+            wire: N352.0 -- N343.1
+            wire: N48.tunnel@(154,214).in -- N351.2
+            wire: N48.tunnel@(154,122).in -- N349.tunnel@(395,130).out
+            wire: N351.0 -- N349.tunnel@(368,219).out
+            wire: N350.0 -- N349.tunnel@(368,207).out
+        frame 15:
+          # "AD9852 expects signed 12-bit in"
+          N365  prim       'Or' @(304,402)  [3 term]
+          N366  Sequence    @(368,130)  [7 term]
+            frame 0:
+              N375  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N366.tunnel@(368,219).in -- N375.3
+                wire: N366.tunnel@(368,207).in -- N375.2
+                wire: N366.tunnel@(395,130).in -- N375.0
+            frame 1:
+              N376  ForLoop     @(394,156)  [7 term]
+                frame 0:
+                  N377  prim       'Add' @(446,333)  [3 term]
+                  N378  Sequence    @(420,185)  [6 term]
+                    frame 0:
+                      N379  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N378.tunnel@(420,254).in -- N379.2
+                        wire: N378.tunnel@(470,316).in -- N379.3
+                        wire: N378.tunnel@(447,185).in -- N379.0
+                    frame 1:
+                      N380  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                        wire: N378.tunnel@(420,197).in -- N380.2
+                        wire: N378.tunnel@(511,316).in -- N380.3
+                        wire: N378.tunnel@(447,185).in -- N380.0
+                    frame 2:
+                      N381  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N382  const      numeric 'line'  [1 term]
+                      N383  const      path? 'line state'  [1 term]
+                        wire: N378.tunnel@(420,238).in -- N381.2
+                        wire: N378.tunnel@(447,185).in -- N381.0
+                        wire: N383.0 -- N381.4
+                        wire: N382.0 -- N381.3
+                    frame 3:
+                      N384  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                      N385  const      numeric 'line'  [1 term]
+                      N386  const      path? 'line state'  [1 term]
+                        wire: N378.tunnel@(420,238).in -- N384.2
+                        wire: N378.tunnel@(447,185).in -- N384.0
+                        wire: N386.0 -- N384.4
+                        wire: N385.0 -- N384.3
+                    wire: N376.tunnel@(511,364).in -- N378.tunnel@(511,316).out
+                    wire: N376.tunnel@(394,192).in -- N378.tunnel@(420,197).out
+                    wire: N376.tunnel@(394,207).in -- N378.tunnel@(420,238).out
+                    wire: N376.tunnel@(394,254).in -- N378.tunnel@(420,254).out
+                    wire: N376.tunnel@(448,156).in -- N378.tunnel@(447,185).out
+                    wire: N377.0 -- N378.tunnel@(470,316).out
+                    wire: N376.i -- N377.1
+                    wire: N376.tunnel@(418,364).in -- N377.2
+                wire: N366.tunnel@(511,394).in -- N376.tunnel@(511,364).out
+                wire: N366.tunnel@(368,167).in -- N376.tunnel@(394,192).out
+                wire: N366.tunnel@(368,207).in -- N376.tunnel@(394,207).out
+                wire: N366.tunnel@(368,254).in -- N376.tunnel@(394,254).out
+                wire: N366.tunnel@(395,130).in -- N376.tunnel@(448,156).out
+                wire: N366.tunnel@(418,394).in -- N376.tunnel@(418,364).out
+          N367  FPterm     'Control DAC output level (12 bits signed)'  [1 term]
+          N368  node3a      @(467,481)  [3 term]
+          N369  prim       'Split Number' @(403,474)  [3 term]
+          N370  prim       'Number To Decimal String' @(274,261)  [3 term]
+          N371  prim       'Number To Decimal String' @(272,130)  [3 term]
+          N372  prim       'Number To Decimal String' @(272,171)  [3 term]
+          N373  prim       'Or' @(277,207)  [3 term]
+          N374  const      numeric 'Base Address'  [1 term]
+            wire: N369.2 -- N368.2
+            wire: N369.1 -- N368.1
+            wire: N374.0 -- N365.1
+            wire: N48.tunnel@(154,292).in -- N365.2
+            wire: N365.0 -- N366.tunnel@(418,394).out
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N367.0 -- N369.0
+            wire: N368.0 -- N366.tunnel@(511,394).out
+            wire: N48.tunnel@(154,238).in -- N373.1
+            wire: N48.tunnel@(154,409).in -- N370.2
+            wire: N370.0 -- N366.tunnel@(368,254).out
+            wire: N371.0 -- N366.tunnel@(368,167).out
+            wire: N48.tunnel@(154,274).in -- N371.2
+            wire: N48.tunnel@(154,175).in -- N372.2
+            wire: N48.tunnel@(154,214).in -- N373.2
+            wire: N48.tunnel@(154,122).in -- N366.tunnel@(395,130).out
+            wire: N373.0 -- N366.tunnel@(368,219).out
+            wire: N372.0 -- N366.tunnel@(368,207).out
+        frame 16:
+          N387  prim       'Or' @(313,401)  [3 term]
+          N388  FPterm     'OSK ramp rate'  [1 term]
+          N389  prim       'Number To Decimal String' @(274,261)  [3 term]
+          N390  prim       'Number To Decimal String' @(272,130)  [3 term]
+          N391  Sequence    @(368,130)  [7 term]
+            frame 0:
+              N395  subVI      'Write to Digital Port .vi' @(485,158)  [8 term]
+                wire: N391.tunnel@(368,219).in -- N395.3
+                wire: N391.tunnel@(368,207).in -- N395.2
+                wire: N391.tunnel@(395,130).in -- N395.0
+            frame 1:
+              N396  Sequence    @(420,185)  [6 term]
+                frame 0:
+                  N397  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                    wire: N396.tunnel@(420,254).in -- N397.2
+                    wire: N396.tunnel@(470,316).in -- N397.3
+                    wire: N396.tunnel@(447,185).in -- N397.0
+                frame 1:
+                  N398  subVI      'Write to Digital Port .vi' @(537,213)  [8 term]
+                    wire: N396.tunnel@(420,197).in -- N398.2
+                    wire: N396.tunnel@(511,316).in -- N398.3
+                    wire: N396.tunnel@(447,185).in -- N398.0
+                frame 2:
+                  N399  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                  N400  const      numeric 'line'  [1 term]
+                  N401  const      path? 'line state'  [1 term]
+                    wire: N396.tunnel@(420,238).in -- N399.2
+                    wire: N396.tunnel@(447,185).in -- N399.0
+                    wire: N401.0 -- N399.4
+                    wire: N400.0 -- N399.3
+                frame 3:
+                  N402  subVI      'Write to Digital Line.vi' @(549,224)  [9 term]
+                  N403  const      numeric 'line'  [1 term]
+                  N404  const      path? 'line state'  [1 term]
+                    wire: N396.tunnel@(420,238).in -- N402.2
+                    wire: N396.tunnel@(447,185).in -- N402.0
+                    wire: N404.0 -- N402.4
+                    wire: N403.0 -- N402.3
+                wire: N391.tunnel@(418,394).in -- N396.tunnel@(470,316).out
+                wire: N391.tunnel@(511,394).in -- N396.tunnel@(511,316).out
+                wire: N391.tunnel@(368,167).in -- N396.tunnel@(420,197).out
+                wire: N391.tunnel@(368,207).in -- N396.tunnel@(420,238).out
+                wire: N391.tunnel@(368,254).in -- N396.tunnel@(420,254).out
+                wire: N391.tunnel@(395,130).in -- N396.tunnel@(447,185).out
+          N392  prim       'Number To Decimal String' @(272,171)  [3 term]
+          N393  prim       'Or' @(277,207)  [3 term]
+          N394  const      numeric 'Base Address'  [1 term]
+            wire: N388.0 -- N391.tunnel@(511,394).out
+            wire: N48.tunnel@(154,292).in -- N387.2
+            wire: N387.0 -- N391.tunnel@(418,394).out
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N48.tunnel@(154,238).in -- N393.1
+            wire: N48.tunnel@(154,409).in -- N389.2
+            wire: N389.0 -- N391.tunnel@(368,254).out
+            wire: N390.0 -- N391.tunnel@(368,167).out
+            wire: N48.tunnel@(154,274).in -- N390.2
+            wire: N48.tunnel@(154,175).in -- N392.2
+            wire: N394.0 -- N387.1
+            wire: N48.tunnel@(154,214).in -- N393.2
+            wire: N48.tunnel@(154,122).in -- N391.tunnel@(395,130).out
+            wire: N393.0 -- N391.tunnel@(368,219).out
+            wire: N392.0 -- N391.tunnel@(368,207).out
+        frame 17:
+          # "(a "don't care" address so nothing is updated)"
+          N405  prim       'Not Equal To 0?' @(178,531)  [2 term]
+          N406  Sequence    @(313,156)  [5 term]
+            frame 0:
+              N415  subVI      'Write to Digital Port .vi' @(430,184)  [8 term]
+                wire: N406.tunnel@(313,227).in -- N415.3
+                wire: N406.tunnel@(313,209).in -- N415.2
+                wire: N406.tunnel@(340,156).in -- N415.0
+            frame 1:
+              N416  subVI      'Write to Digital Port .vi' @(430,184)  [8 term]
+                wire: N406.tunnel@(444,287).in -- N416.3
+                wire: N406.tunnel@(313,248).in -- N416.2
+                wire: N406.tunnel@(340,156).in -- N416.0
+            frame 2:
+              N417  subVI      'Write to Digital Line.vi' @(442,195)  [9 term]
+              N418  const      numeric 'line'  [1 term]
+              N419  const      path? 'line state'  [1 term]
+                wire: N406.tunnel@(313,209).in -- N417.2
+                wire: N406.tunnel@(340,156).in -- N417.0
+                wire: N419.0 -- N417.4
+                wire: N418.0 -- N417.3
+            frame 3:
+              N420  subVI      'Write to Digital Line.vi' @(442,195)  [9 term]
+              N421  const      numeric 'line'  [1 term]
+              N422  const      path? 'line state'  [1 term]
+                wire: N406.tunnel@(313,209).in -- N420.2
+                wire: N406.tunnel@(340,156).in -- N420.0
+                wire: N422.0 -- N420.4
+                wire: N421.0 -- N420.3
+          N407  prim       'Boolean To (0,1)' @(550,238)  [2 term]
+          N408  prim       'Or' @(426,341)  [3 term]
+          N409  prim       'Logical Shift' @(579,234)  [3 term]
+          N410  prim       'Number To Decimal String' @(206,324)  [3 term]
+          N411  prim       'Or' @(198,215)  [3 term]
+          N412  prim       'Number To Decimal String' @(204,172)  [3 term]
+          N413  const      numeric 'Base Address'  [1 term]
+          N414  const      numeric 'y'  [1 term]
+            wire: N405.0 -- N48.tunnel@(697,93).in -- N407.1
+            wire: N48.tunnel@(154,543).in -- N405.1
+            wire: N407.0 -- N409.1
+            wire: N408.0 -- N406.tunnel@(444,287).out
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N413.0 -- N408.1
+            wire: N409.0 -- N408.2
+            wire: N414.0 -- N409.2
+            wire: N410.0 -- N406.tunnel@(313,248).out
+            wire: N48.tunnel@(154,409).in -- N410.2
+            wire: N411.0 -- N406.tunnel@(313,227).out
+            wire: N48.tunnel@(154,238).in -- N411.1
+            wire: N48.tunnel@(154,214).in -- N411.2
+            wire: N412.0 -- N406.tunnel@(313,209).out
+            wire: N48.tunnel@(154,175).in -- N412.2
+            wire: N48.tunnel@(154,122).in -- N406.tunnel@(340,156).out
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+        frame 18:
+          # "(a"don't care" address so nothing is updated)"
+          N423  prim       'Not Equal To 0?' @(174,531)  [2 term]
+          N424  Sequence    @(313,156)  [5 term]
+            frame 0:
+              N433  subVI      'Write to Digital Port .vi' @(430,184)  [8 term]
+                wire: N424.tunnel@(313,227).in -- N433.3
+                wire: N424.tunnel@(313,209).in -- N433.2
+                wire: N424.tunnel@(340,156).in -- N433.0
+            frame 1:
+              N434  subVI      'Write to Digital Port .vi' @(430,184)  [8 term]
+                wire: N424.tunnel@(444,287).in -- N434.3
+                wire: N424.tunnel@(313,248).in -- N434.2
+                wire: N424.tunnel@(340,156).in -- N434.0
+            frame 2:
+              N435  subVI      'Write to Digital Line.vi' @(442,195)  [9 term]
+              N436  const      numeric 'line'  [1 term]
+              N437  const      path? 'line state'  [1 term]
+                wire: N424.tunnel@(313,209).in -- N435.2
+                wire: N424.tunnel@(340,156).in -- N435.0
+                wire: N437.0 -- N435.4
+                wire: N436.0 -- N435.3
+            frame 3:
+              N438  subVI      'Write to Digital Line.vi' @(442,195)  [9 term]
+              N439  const      numeric 'line'  [1 term]
+              N440  const      path? 'line state'  [1 term]
+                wire: N424.tunnel@(313,209).in -- N438.2
+                wire: N424.tunnel@(340,156).in -- N438.0
+                wire: N440.0 -- N438.4
+                wire: N439.0 -- N438.3
+          N425  prim       'Boolean To (0,1)' @(569,238)  [2 term]
+          N426  prim       'Or' @(426,341)  [3 term]
+          N427  prim       'Logical Shift' @(602,234)  [3 term]
+          N428  prim       'Number To Decimal String' @(206,324)  [3 term]
+          N429  prim       'Or' @(198,215)  [3 term]
+          N430  prim       'Number To Decimal String' @(204,172)  [3 term]
+          N431  const      numeric 'y'  [1 term]
+          N432  const      numeric 'Base Address'  [1 term]
+            wire: N423.0 -- N48.tunnel@(697,109).in -- N425.1
+            wire: N48.tunnel@(154,543).in -- N423.1
+            wire: N426.0 -- N424.tunnel@(444,287).out
+            wire: N425.0 -- N427.1
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N432.0 -- N426.1
+            wire: N427.0 -- N426.2
+            wire: N431.0 -- N427.2
+            wire: N428.0 -- N424.tunnel@(313,248).out
+            wire: N48.tunnel@(154,409).in -- N428.2
+            wire: N429.0 -- N424.tunnel@(313,227).out
+            wire: N48.tunnel@(154,238).in -- N429.1
+            wire: N48.tunnel@(154,214).in -- N429.2
+            wire: N430.0 -- N424.tunnel@(313,209).out
+            wire: N48.tunnel@(154,175).in -- N430.2
+            wire: N48.tunnel@(154,122).in -- N424.tunnel@(340,156).out
+        frame 19:
+            wire: N48.tunnel@(154,109).in -- N48.tunnel@(697,109).in
+            wire: N48.tunnel@(154,93).in -- N48.tunnel@(697,93).in
+            wire: N48.tunnel@(154,500).in -- N48.tunnel@(697,548).in
+      N49   FPterm     'port number for board addressing (strobe should be high bit of this port)'  [1 term]
+      N50   FPterm     'port number for DDS data'  [1 term]
+      N51   FPterm     'port number for DDS register addressing (OSK/FSK are two high bits of this port)'  [1 term]
+      N52   FPterm     'DIO board number'  [1 term]
+      N53   FPterm     'DDS board address'  [1 term]
+      N54   FPterm     'Operation'  [1 term]
+      N55   FPterm     'Phase (14 bits) or Pin state (0=off, else on)'  [1 term]
+      N56   const      numeric 'y'  [1 term]
+      N57   const      numeric 'n'  [1 term]
+      N58   const      numeric 'n'  [1 term]
+      N59   const      numeric 'x'  [1 term]
+      N60   const      numeric 'n'  [1 term]
+      N61   const      numeric 'x'  [1 term]
+      N62   const      numeric 'y'  [1 term]
+      N63   const      numeric 'y'  [1 term]
+        wire: N54.0 -- N48.selector
+        wire: N21.2 -- N20.4
+        wire: N21.1 -- N20.3
+        wire: N22.2 -- N20.2
+        wire: N22.1 -- N20.1
+        wire: N25.2 -- N24.2
+        wire: N25.1 -- N24.1
+        wire: N35.2 -- N28.2
+        wire: N35.1 -- N28.1
+        wire: N30.2 -- N28.6
+        wire: N30.1 -- N28.5
+        wire: N31.2 -- N28.4
+        wire: N31.1 -- N28.3
+        wire: N55.0 -- N25.0 -- N48.tunnel@(154,543).out
+        wire: N36.0 -- N32.1 -- N8.1 -- N7.1
+        wire: N7.0 -- N9.1
+        wire: N5.shiftreg@(-268,546).in -- N19.1 -- N48.tunnel@(154,500).out
+        wire: N9.0 -- N35.0
+        wire: N32.0 -- N9.3
+        wire: N8.0 -- N9.2
+        wire: N44.0 -- N11.tunnel@(-104,585).out -- N19.2
+        wire: N11.tunnel@(-19,612).out -- N5.shiftreg@(708,610).in
+        wire: N5.shiftreg@(-268,610).in -- N11.tunnel@(-104,612).out -- N10.1
+        wire: N10.0 -- N11.selector
+        wire: N12.0 -- N16.1
+        wire: N13.0 -- N15.1
+        wire: N5.shiftreg@(-268,107).in -- N48.tunnel@(154,109).out -- N13.1
+        wire: N5.shiftreg@(-268,91).in -- N48.tunnel@(154,93).out -- N12.1
+        wire: N14.0 -- N48.tunnel@(154,292).out
+        wire: N15.0 -- N14.1
+        wire: N16.0 -- N14.2
+        wire: N63.0 -- N15.2
+        wire: N62.0 -- N16.2
+        wire: N48.tunnel@(697,109).out -- N5.shiftreg@(708,107).in
+        wire: N48.tunnel@(697,93).out -- N5.shiftreg@(708,91).in
+        wire: N28.0 -- N48.tunnel@(154,459).out -- N17.0
+        wire: N18.0 -- N26.1
+        wire: N48.tunnel@(697,548).out -- N5.shiftreg@(708,546).in
+        wire: N19.0 -- N41.1 -- N42.1
+        wire: N20.0 -- N48.tunnel@(154,568).out
+        wire: N47.0 -- N23.0
+        wire: N23.2 -- N21.0
+        wire: N23.1 -- N22.0
+        wire: N24.0 -- N48.tunnel@(154,527).out
+        wire: N26.0 -- N48.tunnel@(154,238).out
+        wire: N27.0 -- N18.1
+        wire: N29.0 -- N36.2
+        wire: N61.0 -- N29.1
+        wire: N60.0 -- N29.2
+        wire: N34.1 -- N31.0
+        wire: N34.2 -- N30.0
+        wire: N37.0 -- N36.3 -- N41.2
+        wire: N42.0 -- N37.1
+        wire: N33.0 -- N34.0
+        wire: N36.1 -- N33.1
+        wire: N59.0 -- N38.1
+        wire: N57.0 -- N38.2
+        wire: N38.0 -- N39.1
+        wire: N41.0 -- N39.2
+        wire: N39.0 -- N40.0
+        wire: N46.0 -- N43.1
+        wire: N43.0 -- N42.2
+        wire: N58.0 -- N43.2
+        wire: N45.0 -- N48.tunnel@(154,214).out
+        wire: N56.0 -- N45.2
+        wire: N53.0 -- N45.1
+        wire: N49.0 -- N48.tunnel@(154,175).out
+        wire: N50.0 -- N48.tunnel@(154,274).out
+        wire: N51.0 -- N48.tunnel@(154,409).out
+        wire: N52.0 -- N48.tunnel@(154,122).out
+  N6    const      numeric  [1 term]
+    wire: N5.shiftreg@(708,610).out -- N1.0
+    wire: N5.shiftreg@(708,107).out -- N2.0
+    wire: N5.shiftreg@(708,91).out -- N3.0
+    wire: N6.0 -- N5.N
+    wire: N5.shiftreg@(708,546).out -- N4.0

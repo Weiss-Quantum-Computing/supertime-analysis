@@ -1,0 +1,80 @@
+VI: Get_Channel_Name_Value.vi
+  N1    subVI      'add constants only.vi'  params: 0=Channel out, 1=Channel array @(208,193)  [2 term]
+  N2    ForLoop     @(251,147)  [5 term]
+    frame 0:
+      N6    (Un)BundleByName?  @(287,346)  [3 term]
+      N7    Case        @(460,158)  [8 term]
+        frame 0:
+          N9    IndexArray?  @(587,348)  [3 term]
+          N10   prim       'Not A Number/Path/Refnum?' @(728,230)  [2 term]
+          N11   Case        @(767,172)  [5 term]
+            frame 0:
+              N13   FormatString?  @(858,237)  [8 term]
+              N14   const      string  [1 term]
+                wire: N11.tunnel@(767,293).in -- N13.7
+                wire: N11.tunnel@(767,265).in -- N13.6
+                wire: N11.tunnel@(767,191).in -- N13.5
+                wire: N13.2 -- N11.tunnel@(920,239).in
+                wire: N14.0 -- N13.0
+            frame 1:
+              N15   FormatString?  @(858,237)  [7 term]
+              N16   const      string  [1 term]
+                wire: N11.tunnel@(767,265).in -- N15.6
+                wire: N11.tunnel@(767,191).in -- N15.5
+                wire: N15.2 -- N11.tunnel@(920,239).in
+                wire: N16.0 -- N15.0
+          N12   IndexArray?  @(587,247)  [3 term]
+            wire: N9.1 -- N10.1 -- N11.tunnel@(767,293).out
+            wire: N12.1 -- N11.tunnel@(767,265).out
+            wire: N7.tunnel@(460,349).in -- N9.0
+            wire: N7.tunnel@(460,277).in -- N12.2 -- N9.2
+            wire: N10.0 -- N11.selector
+            wire: N7.tunnel@(460,199).in -- N11.tunnel@(767,191).out
+            wire: N11.tunnel@(920,239).out -- N7.tunnel@(934,239).in
+            wire: N7.tunnel@(460,214).in -- N12.0
+        frame 1:
+          N17   IndexArray?  @(589,346)  [3 term]
+          N18   prim       'Less Than 0?' @(714,233)  [2 term]
+          N19   Case        @(752,176)  [5 term]
+            frame 0:
+              N21   FormatString?  @(836,236)  [7 term]
+              N22   const      string 'format string'  [1 term]
+                wire: N22.0 -- N21.0
+                wire: N19.tunnel@(752,224).in -- N21.5
+                wire: N21.2 -- N19.tunnel@(906,239).in
+                wire: N19.tunnel@(752,264).in -- N21.6
+            frame 1:
+              N23   FormatString?  @(836,236)  [8 term]
+              N24   const      string 'format string'  [1 term]
+                wire: N19.tunnel@(752,298).in -- N23.7
+                wire: N24.0 -- N23.0
+                wire: N19.tunnel@(752,224).in -- N23.5
+                wire: N23.2 -- N19.tunnel@(906,239).in
+                wire: N19.tunnel@(752,264).in -- N23.6
+          N20   IndexArray?  @(587,247)  [3 term]
+            wire: N17.1 -- N18.1 -- N19.tunnel@(752,298).out
+            wire: N20.1 -- N19.tunnel@(752,264).out
+            wire: N7.tunnel@(460,364).in -- N17.0
+            wire: N7.tunnel@(460,277).in -- N20.2 -- N17.2
+            wire: N18.0 -- N19.selector
+            wire: N7.tunnel@(460,199).in -- N19.tunnel@(752,224).out
+            wire: N19.tunnel@(906,239).out -- N7.tunnel@(934,239).in
+            wire: N7.tunnel@(460,229).in -- N20.0
+      N8    (Un)BundleByName?  @(287,181)  [5 term]
+        wire: N6.1 -- N7.tunnel@(460,349).out
+        wire: N6.2 -- N7.tunnel@(460,364).out
+        wire: N2.tunnel@(251,357).in -- N6.0
+        wire: N8.4 -- N7.tunnel@(460,229).out
+        wire: N8.1 -- N7.selector
+        wire: N8.2 -- N7.tunnel@(460,199).out
+        wire: N7.tunnel@(934,239).out -- N2.tunnel@(974,239).in
+        wire: N8.3 -- N7.tunnel@(460,214).out
+        wire: N2.tunnel@(251,277).in -- N7.tunnel@(460,277).out
+        wire: N2.tunnel@(251,205).in -- N8.0
+  N3    FPterm     'Edge Index'  [1 term]
+  N4    FPterm     'Channel Name/Value Output'  [1 term]
+  N5    FPterm     'Channel Array Input'  [1 term]
+    wire: N1.Channel out -- N2.tunnel@(251,205).out
+    wire: N2.tunnel@(974,239).out -- N4.0
+    wire: N3.0 -- N2.tunnel@(251,277).out
+    wire: N5.0 -- N1.Channel array -- N2.tunnel@(251,357).out
