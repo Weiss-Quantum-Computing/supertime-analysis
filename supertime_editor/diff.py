@@ -111,8 +111,8 @@ class Comparison(object):
                                              {"ia": ia, "ib": ib}))
                 continue
             ea, eb = a.edges[ia], b.edges[ib]
-            pa = a.edges[ea[E_PARENT]][E_NAME] if 0 <= ea[E_PARENT] < len(a.edges) else "?"
-            pb = b.edges[eb[E_PARENT]][E_NAME] if 0 <= eb[E_PARENT] < len(b.edges) else "?"
+            pa = norm(a.edges[ea[E_PARENT]][E_NAME]) if 0 <= ea[E_PARENT] < len(a.edges) else "?"
+            pb = norm(b.edges[eb[E_PARENT]][E_NAME]) if 0 <= eb[E_PARENT] < len(b.edges) else "?"
             va = [a.variables[k][V_NAME] for k in ea[E_VARS] if k < len(a.variables)]
             vb = [b.variables[k][V_NAME] for k in eb[E_VARS] if k < len(b.variables)]
             uses_var = ea[E_TYPE] == 1 or eb[E_TYPE] == 1
