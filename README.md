@@ -44,10 +44,13 @@ supertime_editor.bat "some sequence.dt4"                 # Windows XP (uses C:\P
   Two 1,400-edge cooling sequences compare in 0.1 s and unify in under a second.
 * Files whose channel arrays are shorter than the edge list (over half of the 2024-2026
   files) are read tolerantly; **File > Repair channel arrays** pads them.
+* **Ramps:** Supertime enables a ramp only where the cell's time constant is nonzero; the
+  ramp then runs from that edge's value to the next edge where the channel has a value, with
+  the cell's ramp function and step size. Cells with a function set but a zero time constant
+  are inert and drawn as a small grey letter ("grey disabled ramps" hides them).
 * **Step sizes at a glance:** the "cells show" box switches the grid between value + ramp,
-  value + ramp + step (`4.2 L40u` = linear ramp, 40 us steps), step size only, or time
-  constant. Ramp function entries on cells without a value (leftovers of Supertime's ring)
-  are drawn as a small grey letter; untick "grey leftovers" to hide them.
+  value + ramp + step (`4.2` over `L 40u` = linear ramp, 40 us steps), step size only, or
+  time constant.
 * **Editing many cells at once:** click, Shift-click (range), Ctrl/Cmd-click (add) or click a
   row header (whole channel) to select cells, then Return or "Edit selected cells": blank
   fields keep each cell's own value. "Batch edit..." finds cells by channel, edge-name pattern,
@@ -57,12 +60,15 @@ supertime_editor.bat "some sequence.dt4"                 # Windows XP (uses C:\P
 * **Plot...** draws value against time for the selected channels (holds between edges,
   straight lines across ramps), one strip per channel or overlaid; drag to zoom, mouse
   readout. From the compare window, "Plot A vs B" overlays both sequences (B dashed).
-* **Check ramps** (also run on open and before save): flags ramps with steps below the 2 us
-  clock, steps that are not whole microseconds, and simultaneous ramps on different channels
+* **Check ramps** (also run on open and before save): flags enabled ramps with no ramp
+  function, steps below the 2 us clock, steps that are not whole microseconds, and simultaneous ramps on different channels
   whose step sizes have no common multiple of at least 2 us (e.g. 5 us against 2 us), which
   makes Supertime attempt 1 us edges and breaks the sequence. Problems are listed in the Ramps
   tab and the cells outlined in magenta. This catches the August 2025 bug in the Testbed and
   Pre-20250731 files.
+* **Edit > Simplify edge names** drops the numeric prefixes that splicing adds (`0: `,
+  `1: 18: 1: 0: `), keeping the shortest prefix that still makes every name unique; the
+  compare window can match edges ignoring those prefixes.
 * The compare window has a **graphical diff** above the list: matched channels x matched
   edges, red where a value differs, orange for ramp, purple for step/time constant, grey where
   an edge or channel exists on one side only; click a cell to see both sides and select its
