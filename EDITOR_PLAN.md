@@ -1,5 +1,9 @@
 # External sequence editor: plan
 
+**Status 2026-10-27:** v1 implemented in `supertime_editor/` (Tkinter, Python 2.7/3): grid
+editor, edge/variable/channel editing, compare + unify. Not yet run on the XP machine.
+
+
 Goal: edit Supertime sequences (`.dt4`) outside LabVIEW, because Supertime itself is slow and
 runs out of memory on the longest sequences (1,400 to 1,550 edges, 56 channels, up to 2.4 MB).
 

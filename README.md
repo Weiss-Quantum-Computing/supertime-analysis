@@ -21,6 +21,36 @@ PC's disk (kept separately, not in this repository).
 | `vi_printouts/` | The 2009 front-panel printout rendered from PostScript. |
 | `supertime_tools/subvi_calltree.txt`, `subvi_text_labels.txt`, `main_vi_text_labels.txt` | Call graph and all panel/diagram text, including diagram comments. |
 
+## Sequence editor (`supertime_editor/`)
+
+A Tkinter desktop app that opens, edits, compares and saves `.dt4` sequences outside LabVIEW.
+Python 2.7 (the XP control PC) and Python 3 (Mac), standard library only.
+
+```bash
+python3 -m supertime_editor.app "some sequence.dt4"     # Mac/Linux, or double-click supertime_editor.command
+supertime_editor.bat "some sequence.dt4"                 # Windows XP (uses C:\Python27)
+```
+
+* Grid of channels (rows) by edges in time order (columns); cells show the analog or digital
+  value and a ramp marker (L linear, E exponential, O optical, C cubic, K custom). Double-click
+  a cell to edit value, ramp, step size and time constant; double-click a column header to
+  edit the edge (name, parent, relative time, variable); the Edges and Variables tabs list
+  everything and jump the grid to the selected edge.
+* Add/delete edges, variables and channels; absolute times are recomputed exactly the way
+  Supertime does (parent + relative or variable time, rounded to the clock resolution).
+* **Compare with...** opens a second sequence and lists every difference: cell values,
+  ramps and step sizes, edge times/parents/variables, missing edges or channels, variables,
+  settings. Select rows and copy A->B or B->A, or unify everything in one go; save either side.
+  Two 1,400-edge cooling sequences compare in 0.1 s and unify in under a second.
+* Files whose channel arrays are shorter than the edge list (over half of the 2024-2026
+  files) are read tolerantly; **File > Repair channel arrays** pads them.
+
+`supertime_editor/lvcore.py` is the canonical reader/writer (`record.td` carries the LabVIEW
+type descriptor so no log file is needed); `model.py` the editable model; `diff.py` the
+comparison and unify logic; `app.py` the GUI.
+
+![editor grid](docs/editor_grid.png)
+
 ## Requirements
 
 Python 3 (standard library only for the sequence tools). `pylabview` and ghostscript were
