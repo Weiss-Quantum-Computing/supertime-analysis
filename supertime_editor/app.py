@@ -81,6 +81,7 @@ class SequenceGrid(tk.Frame):
         self.anchor = None          # for shift-click ranges
         self.conflicts = set()      # (channel, edge) cells flagged by the ramp check
         self.cell_w = CELL_W
+        self.cell_h = CELL_H
         self.canvas = tk.Canvas(self, bg="white", highlightthickness=0)
         self.vbar = tk.Scrollbar(self, orient="vertical", command=self._yscroll)
         self.hbar = tk.Scrollbar(self, orient="horizontal", command=self._xscroll)
@@ -119,7 +120,7 @@ class SequenceGrid(tk.Frame):
         w = self.canvas.winfo_width()
         h = self.canvas.winfo_height()
         ncol = max(1, (w - ROW_HDR_W) // self.cell_w + 1)
-        nrow = max(1, (h - HDR_H) // CELL_H + 1)
+        nrow = max(1, (h - HDR_H) // self.cell_h + 1)
         return ncol, nrow
 
     def _scroll_rows(self, d):
@@ -169,7 +170,7 @@ class SequenceGrid(tk.Frame):
         if x < ROW_HDR_W or y < HDR_H:
             return None
         c = self.col0 + (x - ROW_HDR_W) // self.cell_w
-        r = self.row0 + (y - HDR_H) // CELL_H
+        r = self.row0 + (y - HDR_H) // self.cell_h
         if self.seq and c < len(self.order) and r < len(self.seq.grid):
             return r, self.order[c]
         return None
@@ -179,8 +180,8 @@ class SequenceGrid(tk.Frame):
         self.redraw()
 
     # ---- drawing
-    def cell_text(self, ch, ei, mode):
-        """(text, fill, leftover) for one cell under the given display mode."""
+    def cell_text(self, ch, ei, mode, maxchars):
+        """(line1, line2, fill, leftover) for one cell under the given display mode."""
         a = Sequence.cell_value(ch, K_ANLG, ei)
         d = Sequence.cell_value(ch, K_DIG, ei)
         f = Sequence.cell_value(ch, K_FUNC, ei)
@@ -188,30 +189,39 @@ class SequenceGrid(tk.Frame):
         tc = Sequence.cell_value(ch, K_TC, ei)
         digital = ch[K_SIG] == 1
         fill = C_EMPTY
-        txt = u""
+        val = u""
         if digital:
             if d != -1:
-                txt = u"1" if d else u"0"
+                val = u"1" if d else u"0"
                 fill = C_DIG1 if d else C_DIG0
         elif not lvcore.is_nan(a):
-            txt = fnum(a, 4)
+            val = fnum(a, 4)
+            if len(val) > maxchars:
+                val = fnum(a, 3)
+            if len(val) > maxchars:
+                val = fnum(a, 2)
             fill = C_ANALOG
-        leftover = bool(f) and not txt
-        if f and txt:
+        leftover = bool(f) and not val
+        ramp = bool(f) and bool(val)
+        if ramp:
             fill = C_RAMP
+        line2 = u""
         if mode == u"value + ramp":
-            if f and txt:
-                txt = txt + u" " + abbr_func(f)
+            if ramp:
+                tag = abbr_func(f)
+                val = (val + u" " + tag) if len(val) + 1 + len(tag) <= maxchars else val + tag
         elif mode == u"value + ramp + step":
-            if f and txt:
-                txt = txt + u" " + abbr_func(f) + fstep(st)
+            if ramp:
+                line2 = abbr_func(f) + u" " + fstep(st)
+            elif st != 1.0 and val:
+                line2 = fstep(st)
         elif mode == u"step size":
-            txt = fstep(st) if (st != 1.0 or (f and txt)) else u""
-            if f and txt:
-                txt = abbr_func(f) + u" " + txt
+            val = fstep(st) if (st != 1.0 or ramp) else u""
+            if ramp:
+                val = abbr_func(f) + u" " + val
         elif mode == u"time constant":
-            txt = fnum(tc, 4) if tc else u""
-        return txt, fill, leftover
+            val = fnum(tc, 4) if tc else u""
+        return val, line2, fill, leftover
 
     def redraw(self):
         cv = self.canvas
@@ -219,18 +229,22 @@ class SequenceGrid(tk.Frame):
         if not self.seq:
             return
         seq = self.seq
+        n = len(self.order) or 1
+        W = self.cell_w
+        mode = self.app.display_mode.get()
+        two_lines = mode == u"value + ramp + step"
+        self.cell_h = 30 if two_lines else CELL_H
+        CH = self.cell_h
         ncol, nrow = self._visible()
         cols = self.order[self.col0:self.col0 + ncol]
         rows = range(self.row0, min(len(seq.grid), self.row0 + nrow))
-        n = len(self.order) or 1
+        small = ("TkDefaultFont", 9 if W >= 44 else 8)
+        tiny = ("TkDefaultFont", 8)
+        maxchars = max(3, (W - 4) // (6 if W < 44 else 7))
+        show_left = self.app.show_leftovers.get()
         self.hbar.set(self.col0 / n, min(1.0, (self.col0 + ncol) / n))
         m = len(seq.grid) or 1
         self.vbar.set(self.row0 / m, min(1.0, (self.row0 + nrow) / m))
-        W = self.cell_w
-        small = ("TkDefaultFont", 9 if W >= 44 else 8)
-        maxchars = max(3, (W - 6) // 7)
-        mode = self.app.display_mode.get()
-        show_left = self.app.show_leftovers.get()
         for k, ei in enumerate(cols):
             x = ROW_HDR_W + k * W
             e = seq.edges[ei]
@@ -243,24 +257,29 @@ class SequenceGrid(tk.Frame):
                 cv.create_text(x + 2, 4, text=label[:maxchars], anchor="nw", font=small, fill=TXT)
             cv.create_text(x + W // 2, HDR_H - 9, text=fnum(e[E_ABS], 5)[:maxchars], font=("TkDefaultFont", 8), fill=TXT)
         for j, r in enumerate(rows):
-            y = HDR_H + j * CELL_H
+            y = HDR_H + j * CH
             ch = seq.grid[r][self.app.set_index]
-            cv.create_rectangle(0, y, ROW_HDR_W, y + CELL_H, fill=C_ROWHDR, outline=C_GRIDLINE)
-            cv.create_text(4, y + CELL_H // 2, text=u"%s  (%d.%d)" % (ch[K_NAME][:22], ch[K_CARD], ch[K_CHAN]),
+            cv.create_rectangle(0, y, ROW_HDR_W, y + CH, fill=C_ROWHDR, outline=C_GRIDLINE)
+            cv.create_text(4, y + CH // 2, text=u"%s  (%d.%d)" % (ch[K_NAME][:22], ch[K_CARD], ch[K_CHAN]),
                            anchor="w", font=("TkDefaultFont", 10), fill=TXT)
             for k, ei in enumerate(cols):
                 x = ROW_HDR_W + k * W
-                txt, fill, leftover = self.cell_text(ch, ei, mode)
+                txt, line2, fill, leftover = self.cell_text(ch, ei, mode, maxchars)
                 selected = (r, ei) in self.sel
                 conflict = (r, ei) in self.conflicts
                 outline = C_SEL if selected else (C_CONFLICT if conflict else C_GRIDLINE)
                 width = 2 if (selected or conflict) else 1
-                cv.create_rectangle(x, y, x + W, y + CELL_H, fill=fill, outline=outline, width=width)
-                if txt:
-                    cv.create_text(x + 3, y + CELL_H // 2, text=txt[:maxchars], anchor="w", font=small, fill=TXT)
-                elif leftover and show_left:
-                    cv.create_text(x + W - 3, y + CELL_H // 2, text=abbr_func(Sequence.cell_value(ch, K_FUNC, ei)),
-                                   anchor="e", font=("TkDefaultFont", 8), fill="#a0a0a0")
+                cv.create_rectangle(x, y, x + W, y + CH, fill=fill, outline=outline, width=width)
+                if two_lines:
+                    if txt:
+                        cv.create_text(x + 3, y + 8, text=txt[:maxchars], anchor="w", font=small, fill=TXT)
+                    if line2:
+                        cv.create_text(x + W - 3, y + CH - 8, text=line2[:maxchars], anchor="e", font=tiny, fill="#303030")
+                elif txt:
+                    cv.create_text(x + 3, y + CH // 2, text=txt[:maxchars], anchor="w", font=small, fill=TXT)
+                if leftover and show_left and not txt:
+                    cv.create_text(x + W - 3, y + CH // 2, text=abbr_func(Sequence.cell_value(ch, K_FUNC, ei)),
+                                   anchor="e", font=tiny, fill="#a0a0a0")
         cv.create_rectangle(0, 0, ROW_HDR_W, HDR_H, fill="#d4d4d4", outline=C_GRIDLINE)
         cv.create_text(6, HDR_H - 10, anchor="w", font=("TkDefaultFont", 9), fill=TXT,
                        text=u"%d channels x %d edges%s" % (len(seq.grid), len(self.order),
@@ -279,7 +298,7 @@ class SequenceGrid(tk.Frame):
             if c < len(self.order):
                 self.app.select_edge(self.order[c])
         elif e.x < ROW_HDR_W and e.y >= HDR_H:          # row header: select the whole channel row
-            r = self.row0 + (e.y - HDR_H) // CELL_H
+            r = self.row0 + (e.y - HDR_H) // self.cell_h
             if r < len(self.seq.grid):
                 self.sel = set((r, ei) for ei in self.order)
                 self.anchor = (r, self.order[0]) if self.order else None
