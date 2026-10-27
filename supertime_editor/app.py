@@ -208,14 +208,21 @@ class SequenceGrid(tk.Frame):
                     if not lvcore.is_nan(a):
                         txt = fnum(a, 4)
                         fill = C_ANALOG
+                leftover = False
                 if f:
-                    txt = (txt + u" " if txt else u"") + abbr_func(f)
-                    fill = C_RAMP
+                    if txt:                                   # value + ramp function: a real ramp
+                        txt = txt + u" " + abbr_func(f)
+                        fill = C_RAMP
+                    else:                                     # function set but no value: inert leftover
+                        leftover = True
                 selected = self.sel == (r, ei)
                 cv.create_rectangle(x, y, x + W, y + CELL_H, fill=fill,
                                     outline="#e00000" if selected else C_GRIDLINE, width=2 if selected else 1)
                 if txt:
                     cv.create_text(x + 3, y + CELL_H // 2, text=txt[:maxchars], anchor="w", font=small, fill=TXT)
+                elif leftover and self.app.show_leftovers.get():
+                    cv.create_text(x + W - 3, y + CELL_H // 2, text=abbr_func(f), anchor="e",
+                                   font=("TkDefaultFont", 8), fill="#a0a0a0")
         cv.create_rectangle(0, 0, ROW_HDR_W, HDR_H, fill="#d4d4d4", outline=C_GRIDLINE)
         cv.create_text(6, HDR_H - 10, anchor="w", font=("TkDefaultFont", 9), fill=TXT,
                        text=u"%d channels x %d edges" % (len(seq.grid), len(self.order)))
@@ -524,6 +531,9 @@ class App(object):
         tk.Button(bar, text=u"Add channel", command=self.add_channel).pack(side="left", padx=3)
         tk.Button(bar, text=u"Delete channel", command=self.delete_channel).pack(side="left", padx=3)
         tk.Button(bar, text=u"Compare with...", command=self.compare).pack(side="left", padx=12)
+        self.show_leftovers = tk.BooleanVar(value=True)
+        tk.Checkbutton(bar, text=u"grey ramp leftovers", variable=self.show_leftovers,
+                       command=lambda: self.grid.redraw()).pack(side="left", padx=6)
         tk.Label(bar, text=u"  Column width:").pack(side="left")
         self.width_var = tk.StringVar(value=u"%d" % CELL_W)
         sp = tk.Spinbox(bar, from_=24, to=160, increment=4, width=4, textvariable=self.width_var,
