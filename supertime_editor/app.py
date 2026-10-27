@@ -24,10 +24,19 @@ from .model import (Sequence, K_NAME, K_CARD, K_CHAN, K_SIG, K_CONV, K_ANLG, K_D
                     K_STEP, E_ABS, E_NAME, E_PARENT, E_REL, E_VARS, E_TYPE, V_NAME, V_VAL)
 from .diff import Comparison, fmt_value
 
-CELL_W = 64
+CELL_W = 46            # default column width; adjustable in the toolbar
 CELL_H = 20
 HDR_H = 110
-ROW_HDR_W = 190
+ROW_HDR_W = 170
+TXT = "#000000"        # explicit colours so the grid looks the same in dark mode
+C_HDR = "#dfe3ee"
+C_ROWHDR = "#ece9d8"
+C_EMPTY = "#ffffff"
+C_ANALOG = "#bcd4ff"
+C_DIG1 = "#9fe09f"
+C_DIG0 = "#f4a9a9"
+C_RAMP = "#ffd27a"
+C_GRIDLINE = "#b8b8b8"
 FUNC_ABBR = {u"": u"", u"Linear": u"L", u"Exponential": u"E", u"Cubic": u"C", u"Custom": u"K",
              u"Optical: 1/(1+t)^2": u"O", u"Optical with offset": u"O+", u"Depth lin freq const": u"D"}
 
@@ -38,11 +47,11 @@ def abbr_func(f):
     return (f or u"")[:2]
 
 
-def fnum(v):
+def fnum(v, digits=6):
     if isinstance(v, float):
         if lvcore.is_nan(v):
             return u""
-        return (u"%.6g" % v)
+        return (u"%.*g" % (digits, v))
     return u"%s" % (v,)
 
 
@@ -58,6 +67,7 @@ class SequenceGrid(tk.Frame):
         self.col0 = 0
         self.row0 = 0
         self.sel = None
+        self.cell_w = CELL_W
         self.canvas = tk.Canvas(self, bg="white", highlightthickness=0)
         self.vbar = tk.Scrollbar(self, orient="vertical", command=self._yscroll)
         self.hbar = tk.Scrollbar(self, orient="horizontal", command=self._xscroll)
@@ -89,7 +99,7 @@ class SequenceGrid(tk.Frame):
     def _visible(self):
         w = self.canvas.winfo_width()
         h = self.canvas.winfo_height()
-        ncol = max(1, (w - ROW_HDR_W) // CELL_W + 1)
+        ncol = max(1, (w - ROW_HDR_W) // self.cell_w + 1)
         nrow = max(1, (h - HDR_H) // CELL_H + 1)
         return ncol, nrow
 
@@ -139,7 +149,7 @@ class SequenceGrid(tk.Frame):
     def _cell_at(self, x, y):
         if x < ROW_HDR_W or y < HDR_H:
             return None
-        c = self.col0 + (x - ROW_HDR_W) // CELL_W
+        c = self.col0 + (x - ROW_HDR_W) // self.cell_w
         r = self.row0 + (y - HDR_H) // CELL_H
         if self.seq and c < len(self.order) and r < len(self.seq.grid):
             return r, self.order[c]
@@ -160,52 +170,54 @@ class SequenceGrid(tk.Frame):
         self.hbar.set(self.col0 / n, min(1.0, (self.col0 + ncol) / n))
         m = len(seq.grid) or 1
         self.vbar.set(self.row0 / m, min(1.0, (self.row0 + nrow) / m))
+        W = self.cell_w
+        small = ("TkDefaultFont", 9 if W >= 44 else 8)
+        maxchars = max(3, (W - 6) // 7)
         # column headers
         for k, ei in enumerate(cols):
-            x = ROW_HDR_W + k * CELL_W
+            x = ROW_HDR_W + k * W
             e = seq.edges[ei]
-            cv.create_rectangle(x, 0, x + CELL_W, HDR_H, fill="#e8e8f0", outline="#c0c0c0")
+            cv.create_rectangle(x, 0, x + W, HDR_H, fill=C_HDR, outline=C_GRIDLINE)
             label = u"%d %s" % (ei, e[E_NAME])
             try:
-                cv.create_text(x + CELL_W // 2, HDR_H - 24, text=label[:28], anchor="w", angle=90, font=("TkDefaultFont", 8))
+                cv.create_text(x + W // 2, HDR_H - 22, text=label[:26], anchor="w", angle=90,
+                               font=("TkDefaultFont", 9), fill=TXT)
             except tk.TclError:
-                cv.create_text(x + 2, 4, text=label[:9], anchor="nw", font=("TkDefaultFont", 7))
-            cv.create_text(x + CELL_W // 2, HDR_H - 10, text=fnum(e[E_ABS]), font=("TkDefaultFont", 7))
+                cv.create_text(x + 2, 4, text=label[:maxchars], anchor="nw", font=small, fill=TXT)
+            cv.create_text(x + W // 2, HDR_H - 9, text=fnum(e[E_ABS], 5)[:maxchars], font=("TkDefaultFont", 8), fill=TXT)
         # rows
         for j, r in enumerate(rows):
             y = HDR_H + j * CELL_H
             ch = seq.grid[r][self.app.set_index]
-            cv.create_rectangle(0, y, ROW_HDR_W, y + CELL_H, fill="#f0f0e8", outline="#c0c0c0")
-            cv.create_text(4, y + CELL_H // 2, text=u"%s  (%d.%d)" % (ch[K_NAME][:24], ch[K_CARD], ch[K_CHAN]),
-                           anchor="w", font=("TkDefaultFont", 9))
+            cv.create_rectangle(0, y, ROW_HDR_W, y + CELL_H, fill=C_ROWHDR, outline=C_GRIDLINE)
+            cv.create_text(4, y + CELL_H // 2, text=u"%s  (%d.%d)" % (ch[K_NAME][:22], ch[K_CARD], ch[K_CHAN]),
+                           anchor="w", font=("TkDefaultFont", 10), fill=TXT)
             digital = ch[K_SIG] == 1
             for k, ei in enumerate(cols):
-                x = ROW_HDR_W + k * CELL_W
+                x = ROW_HDR_W + k * W
                 a = Sequence.cell_value(ch, K_ANLG, ei)
                 d = Sequence.cell_value(ch, K_DIG, ei)
                 f = Sequence.cell_value(ch, K_FUNC, ei)
-                fill = "white"
+                fill = C_EMPTY
                 txt = u""
                 if digital:
                     if d != -1:
                         txt = u"1" if d else u"0"
-                        fill = "#c8f0c8" if d else "#f0c8c8"
+                        fill = C_DIG1 if d else C_DIG0
                 else:
                     if not lvcore.is_nan(a):
-                        txt = fnum(a)
-                        fill = "#dde8ff"
+                        txt = fnum(a, 4)
+                        fill = C_ANALOG
                 if f:
-                    txt = txt + u" " + abbr_func(f)
-                    fill = "#ffe8b0"
-                outline = "#d0d0d0"
-                if self.sel == (r, ei):
-                    outline = "red"
-                cv.create_rectangle(x, y, x + CELL_W, y + CELL_H, fill=fill, outline=outline,
-                                    width=2 if self.sel == (r, ei) else 1)
+                    txt = (txt + u" " if txt else u"") + abbr_func(f)
+                    fill = C_RAMP
+                selected = self.sel == (r, ei)
+                cv.create_rectangle(x, y, x + W, y + CELL_H, fill=fill,
+                                    outline="#e00000" if selected else C_GRIDLINE, width=2 if selected else 1)
                 if txt:
-                    cv.create_text(x + 3, y + CELL_H // 2, text=txt[:10], anchor="w", font=("TkDefaultFont", 8))
-        cv.create_rectangle(0, 0, ROW_HDR_W, HDR_H, fill="#dcdcdc", outline="#c0c0c0")
-        cv.create_text(6, HDR_H - 10, anchor="w", font=("TkDefaultFont", 8),
+                    cv.create_text(x + 3, y + CELL_H // 2, text=txt[:maxchars], anchor="w", font=small, fill=TXT)
+        cv.create_rectangle(0, 0, ROW_HDR_W, HDR_H, fill="#d4d4d4", outline=C_GRIDLINE)
+        cv.create_text(6, HDR_H - 10, anchor="w", font=("TkDefaultFont", 9), fill=TXT,
                        text=u"%d channels x %d edges" % (len(seq.grid), len(self.order)))
 
     # ---- interaction
@@ -216,7 +228,7 @@ class SequenceGrid(tk.Frame):
             self.app.show_cell_info(*hit)
             self.redraw()
         elif e.y < HDR_H and e.x >= ROW_HDR_W:
-            c = self.col0 + (e.x - ROW_HDR_W) // CELL_W
+            c = self.col0 + (e.x - ROW_HDR_W) // self.cell_w
             if c < len(self.order):
                 self.app.select_edge(self.order[c])
 
@@ -225,9 +237,13 @@ class SequenceGrid(tk.Frame):
         if hit:
             self.app.edit_cell(*hit)
         elif e.y < HDR_H and e.x >= ROW_HDR_W:
-            c = self.col0 + (e.x - ROW_HDR_W) // CELL_W
+            c = self.col0 + (e.x - ROW_HDR_W) // self.cell_w
             if c < len(self.order):
                 self.app.edit_edge(self.order[c])
+
+    def set_cell_width(self, w):
+        self.cell_w = max(24, min(160, int(w)))
+        self.redraw()
 
 
 # ======================================================================= dialogs
@@ -508,6 +524,15 @@ class App(object):
         tk.Button(bar, text=u"Add channel", command=self.add_channel).pack(side="left", padx=3)
         tk.Button(bar, text=u"Delete channel", command=self.delete_channel).pack(side="left", padx=3)
         tk.Button(bar, text=u"Compare with...", command=self.compare).pack(side="left", padx=12)
+        tk.Label(bar, text=u"  Column width:").pack(side="left")
+        self.width_var = tk.StringVar(value=u"%d" % CELL_W)
+        sp = tk.Spinbox(bar, from_=24, to=160, increment=4, width=4, textvariable=self.width_var,
+                        command=self._width_changed)
+        sp.pack(side="left")
+        sp.bind("<Return>", lambda e: self._width_changed())
+        root.bind("<Control-equal>", lambda e: self._zoom(4))
+        root.bind("<Control-plus>", lambda e: self._zoom(4))
+        root.bind("<Control-minus>", lambda e: self._zoom(-4))
         self.cell_info = tk.Label(right, anchor="w", relief="sunken")
         self.cell_info.pack(fill="x")
         self.grid = SequenceGrid(right, self)
@@ -623,6 +648,16 @@ class App(object):
         self.refresh_lists()
 
     # ---- interaction
+    def _width_changed(self):
+        try:
+            self.grid.set_cell_width(int(self.width_var.get()))
+        except ValueError:
+            pass
+
+    def _zoom(self, d):
+        self.width_var.set(u"%d" % max(24, min(160, self.grid.cell_w + d)))
+        self._width_changed()
+
     def _set_changed(self, e=None):
         self.set_index = int(self.set_box.get().split(u" ", 1)[0])
         self.grid.redraw()
