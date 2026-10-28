@@ -69,6 +69,20 @@ edge.ctl (6 fields)
 Encoding rules: strings and arrays are prefixed by I32 length / dimension sizes; paths are
 `'PTH0'`, I32 length, I16 type, I16 segment count, Pascal segments; enums are U16; bools 1 byte.
 
+
+### Invariants Supertime relies on (found the hard way, 2026-10-28)
+
+Every file Supertime saves has
+* the **Edge Array in absolute-time order** (stable for equal times), and
+* the **Variable Array in plain code-point name order** (LabVIEW `Sort 1D Array` on the names).
+
+A file that breaks either one loads, but Supertime then sits in "calculating" forever (its time
+calculation and variable lookups walk the arrays in order).  `Sequence.save()` / `to_bytes()` /
+`add_edge()` / `add_variable()` keep both; `check()` reports a violation.  Edge names and variable
+names are also always unique in Supertime's files.  Parent-chain loops exist in two 2026 files
+(`...843nm_X2detect_B+V_Fine_Tune_2EOx_checkcooling.dt4` and its backup, the "EO ramp up" edges);
+Supertime itself produced them.
+
 ## `supertime*.log` run history
 
 LabVIEW datalog: `'DTLG'`, version, I32 record count, I32 offset of the master index block,

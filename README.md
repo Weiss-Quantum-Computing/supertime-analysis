@@ -94,6 +94,8 @@ supertime_editor.bat "some sequence.dt4"                 # Windows XP (uses C:\P
 * **Edit > Simplify variables** strips the splice prefixes from variable names (`0: `, `000`),
   merges variables with the same simplified name and value, repoints the edges that use them,
   and removes variables no edge uses; edge times are unchanged.
+* Saving keeps the two orderings Supertime depends on: the Edge Array in time order and the
+  Variable Array in name order (a file without them hangs Supertime's calculation).
 * `python -m supertime_editor.audit file.dt4` lists likely mistakes: inconsistent arrays,
   parent cycles, duplicate pins, edges below the clock, conflicting same-instant values, ramp
   step conflicts, unterminated or disabled-but-intended ramps, values on the wrong channel

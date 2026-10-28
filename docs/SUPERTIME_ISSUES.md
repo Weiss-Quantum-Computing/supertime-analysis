@@ -96,6 +96,11 @@ Consequences, with the 9-planes cooling sequence as the example:
   checked by Supertime; they produced the August 2025 failures. The editor's Check ramps and
   audit catch them.
 
+* **Two array-order invariants.** Supertime keeps the Edge Array sorted by absolute time and the
+  Variable Array sorted by name (code-point order) in every file it saves. A file that breaks either
+  loads fine but never finishes "calculating". Found on 2026-10-28 with files written by this editor;
+  the editor now sorts both on save.
+
 ## 4. What can be done without touching LabVIEW
 
 * Keep per-channel ramp steps down: fewer steps per ramp (larger step sizes on the Trek and
