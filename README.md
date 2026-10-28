@@ -18,6 +18,7 @@ PC's disk (kept separately, not in this repository).
 | `supertime_tools/lvdstm.py` | Exploration tool for the data-space type map and default-data block (constant values, unfinished). |
 | `supertime_tools/lv61_strings.json` | String tables from LabVIEW 6.1's `labview.rsc`; the `CURS` table maps primitive ids to names. |
 | `vi_diagrams/` | One text netlist per VI (209), `MAIN_*.txt` is the main program. |
+| `docs/CUSTOM_RAMP_1009_NOTE.md` | Why the 26 Oct custom-ramp build turns every ramp into a step: the ramp-path table saved empty, loaded at run time behind a gate, and a per-channel loop whose count follows it. |
 | `docs/CUSTOM_RAMP_BRIEF.md` | Briefing for another agent: the cooling spin-echo edges and timing, how the custom-ramp Supertime build maps a CSV shape onto a ramp, the ramp-number rule (channel row x position among the channel's enabled ramps), and what a drift correction across the hold implies. |
 | `docs/SUPERTIME_ISSUES.md` | What makes Supertime slow and run out of memory on long sequences (ramp expansion by edge insertion), other per-run costs, silenced errors and hacks, and what would fix them. |
 | `vi_printouts/` | The 2009 front-panel printout rendered from PostScript. |
