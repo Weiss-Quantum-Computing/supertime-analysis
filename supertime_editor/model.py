@@ -80,8 +80,24 @@ class Sequence(object):
                     c[K_EDGEIDX] = newpos[c[K_EDGEIDX]]
         return True
 
+    def sort_variables(self):
+        """Put the Variable Array in name order (plain code-point order, what LabVIEW's Sort 1D
+        Array gives), the way Supertime keeps it: every one of its saved files is sorted that way,
+        and a file that is not makes Supertime hang in its calculation.  Edge variable references
+        are remapped.  Returns True if anything moved.  Stable: equal names keep their order."""
+        V = self.variables
+        perm = sorted(range(len(V)), key=lambda i: (V[i][V_NAME], i))
+        if perm == list(range(len(V))):
+            return False
+        newpos = {old: new for new, old in enumerate(perm)}
+        self.data["Variable Array"] = [V[i] for i in perm]
+        for e in self.edges:
+            e[E_VARS] = [newpos[k] if k in newpos else k for k in e[E_VARS]]
+        return True
+
     def save(self, path=None):
         self.sort_edges()
+        self.sort_variables()
         path = path or self.path
         self.data["File name"] = os.path.basename(path)
         with open(path, "wb") as f:
@@ -90,6 +106,7 @@ class Sequence(object):
 
     def to_bytes(self):
         self.sort_edges()
+        self.sort_variables()
         return lvcore.encode_dt4(self.data, self.fmt, self.dc)
 
     # ---- basic accessors
@@ -276,8 +293,10 @@ class Sequence(object):
 
     # ---- variables
     def add_variable(self, name, value_ms):
-        self.variables.append({V_NAME: name, V_VAL: value_ms})
-        return len(self.variables) - 1
+        new = {V_NAME: name, V_VAL: value_ms}
+        self.variables.append(new)
+        self.sort_variables()
+        return self.variables.index(new)
 
     def delete_variable(self, k):
         del self.variables[k]
@@ -333,6 +352,12 @@ class Sequence(object):
             if v[V_NAME] in seenv:
                 problems.append("variables %d and %d share the name %r" % (seenv[v[V_NAME]], i, v[V_NAME]))
             seenv.setdefault(v[V_NAME], i)
+        V = self.variables
+        for i in range(len(V) - 1):
+            if V[i][V_NAME] > V[i + 1][V_NAME]:
+                problems.append("Variable Array is not in name order at variable %d %r (Supertime gets stuck "
+                                "calculating; saving from the editor sorts it)" % (i + 1, V[i + 1][V_NAME]))
+                break
         for i in range(len(E) - 1):
             if E[i][E_ABS] > E[i + 1][E_ABS] + 1e-9:
                 problems.append("Edge Array is not in time order at edge %d %r (Supertime gets stuck "
@@ -816,6 +841,7 @@ def _simplify_variables(seq, dry_run=False, merge_similar=True, drop_unused=True
     seq.data["Variable Array"] = [{V_NAME: final[k], V_VAL: V[k][V_VAL]} for k in survivors]
     for e in E:
         e[E_VARS] = [newindex[k] for k in e[E_VARS] if k in newindex]
+    seq.sort_variables()
     seq.recompute_times()
     return report
 
