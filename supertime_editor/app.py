@@ -1268,10 +1268,11 @@ class App(object):
         if msgs and not messagebox.askyesno("Save", u"%d consistency problems, %d ramp problems:\n%s\n\nSave anyway?"
                                             % (len(problems), len(rp), u"\n".join(msgs))):
             return
-        self.seq.save(path)
+        self.seq.save(path)                      # also puts the Edge Array in time order, as Supertime keeps it
         self.dirty = False
         self.root.title(u"Supertime sequence editor - %s" % os.path.basename(path))
-        self.refresh_status()
+        self.grid.refresh_order()
+        self.refresh_lists()
 
     def quit(self):
         if self.dirty and not messagebox.askyesno("Quit", u"Unsaved changes. Quit anyway?"):

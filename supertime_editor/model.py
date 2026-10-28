@@ -57,7 +57,31 @@ class Sequence(object):
         data, fmt = lvcore.decode_dt4(path)
         return cls(data, fmt, path)
 
+    def sort_edges(self):
+        """Put the Edge Array in absolute-time order, the way Supertime keeps it (its time
+        calculation walks the array in order and hangs on an unsorted one).  Parent indices,
+        every channel's per-edge arrays and the channels' shown-edge index are remapped.
+        Returns True if anything moved.  Stable: equal times keep their order."""
+        self.repair()
+        E = self.edges
+        perm = sorted(range(len(E)), key=lambda i: (E[i][E_ABS], i))
+        if perm == list(range(len(E))):
+            return False
+        newpos = {old: new for new, old in enumerate(perm)}
+        self.data["Edge Array"] = [E[i] for i in perm]
+        for e in self.data["Edge Array"]:
+            if 0 <= e[E_PARENT] < len(E):
+                e[E_PARENT] = newpos[e[E_PARENT]]
+        for row in self.grid:
+            for c in row:
+                for f in CELL_FIELDS:
+                    c[f] = [c[f][i] for i in perm]
+                if 0 <= c[K_EDGEIDX] < len(E):
+                    c[K_EDGEIDX] = newpos[c[K_EDGEIDX]]
+        return True
+
     def save(self, path=None):
+        self.sort_edges()
         path = path or self.path
         self.data["File name"] = os.path.basename(path)
         with open(path, "wb") as f:
@@ -65,6 +89,7 @@ class Sequence(object):
         self.path = path
 
     def to_bytes(self):
+        self.sort_edges()
         return lvcore.encode_dt4(self.data, self.fmt, self.dc)
 
     # ---- basic accessors
@@ -218,7 +243,9 @@ class Sequence(object):
                 for f in CELL_FIELDS:
                     c[f].append(CELL_DEFAULTS[f])
         self.recompute_times()
-        return len(self.edges) - 1
+        new = self.edges[-1]
+        self.sort_edges()
+        return self.edges.index(new)
 
     def delete_edge(self, i):
         """Remove edge i; children are re-parented to its parent with their time preserved."""
@@ -294,6 +321,12 @@ class Sequence(object):
         bad = self.recompute_times()
         for i in bad:
             problems.append("edge %d %r: parent chain is a cycle" % (i, self.edges[i][E_NAME]))
+        E = self.edges
+        for i in range(len(E) - 1):
+            if E[i][E_ABS] > E[i + 1][E_ABS] + 1e-9:
+                problems.append("Edge Array is not in time order at edge %d %r (Supertime gets stuck "
+                                "calculating; saving from the editor sorts it)" % (i + 1, E[i + 1][E_NAME]))
+                break
         return problems
 
 
