@@ -574,7 +574,50 @@ def _find_edges(seq, name_pattern=None, relative=None, tol=1e-9):
 
 
 Sequence.ramps = _ramps_for
+COST_HEAVY = 10000     # expanded time points above which Supertime's compile is noticeably slow
+COST_LIMIT = 20000     # the 2026 cooling sequences (21,000-25,000) are at the "memory is full" limit
+
+
+def cost(seq, s=0, ramps=None):
+    """How expensive the sequence is for Supertime to compile.
+
+    Supertime expands every enabled ramp by inserting one edge per ramp step into the Edge Array
+    and into every channel's per-edge arrays (add ramps only.vi), so its time grows with the
+    square of the per-channel ramp steps and its memory with the number of distinct time points
+    after expansion (see docs/SUPERTIME_ISSUES.md).  Returns a dict:
+      edges, ramps, steps (per-channel ramp steps), points (unique time points after
+      expansion), array_mb (expanded channel array, 27 bytes per point per channel),
+      by_channel [(name, steps)] most first, level 0 ok / 1 heavy / 2 at or over the limit,
+      level_text.
+    """
+    if ramps is None:
+        _, ramps = seq.check_ramps(s)
+    times = set(int(round(e[E_ABS] * 1000.0)) for e in seq.edges)      # whole microseconds
+    steps = 0
+    by_ch = {}
+    for r in ramps:
+        n = ramp_steps(r)
+        if n <= 0:
+            continue
+        steps += n
+        name = seq.grid[r.ch][s][K_NAME]
+        by_ch[name] = by_ch.get(name, 0) + n
+        t0 = r.t0 * 1000.0
+        st = r.step * 1000.0
+        for k in range(n):
+            times.add(int(round(t0 + k * st)))
+    points = len(times)
+    nch = len(seq.grid)
+    level = 2 if points >= COST_LIMIT else (1 if points >= COST_HEAVY else 0)
+    text = (u"ok", u"heavy: slow compile", u"at the memory limit")[level]
+    return {"edges": len(seq.edges), "ramps": len(ramps), "steps": steps, "points": points,
+            "array_mb": points * nch * 27 / 1e6,
+            "by_channel": sorted(by_ch.items(), key=lambda kv: -kv[1]),
+            "level": level, "level_text": text}
+
+
 Sequence.ramp_report = ramp_report
+Sequence.cost = cost
 Sequence.trace = _trace
 Sequence.check_ramps = _check_ramps
 Sequence.set_cells = _set_cells

@@ -77,7 +77,11 @@ supertime_editor.bat "some sequence.dt4"                 # Windows XP (uses C:\P
   readout. From the compare window, "Plot A vs B" overlays both sequences (B dashed).
 * The **Ramp list** tab lists every enabled ramp with its step count, most steps first, and
   the total number of output steps, for finding what eats sequence memory; click one to jump
-  to it.
+  to it. Below the list, and in the status bar, is the **sequence cost**: per-channel ramp
+  steps (Supertime's compile time grows with the square of this), the number of distinct time
+  points after ramp expansion with the size of the channel array Supertime builds, and a level:
+  ok below 10,000 points, heavy (slow compile) above, at the memory limit from 20,000 (the 2026
+  cooling sequences sit at 21,000-25,000). See `docs/SUPERTIME_ISSUES.md` for why.
 * **Check ramps** (also run on open and before save): flags enabled ramps with no ramp
   function, steps below the 2 us clock, steps that are not whole microseconds, and simultaneous ramps on different channels
   whose step sizes have no common multiple of at least 2 us (e.g. 5 us against 2 us), which

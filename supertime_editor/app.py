@@ -21,9 +21,10 @@ except ImportError:                     # Python 2.7
 
 from . import lvcore
 from .model import (Sequence, K_NAME, K_CARD, K_CHAN, K_SIG, K_CONV, K_ANLG, K_DIG, K_TC, K_FUNC,
-                    K_STEP, E_ABS, E_NAME, E_PARENT, E_REL, E_VARS, E_TYPE, V_NAME, V_VAL, step_us)
+                    K_STEP, E_ABS, E_NAME, E_PARENT, E_REL, E_VARS, E_TYPE, V_NAME, V_VAL, step_us, COST_HEAVY, COST_LIMIT)
 from .diff import Comparison, fmt_value
 
+COST_COLORS = ("black", "#b06000", "#c00000")
 CELL_W = 46            # default column width; adjustable in the toolbar
 CELL_H = 20
 HDR_H = 110
@@ -1152,7 +1153,7 @@ class App(object):
         self.ltree.pack(side="left", fill="both", expand=True)
         vs2.pack(side="right", fill="y")
         self.ltree.bind("<<TreeviewSelect>>", self._ramp_list_selected)
-        self.ramp_total = tk.Label(f3b, anchor="w")
+        self.ramp_total = tk.Label(f3b, anchor="w", justify="left")
         self.ramp_total.pack(side="bottom", fill="x")
         f4 = tk.Frame(self.nb)
         self.nb.add(f4, text=u"Info")
@@ -1305,9 +1306,12 @@ class App(object):
         if not self.seq:
             self.status.configure(text=u"no sequence loaded")
             return
-        self.status.configure(text=u"%s%s   edges %d   channels %d   cycle %s ms   ramp problems %d" % (
+        c = getattr(self, "cost", None)
+        cost_txt = u"   expanded points %d (%s)" % (c["points"], c["level_text"]) if c else u""
+        self.status.configure(text=u"%s%s   edges %d   channels %d   cycle %s ms   ramp problems %d%s" % (
             os.path.basename(self.seq.path or u"untitled"), u" *" if self.dirty else u"",
-            len(self.seq.edges), len(self.seq.grid), fnum(self.seq.cycle_length()), len(self.grid.conflicts) // 2))
+            len(self.seq.edges), len(self.seq.grid), fnum(self.seq.cycle_length()), len(self.grid.conflicts) // 2, cost_txt),
+            fg=(COST_COLORS[c["level"]] if c else "black"))
 
     def mark_dirty(self, structural=False):
         self.dirty = True
@@ -1359,7 +1363,15 @@ class App(object):
             total += steps
             self.ltree.insert("", "end", iid=str(n), values=(steps, fstep(r.step), fnum(r.t1 - r.t0, 4),
                                                               self.seq.grid[r.ch][0][K_NAME][:22], fnum(r.v0, 4), fnum(r.v1, 4)))
-        self.ramp_total.configure(text=u"%d ramps, %d output steps in total" % (len(self.ramp_rows), total))
+        self.cost = self.seq.cost(self.set_index, ramps)
+        c = self.cost
+        top = u", ".join(u"%s %d" % (n[:24], k) for n, k in c["by_channel"][:5])
+        self.ramp_total.configure(
+            text=u"%d ramps, %d per-channel ramp steps (compile time grows with the square of this)\n"
+                 u"%d time points after expansion, ~%d MB channel array in Supertime: %s (heavy above %d, limit about %d)\n"
+                 u"steps by channel: %s" % (len(self.ramp_rows), total, c["points"], round(c["array_mb"]), c["level_text"],
+                                            COST_HEAVY, COST_LIMIT, top or u"none"),
+            fg=COST_COLORS[c["level"]])
         self.grid.redraw()
         self.refresh_status()
         if not quiet:

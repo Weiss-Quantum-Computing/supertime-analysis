@@ -103,6 +103,8 @@ Consequences, with the 9-planes cooling sequence as the example:
   channels that do not need them. The Ramp list tab shows where the steps are.
 * Watch the expanded point count rather than the edge count. Roughly: cooling-class sequences
   at 20,000-25,000 expanded points are at the limit on the current machine; 5,000 is comfortable.
+  The editor shows this as the "sequence cost" in the status bar and the Ramp list tab
+  (`Sequence.cost()` in `model.py`: per-channel ramp steps, expanded points, array size, level).
 * Rotate the run log before 2 GB.
 
 ## 5. What would fix it in LabVIEW (for when someone opens the VIs)
