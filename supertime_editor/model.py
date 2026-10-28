@@ -322,6 +322,17 @@ class Sequence(object):
         for i in bad:
             problems.append("edge %d %r: parent chain is a cycle" % (i, self.edges[i][E_NAME]))
         E = self.edges
+        seen = {}
+        for i, e in enumerate(E):
+            if e[E_NAME] in seen:
+                problems.append("edges %d and %d share the name %r (Supertime never saves duplicate edge names)"
+                                % (seen[e[E_NAME]], i, e[E_NAME]))
+            seen.setdefault(e[E_NAME], i)
+        seenv = {}
+        for i, v in enumerate(self.variables):
+            if v[V_NAME] in seenv:
+                problems.append("variables %d and %d share the name %r" % (seenv[v[V_NAME]], i, v[V_NAME]))
+            seenv.setdefault(v[V_NAME], i)
         for i in range(len(E) - 1):
             if E[i][E_ABS] > E[i + 1][E_ABS] + 1e-9:
                 problems.append("Edge Array is not in time order at edge %d %r (Supertime gets stuck "
