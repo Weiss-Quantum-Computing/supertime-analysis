@@ -1,0 +1,12 @@
+#Name	File	Min
+Molasses	C:\Documents and Settings\Experiment control\Desktop\Supertime\supertime sub vi's\OM-2014-9-3.txt	6.0
+MOT	C:\Documents and Settings\Experiment control\Desktop\Supertime\supertime sub vi's\MOT-20250910.txt	30.0
+Repump	C:\Documents and Settings\Experiment control\Desktop\Supertime\supertime sub vi's\repump MOT path 20111110.txt	0.0
+OP	C:\Documents and Settings\Experiment control\Desktop\Supertime\supertime sub vi's\OP 4-4_20120410.txt	0.0
+Add. H	C:\Documents and Settings\Experiment control\Desktop\Supertime\supertime sub vi's\AddressingH.txt	0.0
+Add. V	C:\Documents and Settings\Experiment control\Desktop\Supertime\supertime sub vi's\AddressingV.txt	0.0
+Lat. X2	C:\Documents and Settings\Experiment control\Desktop\Supertime\supertime sub vi's\LatticeX2.txt	0.0
+Lat. X	C:\Documents and Settings\Experiment control\Desktop\Supertime\supertime sub vi's\X lattice calibration at 845nm 8-7-06.txt	0.0
+Lat. Y	C:\Documents and Settings\Experiment control\Desktop\Supertime\supertime sub vi's\Y lattice calibration at 845nm 8-7-06.txt	0.0
+Lat. Z	C:\Documents and Settings\Experiment control\Desktop\Supertime\supertime sub vi's\Z lattice calibration at 845nm 8-7-06.txt	0.0
+847 seed	C:\Documents and Settings\Experiment control\Desktop\Supertime\supertime sub vi's\TA847.txt	0.0
