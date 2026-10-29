@@ -21,7 +21,7 @@ PC's disk (kept separately, not in this repository).
 | `docs/CUSTOM_RAMP_1009_NOTE.md` | Why the 26 Oct custom-ramp build turns every ramp into a step: the ramp-path table saved empty, loaded at run time behind a gate, and a per-channel loop whose count follows it. |
 | `docs/CUSTOM_RAMP_BRIEF.md` | Briefing for another agent: the cooling spin-echo edges and timing, how the custom-ramp Supertime build maps a CSV shape onto a ramp, the ramp-number rule (channel row x position among the channel's enabled ramps), and what a drift correction across the hold implies. |
 | `docs/SUPERTIME_ISSUES.md` | What makes Supertime slow and run out of memory on long sequences (ramp expansion by edge insertion), other per-run costs, silenced errors and hacks, and what would fix them. |
-* [docs/SEQUENCE_VALUES_BRIEF.md](docs/SEQUENCE_VALUES_BRIEF.md): how a sequence value becomes a card voltage and a beam power (conversion VIs, calibration tables, AOMrescale), with `supertime_tools/stage_values.py` and the `exports/lattice-sim-context-20261029/` bundle for the lattice simulation.
+| `docs/SEQUENCE_VALUES_BRIEF.md` | How a sequence value becomes a card voltage and a beam power (conversion VIs, calibration tables, AOMrescale), the channel/unit registry, the molasses power through the PGC hold; goes with `supertime_tools/stage_values.py` and the `exports/lattice-sim-context-20261029/` bundle for the lattice simulation. |
 | `vi_printouts/` | The 2009 front-panel printout rendered from PostScript. |
 | `supertime_tools/subvi_calltree.txt`, `subvi_text_labels.txt`, `main_vi_text_labels.txt` | Call graph and all panel/diagram text, including diagram comments. |
 
